@@ -13,7 +13,7 @@ namespace TriangleProject.Shared.Models.GamesContent
 		public int QuestionID { get; set; }
 		public string AnswerDescription { get; set; }
 		public bool HasImage { get; set; }
-		public Blob AnswerImage { get; set; }
+		public string AnswerImageText { get; set; }
 		public bool IsCorrect { get; set; }
 	}
 }

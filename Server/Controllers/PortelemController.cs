@@ -17,6 +17,7 @@ namespace TriangleProject.Server.Controllers
             _db = db;
             _config = config;
         }
+        
         [HttpGet("token")]
         public async Task<IActionResult> GetToken()
         {

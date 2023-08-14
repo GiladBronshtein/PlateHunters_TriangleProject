@@ -13,7 +13,9 @@ namespace TriangleProject.Shared.Models.GamesContent
 		public int GameID { get; set; }
 		public string QuestionDescription { get; set; }
 		public bool HasImage { get; set; }
-		public Blob QuestionImage { get; set; }
+		public string QuestionImage { get; set; }
+		public string CorrectCategoryName { get; set; }
+		public string WrongCategoryName { get; set; }
 		public List<GameAnswers> Answers { get; set; }
 	}
 }
