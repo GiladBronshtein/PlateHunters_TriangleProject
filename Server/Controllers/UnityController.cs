@@ -22,24 +22,23 @@ namespace TriangleProject.Server.Controllers
         {
             object getParam = new
             {
-                gameCode = GameCode
+                codeFromUser = GameCode
             };
-            //Get game code
-            string getGameQuery = "SELECT GameCode FROM Games WHERE GameCode = @gameCode and IsPublished = 1";
-            var getRecords = await _db.GetRecordsAsync<string>(getGameQuery, getParam); //Get game code
-            string gameCode = getRecords.FirstOrDefault();
-            if (gameCode == null) //If no game found
-            {
-                return BadRequest("no game found");
-            }
-
-            //Get course details for the game code
-            string getGameDetailsQuery = "select * from games g where GameCode = @gameCode";
+           
+            //Get course details for the codeFromUser if it exists and is published
+            string getGameDetailsQuery = "select * from games g where GameCode = @codeFromUser and IsPublished = 1";
             var getGameDetailsRecords = await _db.GetRecordsAsync<GameDetails>(getGameDetailsQuery, getParam);
             GameDetails gameDetails = getGameDetailsRecords.FirstOrDefault();
 
+            //If no game found, return bad request
+            if(gameDetails == null)
+            {
+                return BadRequest("no game found");
+            }           
+
             //Get question details for the game code
-            string getAnswersQuery = "select i.id,i.AnswerDescription,i.IsCorrect,i.HasImage,i.AnswerImageText from items i, games g where i.GameID = g.id and g.GameCode = @gameCode";
+            string getAnswersQuery = "select i.id,i.AnswerDescription,i.IsCorrect,i.HasImage,i.AnswerImageText " +
+                "from items i, games g where i.GameID = g.id and g.GameCode = @codeFromUser";
             var getAnswersRecords = await _db.GetRecordsAsync<GameAnswers>(getAnswersQuery, getParam);
             gameDetails.Answers = getAnswersRecords.ToList();
             return Ok(gameDetails);
