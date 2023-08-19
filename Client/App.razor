@@ -1,4 +1,5 @@
 ﻿@implements IDisposable
+<CascadingBlazoredModal>  
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         @if (UserId > 0 || _nav.Uri + "/" == _nav.ToAbsoluteUri("./").ToString() || _nav.Uri == _nav.ToAbsoluteUri("./").ToString())
@@ -21,7 +22,7 @@
         </LayoutView>
     </NotFound>
 </Router>
-
+</CascadingBlazoredModal>
 @code {
     int UserId = 0;
 

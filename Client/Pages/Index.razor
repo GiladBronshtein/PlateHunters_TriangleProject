@@ -1,8 +1,37 @@
 ﻿@page "/"
+@inject HttpClient Http
+@using TriangleProject.Shared.Models.Games;
 
 <h3>The user ID is: @UserId</h3>
+
+<MainGameTable Items="GamesData"></MainGameTable>
 
 @code {
     [CascadingParameter]
     public int UserId { get; set; }
+
+    List<Game> GamesData = new List<Game>
+    {
+        new Game { GameCode = 101, GameName = "Game 1", GameEdit = "Edit", GameDelete = "Delete", GamePublish = true },
+        new Game { GameCode = 102, GameName = "Game 2", GameEdit = "Edit", GameDelete = "Delete", GamePublish = true },
+        new Game { GameCode = 103, GameName = "Game 3", GameEdit = "Edit", GameDelete = "Delete", GamePublish = true },
+        new Game { GameCode = 104, GameName = "Game 4", GameEdit = "Edit", GameDelete = "Delete", GamePublish = true },
+        new Game { GameCode = 105, GameName = "Game 5", GameEdit = "Edit", GameDelete = "Delete", GamePublish = true },
+        new Game { GameCode = 106, GameName = "Game 6", GameEdit = "Edit", GameDelete = "Delete", GamePublish = true }
+    };
+    public class Game
+    {
+        public int GameCode { get; set; }
+        public string GameName { get; set; }
+        public string GameEdit { get; set; }
+        public string GameDelete { get; set; }
+        public bool GamePublish { get; set; }
+    }
+
+    async Task DeleteGameAsync(Game game)
+    {
+        GamesData.Remove(game);
+    }
+
+
 }

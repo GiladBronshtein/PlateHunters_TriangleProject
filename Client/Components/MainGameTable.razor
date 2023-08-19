@@ -1,0 +1,66 @@
+﻿@typeparam TItem
+@inject IStringLocalizer<SharedResources> Localizer
+
+<table class="table">
+    <thead>
+        <tr>
+            @foreach (var property in typeof(TItem).GetProperties())
+            {
+                <th>@Localizer[property.Name]</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Items)
+        {
+            <tr>
+                @foreach (var property in typeof(TItem).GetProperties())
+                {
+                    <td>
+
+                        @switch (property.Name)
+                        {
+                            case "GameDelete":
+                                <button @onclick="() => DeleteGame(item)">
+                                    @Localizer[property.Name]
+                                </button>
+                                break;
+                            case "GamePublish":
+                                <input type="checkbox" checked="@property.GetValue(item)" />
+                                break;
+                            case "GameEdit":
+                                <button @onclick="() => EditGame(item)">
+                                    @Localizer[property.Name]
+                                </button>
+                                break;
+                            case "GameCode":
+                                @property.GetValue(item)
+                                break;
+
+                            case "GameName":
+                                @property.GetValue(item)
+                                break;
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public List<TItem> Items { get; set; }
+
+    [Parameter]
+    public EventCallback<TItem> OnDeleteClicked { get; set; }
+
+    private async Task DeleteGame(TItem game)
+    {
+        await OnDeleteClicked.InvokeAsync(game);
+    }
+    private async Task EditGame(TItem game)
+    {
+        await OnDeleteClicked.InvokeAsync(game);
+    }
+}
