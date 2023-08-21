@@ -1,6 +1,9 @@
-﻿@page "/PageWithAuth"
+﻿@page "/PageWithAuth";
 @inject HttpClient Http
 @using TriangleProject.Shared.Models.Users
+@inject IStringLocalizer<SharedResources> Localizer
+@using TriangleProject.Shared.Models.Games
+
 @inject NavigationManager Nav
 
 @if (msg != "")
@@ -9,10 +12,7 @@
     <input type="button" value="reload" @onclick=Navigate />
 }
 
-
 <h3>The user ID is: @UserId</h3>
-
-
 
 @if (user != null)
 {
@@ -25,22 +25,88 @@
     </ul>
 }
 
+@if (user!=null)
+{
+    @if (user != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    @foreach (var property in typeof(GameMainTable).GetProperties())
+                    {
+                        <th>@Localizer[property.Name]</th>
+                    }
+
+                </tr>
+            </thead>
+          <tbody>
+                @foreach (var item in GamesList)
+                {
+                    <tr>
+                        <td>
+                            @item.GameCode
+                        </td>
+                        <td>
+                            @item.GameName
+                        </td>
+                        <td>
+                            <input type="checkbox"  @bind="item.IsPublished">
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+
+
 
 @code {
     [CascadingParameter]
     public int UserId { get; set; }
     UserWithGames user;
+
+    GameMainTable Games;
+    [Parameter]
+    public List<GameMainTable> GamesList { get; set; }
+
+
     string msg = "";    
+    [Parameter]
+    public EventCallback<GameMainTable> OnDeleteClicked { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         var userRes = await Http.GetAsync("api/game/" + UserId);
         string error = userRes.Content.ReadAsStringAsync().Result;
 
+
         if (userRes.IsSuccessStatusCode == true)
         {
             user = userRes.Content.ReadFromJsonAsync<UserWithGames>().Result;
         }
+        var gameRes = await Http.GetAsync("api/game/" + UserId + "/all");
+        Console.WriteLine(gameRes.ToString());
+
+        if (gameRes.IsSuccessStatusCode == true)
+        {
+            GamesList = gameRes.Content.ReadFromJsonAsync<List<GameMainTable>>().Result;
+            Console.WriteLine("Yo2");
+
+            if (GamesList != null)
+            {
+                Console.WriteLine("GameList is Full");
+
+            }
+            else
+            {
+                Console.WriteLine("GamesList is null");
+            }
+
+        }
+
+
         else
         {
             error = userRes.Content.ReadAsStringAsync().Result;
@@ -64,5 +130,16 @@
         Nav.NavigateTo("./", true);
     }
 
+    
+    private async Task DeleteGame(GameMainTable game)
+    {
+        await OnDeleteClicked.InvokeAsync(game);
+    }
+    private async Task EditGame(GameMainTable game)
+    {
+        await OnDeleteClicked.InvokeAsync(game);
+    }
+
+
+
 }
-   

@@ -13,4 +13,3 @@ builder.Services.AddBlazoredModal();
 builder.Services.AddLocalization();
 
 await builder.Build().RunAsync();
-

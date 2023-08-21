@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>אודות</value>
+  </data>
   <data name="GameCode" xml:space="preserve">
     <value>קוד משחק</value>
   </data>
@@ -130,6 +133,15 @@
     <value>שם משחק</value>
   </data>
   <data name="GamePublish" xml:space="preserve">
-    <value>פרסום משחק</value>
+    <value>פרסום</value>
+  </data>
+  <data name="How to play" xml:space="preserve">
+    <value>איך משחקים</value>
+  </data>
+  <data name="IsPublished" xml:space="preserve">
+    <value>פרסום</value>
+  </data>
+  <data name="Portelem" xml:space="preserve">
+    <value>פורטל"מ</value>
   </data>
 </root>

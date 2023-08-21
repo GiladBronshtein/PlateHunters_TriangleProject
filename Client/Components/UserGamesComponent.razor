@@ -1,0 +1,21 @@
+﻿@using TriangleProject.Shared.Models.Users
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<p>I'm a text from component</p>
+
+<div>
+    <p>@Message</p>
+    <button @onclick="Close" class="btn btn-primary">Confirm</button>
+    <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+</div>
+
+
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [Parameter] public string? Message { get; set; }
+    //Confirm button
+    private async Task Close() => await BlazoredModal.CloseAsync();
+    //Cancel button
+    private async Task Cancel() => await BlazoredModal.CancelAsync();
+}

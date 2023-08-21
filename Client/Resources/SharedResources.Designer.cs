@@ -61,6 +61,15 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to אודות.
+        /// </summary>
+        public static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to קוד משחק.
         /// </summary>
         public static string GameCode {
@@ -97,11 +106,38 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to פרסום משחק.
+        ///   Looks up a localized string similar to פרסום.
         /// </summary>
         public static string GamePublish {
             get {
                 return ResourceManager.GetString("GamePublish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to איך משחקים.
+        /// </summary>
+        public static string How_to_play {
+            get {
+                return ResourceManager.GetString("How to play", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to פרסום.
+        /// </summary>
+        public static string IsPublished {
+            get {
+                return ResourceManager.GetString("IsPublished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to פורטל&quot;מ.
+        /// </summary>
+        public static string Portelem {
+            get {
+                return ResourceManager.GetString("Portelem", resourceCulture);
             }
         }
     }

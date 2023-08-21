@@ -1,27 +1,28 @@
-﻿@typeparam TItem
-@inject IStringLocalizer<SharedResources> Localizer
+﻿@inject IStringLocalizer<SharedResources> Localizer
+@using TriangleProject.Shared.Models.Games
 
 <table class="table">
     <thead>
         <tr>
-            @foreach (var property in typeof(TItem).GetProperties())
-            {
-                <th>@Localizer[property.Name]</th>
-            }
+            @foreach (var property in typeof(GameMainTable).GetProperties())
+                {
+                    <th>@Localizer[property.Name]</th>
+                }
+
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Items)
+ <tbody>
+        @foreach (var item in GamesList)
         {
             <tr>
-                @foreach (var property in typeof(TItem).GetProperties())
+    @foreach (var property in typeof(GameMainTable).GetProperties())
                 {
                     <td>
 
                         @switch (property.Name)
                         {
                             case "GameDelete":
-                                <button @onclick="() => DeleteGame(item)">
+                                <button @onclick="() => DeleteGame(item) ">
                                     @Localizer[property.Name]
                                 </button>
                                 break;
@@ -50,16 +51,19 @@
 
 @code {
     [Parameter]
-    public List<TItem> Items { get; set; }
+    public List<GameMainTable> GamesList { get; set; }
+
+
+
 
     [Parameter]
-    public EventCallback<TItem> OnDeleteClicked { get; set; }
+    public EventCallback<GameMainTable> OnDeleteClicked { get; set; }
 
-    private async Task DeleteGame(TItem game)
+    private async Task DeleteGame(GameMainTable game)
     {
         await OnDeleteClicked.InvokeAsync(game);
     }
-    private async Task EditGame(TItem game)
+    private async Task EditGame(GameMainTable game)
     {
         await OnDeleteClicked.InvokeAsync(game);
     }
