@@ -141,6 +141,9 @@
   <data name="IsPublished" xml:space="preserve">
     <value>פרסום</value>
   </data>
+  <data name="New Game" xml:space="preserve">
+    <value>משחק חדש</value>
+  </data>
   <data name="Portelem" xml:space="preserve">
     <value>פורטל"מ</value>
   </data>

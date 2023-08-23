@@ -133,6 +133,15 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to משחק חדש.
+        /// </summary>
+        public static string New_Game {
+            get {
+                return ResourceManager.GetString("New Game", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to פורטל&quot;מ.
         /// </summary>
         public static string Portelem {
