@@ -113,7 +113,7 @@ namespace TriangleProject.Server.Controllers
                             QuestionHasImage = false,
                             QuestionImageText = "empty",
                             QuestionWrongCategory = "empty",
-                            UserId = userId
+                            UserID = userId  // Use UserID instead of UserId
                         };
 
                         string insertGameQuery = "INSERT INTO Games (CanPublish, GameCode, GameEndMessage, GameName, IsPublished, QuestionCorrectCategory, QuestionDescription, QuestionHasImage, QuestionImageText, QuestionWrongCategory, UserID) " +
@@ -155,8 +155,52 @@ namespace TriangleProject.Server.Controllers
             return BadRequest("No Session");
         }
 
-
-
-
+        [HttpDelete("deleteGame/{deleteGameCode}")]
+        public async Task<IActionResult> DeleteGame(int userId, int deleteGameCode)
+        {
+            Console.WriteLine("deleteGameCode");
+            int? sessionId = HttpContext.Session.GetInt32("userId");
+            if (sessionId != null)
+            {
+                if (userId == sessionId)
+                {
+                    object param = new
+                    {
+                        UserId = userId
+                    };
+                    string userQuery = "SELECT FirstName FROM Users WHERE ID = @UserId";
+                    var userRecords = await _db.GetRecordsAsync<UserWithGames>(userQuery, param);
+                    UserWithGames user = userRecords.FirstOrDefault();
+                    if (user != null)
+                    {
+                        object param2 = new
+                        {
+                            GameCodeId = deleteGameCode
+                        };
+                        string gameQuery = "SELECT GameName FROM Games WHERE GameCode = @GameCodeId";
+                        var gameRecords = await _db.GetRecordsAsync<UserWithGames>(gameQuery, param2);
+                        UserWithGames game = gameRecords.FirstOrDefault();
+                        if (game != null)
+                        {
+                            object param3 = new
+                            {
+                                GameCodeId = deleteGameCode
+                            };
+                            string deleteGameQuery = "DELETE FROM Games WHERE GameCode = @GameCodeId";
+                            bool isDelete = await _db.SaveDataAsync(deleteGameQuery, param3);
+                            if (isDelete == true)
+                            {
+                                return Ok("Game deleted");
+                            }
+                            return BadRequest("Game not deleted");
+                        }
+                        return BadRequest("Game Not Found");
+                    }
+                    return BadRequest("User Not Found");
+                }
+                return BadRequest("User Not Logged In");
+            }
+            return BadRequest("No Session");
+        }
     }
 }

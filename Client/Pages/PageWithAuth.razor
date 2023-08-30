@@ -128,17 +128,46 @@
 {
     @if (user != null)
     {
-        <p>Add New Game</p>
-        <input type="text" @bind="gameToAdd.GameName" />
-        <button style="direction: rtl; display: flex; align-items: center; justify-content: center; border-radius: 8px; height: 90px;" class="btn btn-primary" @onclick="CreateGame">
-            <span style="margin-left: 8px; white-space: nowrap;">@Localizer["New Game"]</span>
-            <span><i class="fa fa-plus-square" style="font-size: 42px;"></i></span>
-        </button>
+       @* <div style="display: flex; align-items: center; gap: 16px; direction: rtl; height: 90px;">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 90px;">
+               <button style="direction: rtl; display: flex; align-items: center; justify-content: center; border-radius: 8px; height: 90px;" class="btn btn-primary" @onclick="CreateGame">
+                    <span style="margin-left: 8px; white-space: nowrap;">@Localizer["New Game"]</span>
+                    <span><i class="fa fa-plus-square" style="font-size: 42px;"></i></span>
+                </button>
+            </div>
+            <div style="height: 90px; overflow: auto;">
+            <table class="rounded-table">
+                <tr>
+                    <td>
+                        <input type="text" @bind="gameToAdd.GameName" placeholder="שם המשחק החדש" style="height: 40px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; width: 30%;" />
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>*@
+
+        <div style="display: flex; align-items: center; gap: 16px; direction: rtl;">
+            <button style="direction: rtl; display: flex; align-items: center; justify-content: center; border-radius: 8px; height: 90px;" class="btn btn-primary" @onclick="CreateGame">
+                <span style="margin-left: 8px; white-space: nowrap;">@Localizer["New Game"]</span>
+                <span><i class="fa fa-plus-square" style="font-size: 42px;"></i></span>
+            </button>
+            <div style="flex: 1; max-height: 90px; overflow: auto;">
+                <table class="rounded-table" style="width: 70%;">
+                    <tr>
+                        <td >
+                            <input type="text" @bind="gameToAdd.GameName" placeholder="שם המשחק החדש" style="height: 40px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; width: 100%;" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+
 
 
         <br />
-
-        <table class="rounded-table">
+        <table class="rounded-table" style="height: 90px;">
             <thead >
                 <tr style="background-color:whitesmoke;">
 
@@ -236,6 +265,7 @@
 
     GameToAdd gameToAdd = new GameToAdd();
 
+
     string msg = "";    
 
     protected override async Task OnInitializedAsync()
@@ -299,20 +329,26 @@
             GameForCreation newGame = userRes.Content.ReadFromJsonAsync<GameForCreation>().Result;
             user.Games.Add(newGame.GameName);
             gameToAdd.GameName = "";
+            //call to edit game with the new gamecode created
+            
+            Nav.NavigateTo("./EditGame/" + newGame.GameCode);
         }
         else
         {
             //המשך הקוד כאן
         }
-    }
 
-    //delete game method to delete game from the server db
+    }
+    
+
+    //deletegame method considering my controller code
     private async Task DeleteGame(GameMainTable game)
     {
-        await OnDeleteClicked.InvokeAsync(game);
-        var res = await Http.DeleteAsync("api/game/" + game.GameCode);
+        //שליחת המשתנה לקונטרולר
+        var res = await Http.DeleteAsync("api/game/" + UserId + "/deleteGame/" + game.GameCode);
         if (res.IsSuccessStatusCode == true)
         {
+            //הסרת המשחק מרשימת המשחקים
             GamesList.Remove(game);
         }
         else
@@ -331,14 +367,17 @@
                     break;
             }
         }
-
-
     }
+
+   
+
+
+
     
     //edit game method to navigate to edit game page
     private async Task EditGame(GameMainTable game)
     {
-        Nav.NavigateTo("./EditGame/" + game.GameCode, true);
+        Nav.NavigateTo("./EditGame/" + game.GameCode);
     }
     
     //edit publish status method to change IsPublished value on the server db

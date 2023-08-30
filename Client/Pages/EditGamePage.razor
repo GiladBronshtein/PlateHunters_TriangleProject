@@ -1,0 +1,8 @@
+﻿@page "/EditGame/{gameCode:int}";
+
+<h3>EditGame - GameID: @gameCode</h3>
+
+@code {
+    [Parameter]
+    public int gameCode { get; set; }
+}
