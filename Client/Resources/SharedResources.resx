@@ -120,6 +120,9 @@
   <data name="About" xml:space="preserve">
     <value>אודות</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>ביטול</value>
+  </data>
   <data name="GameCode" xml:space="preserve">
     <value>קוד משחק</value>
   </data>
@@ -129,11 +132,17 @@
   <data name="GameEdit" xml:space="preserve">
     <value>עריכת משחק</value>
   </data>
+  <data name="GameEndMessage" xml:space="preserve">
+    <value>הודעת סיום</value>
+  </data>
   <data name="GameName" xml:space="preserve">
     <value>שם משחק</value>
   </data>
   <data name="GamePublish" xml:space="preserve">
     <value>פרסום</value>
+  </data>
+  <data name="GameQuestion" xml:space="preserve">
+    <value>גזע השאלה</value>
   </data>
   <data name="How to play" xml:space="preserve">
     <value>איך משחקים</value>
@@ -146,5 +155,8 @@
   </data>
   <data name="Portelem" xml:space="preserve">
     <value>פורטל"מ</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>שמירה</value>
   </data>
 </root>

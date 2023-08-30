@@ -70,6 +70,15 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ביטול.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to קוד משחק.
         /// </summary>
         public static string GameCode {
@@ -97,6 +106,15 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to הודעת סיום.
+        /// </summary>
+        public static string GameEndMessage {
+            get {
+                return ResourceManager.GetString("GameEndMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to שם משחק.
         /// </summary>
         public static string GameName {
@@ -111,6 +129,15 @@ namespace TriangleProject.Client.Resources {
         public static string GamePublish {
             get {
                 return ResourceManager.GetString("GamePublish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to גזע השאלה.
+        /// </summary>
+        public static string GameQuestion {
+            get {
+                return ResourceManager.GetString("GameQuestion", resourceCulture);
             }
         }
         
@@ -147,6 +174,15 @@ namespace TriangleProject.Client.Resources {
         public static string Portelem {
             get {
                 return ResourceManager.GetString("Portelem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to שמירה.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
     }

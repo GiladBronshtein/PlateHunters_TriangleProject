@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TriangleDbRepository;
 using TriangleProject.Shared.Models.Games;
+using TriangleProject.Shared.Models.GamesContent;
 using TriangleProject.Shared.Models.Users;
 
 namespace TriangleProject.Server.Controllers
@@ -11,6 +12,7 @@ namespace TriangleProject.Server.Controllers
     public class GameController : ControllerBase
     {
         private readonly DbRepository _db;
+        
         public GameController(DbRepository db)
         {
             _db = db;
@@ -201,6 +203,124 @@ namespace TriangleProject.Server.Controllers
                 return BadRequest("User Not Logged In");
             }
             return BadRequest("No Session");
+        }
+
+        [HttpPut("updateGame/{updateGameCode}")]
+        public async Task<IActionResult> UpdateGame(int userId, int updateGameCode, GameToUpdate gameToUpdate)
+        {
+            Console.WriteLine("updateGameCode");
+            int? sessionId = HttpContext.Session.GetInt32("userId");
+            if (sessionId != null)
+            {
+                if (userId == sessionId)
+                {
+                    object param = new
+                    {
+                        UserId = userId
+                    };
+                    string userQuery = "SELECT FirstName FROM Users WHERE ID = @UserId";
+                    var userRecords = await _db.GetRecordsAsync<UserWithGames>(userQuery, param);
+                    UserWithGames user = userRecords.FirstOrDefault();
+                    if (user != null)
+                    {
+                        object param2 = new
+                        {
+                            GameCodeId = updateGameCode
+                        };
+                        string gameQuery = "SELECT GameName FROM Games WHERE GameCode = @GameCodeId";
+                        var gameRecords = await _db.GetRecordsAsync<UserWithGames>(gameQuery, param2);
+                        UserWithGames game = gameRecords.FirstOrDefault();
+                        if (game != null)
+                        {
+                            object param3 = new
+                            {
+                                GameCodeId = updateGameCode
+                            };
+                            string updateGameQuery = "UPDATE Games SET GameName = @GameName WHERE GameCode = @GameCodeId";
+                            bool isUpdate = await _db.SaveDataAsync(updateGameQuery, param3);
+                            if (isUpdate == true)
+                            {
+                                return Ok("Game updated");
+                            }
+                            return BadRequest("Game not updated");
+                        }
+                        return BadRequest("Game Not Found");
+                    }
+                    return BadRequest("User Not Found");
+                }
+                return BadRequest("User Not Logged In");
+            }
+            return BadRequest("No Session");
+        }
+
+        [HttpGet("getGame/{gameCode}")]
+        public async Task<IActionResult> GetGame(int userId, int gameCode)
+        {
+
+            object getParam = new
+            {
+                codeFromUser = gameCode
+            };
+
+            //Get course details for the codeFromUser if it exists and is published
+            string getGameDetailsQuery = "select * from games g where GameCode = @codeFromUser";
+            var getGameDetailsRecords = await _db.GetRecordsAsync<GameDetails>(getGameDetailsQuery, getParam);
+            GameDetails gameDetails = getGameDetailsRecords.FirstOrDefault();
+
+            //If no game found, return bad request
+            if (gameDetails == null)
+            {
+                return BadRequest("No game found for game code: " + gameCode);
+            }
+
+            //Get question details for the game code
+            string getAnswersQuery = "select i.id,i.AnswerDescription,i.IsCorrect,i.HasImage,i.AnswerImageText " +
+                "from items i, games g where i.GameID = g.id and g.GameCode = @codeFromUser";
+            var getAnswersRecords = await _db.GetRecordsAsync<GameAnswers>(getAnswersQuery, getParam);
+            gameDetails.Answers = getAnswersRecords.ToList();
+            return Ok(gameDetails);
+
+            //Console.WriteLine("getGame");
+            //int? sessionId = HttpContext.Session.GetInt32("userId");
+            //if (sessionId != null)
+            //{
+            //    if (userId == sessionId)
+            //    {
+            //        object param = new
+            //        {
+            //            UserId = userId
+            //        };
+            //        string userQuery = "SELECT FirstName FROM Users WHERE ID = @UserId";
+            //        var userRecords = await _db.GetRecordsAsync<UserWithGames>(userQuery, param);
+            //        UserWithGames user = userRecords.FirstOrDefault();
+            //        if (user != null)
+            //        {
+            //            object param2 = new
+            //            {
+            //                GameCodeId = gameCode
+            //            };
+            //            string gameQuery = "SELECT GameName FROM Games WHERE GameCode = @GameCodeId";
+            //            var gameRecords = await _db.GetRecordsAsync<UserWithGames>(gameQuery, param2);
+            //            UserWithGames game = gameRecords.FirstOrDefault();
+            //            if (game != null)
+            //            {
+            //                object param3 = new
+            //                {
+            //                    GameCodeId = gameCode
+            //                };
+            //                string getGameQuery = "SELECT ID,UserID,GameCode,GameName,QuestionDescription,GameEndMessage," +
+            //                    "QuestionCorrectCategory,QuestionWrongCategory,IsPublished FROM Games WHERE GameCode = @GameCodeId";
+            //                var gameRecord = await _db.GetRecordsAsync<GameWithContent>(getGameQuery, param3);
+            //                GameWithContent gameToReturn = gameRecord.FirstOrDefault();
+            //                return Ok(gameToReturn);
+            //            }
+            //            return BadRequest("Game Not Found");
+            //        }
+            //        return BadRequest("User Not Found");
+            //    }
+            //    return BadRequest("User Not Logged In");
+            //}
+            //return BadRequest("No Session");
         }
     }
 }

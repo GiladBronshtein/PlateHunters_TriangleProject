@@ -1,8 +1,70 @@
 ﻿@page "/EditGame/{gameCode:int}";
+@inject HttpClient Http
+@inject NavigationManager Nav
+@inject IStringLocalizer<SharedResources> Localizer
+@using TriangleProject.Shared.Models.Games
 
-<h3>EditGame - GameID: @gameCode</h3>
+<p>@Localizer["GameEdit"] - GameID: @gameCode</p>
+
+
+@if (gameData != null)
+{
+    <table>
+        <tr>
+            <td>
+                <label>@Localizer["GameName"]</label>
+            </td>
+            <td>
+                <input type="text" value="@gameData.GameName" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>@Localizer["GameQuestion"]</label>
+            </td>
+            <td>
+                <input type="text" value="@gameData.QuestionDescription" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>@Localizer["GameEndMessage"]</label>
+            </td>
+            <td>
+                <input type="text" value="@gameData.GameEndMessage" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button class="btn btn-primary" @onclick="() => { }">@Localizer["Save"]</button>
+            </td>
+            <td>
+                <button class="btn btn-secondary" @onclick="() => { }">@Localizer["Cancel"]</button>
+            </td>
+        </tr>
+
+    </table>
+}
+
 
 @code {
+    [CascadingParameter]
+    public int UserId { get; set; }
+
     [Parameter]
     public int gameCode { get; set; }
+
+    GameDetails gameData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetGameData();
+    }
+
+    //get game data from database by gamecode
+    async Task GetGameData()
+    {
+        gameData = await Http.GetFromJsonAsync<GameDetails>($"api/game/" + UserId + "/getGame/" + gameCode);
+    }
+
 }
