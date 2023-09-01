@@ -141,8 +141,8 @@ namespace TriangleProject.Server.Controllers
                                 };
                                 string gameQuery = "SELECT ID, GameName, GameCode, IsPublished, CanPublish FROM Games WHERE ID = @ID";
 
-                                var gameRecord = await _db.GetRecordsAsync<GameForCreation>(gameQuery, param2);
-                                GameForCreation newGame = gameRecord.FirstOrDefault();
+                                var gameRecord = await _db.GetRecordsAsync<Games>(gameQuery, param2);
+                                Games newGame = gameRecord.FirstOrDefault();
                                 return Ok(newGame);
                             }
                             return BadRequest("Game code not created");
@@ -207,10 +207,6 @@ namespace TriangleProject.Server.Controllers
         [HttpPut("updateGame/{updateGameCode}")]
         public async Task<IActionResult> UpdateGame(int userId, int updateGameCode, GameToUpdate gameToUpdate)
         {
-            Console.WriteLine(gameToUpdate.ID);
-            Console.WriteLine(gameToUpdate.GameCode);
-            Console.WriteLine(gameToUpdate.GameName);
-            Console.WriteLine("updateGameCode");
             int? sessionId = HttpContext.Session.GetInt32("userId");
             if (sessionId != null)
             {
@@ -222,16 +218,12 @@ namespace TriangleProject.Server.Controllers
                     };
                     string userQuery = "SELECT FirstName FROM Users WHERE ID = @UserId";
                     var userRecords = await _db.GetRecordsAsync<UserWithGames>(userQuery, param);
-                    
-                    
-                    //Console.WriteLine(param);
                     UserWithGames user = userRecords.FirstOrDefault();
                     if (user != null)
                     {
                         object param2 = new
                         {
                             GameCode = gameToUpdate.GameCode
-
                         };
                         string gameQuery = "SELECT GameName FROM Games WHERE GameCode = @GameCode";
                         var gameRecords = await _db.GetRecordsAsync<UserWithGames>(gameQuery, param2);
@@ -243,11 +235,12 @@ namespace TriangleProject.Server.Controllers
                                 GameCode = gameToUpdate.GameCode,
                                 GameName = gameToUpdate.GameName,
                                 GameQuestion = gameToUpdate.QuestionDescription
-
+                                //ADD MORE PARAMS TO UPDATE
                             };
                             string updateGameQuery = "UPDATE Games SET GameName = @GameName, " +
                                 "QuestionDescription = @GameQuestion " +
                                 "WHERE GameCode = @GameCode";
+                            //CHANGE QUERY ACCORDINGLY TO ADD MORE PARAMS TO UPDATE
                             bool isUpdate = await _db.SaveDataAsync(updateGameQuery, param3);
                             if (isUpdate == true)
                             {
@@ -314,9 +307,12 @@ namespace TriangleProject.Server.Controllers
                     string gameName = checkRecords.FirstOrDefault();
                     if (gameName != null)
                     {
+
                         if (game.IsPublished == true)
+
                         {
-                            CanPublishFunc(game.ID);    
+                            CanPublishFunc(game.ID);
+
                             object canPublishParam = new
                             {
                                 gameID = game.ID
@@ -373,6 +369,5 @@ namespace TriangleProject.Server.Controllers
                 Console.WriteLine($"The update of game: {gameId} was completed successfully {isUpdate}");
             }
         }
-
     }
 }

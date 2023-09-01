@@ -15,7 +15,7 @@ namespace TriangleProject.Server.Controllers
             _filesmanage = filesmanage;
         }
 
-        // upload file API
+        //Upload file API
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFile([FromBody] string imageBase64)
         {
@@ -23,7 +23,7 @@ namespace TriangleProject.Server.Controllers
             return Ok(filName);
         }
 
-        //delete file API
+        //Delete file API
         [HttpPost("deleteImages")]
         public async Task<IActionResult> DeleteImages([FromBody] List<string> images)
         {
