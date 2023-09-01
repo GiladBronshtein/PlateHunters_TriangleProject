@@ -4,7 +4,7 @@
 <table class="table">
     <thead>
         <tr>
-            @foreach (var property in typeof(GameMainTable).GetProperties())
+            @foreach (var property in typeof(Games).GetProperties())
                 {
                     <th>@Localizer[property.Name]</th>
                 }
@@ -15,7 +15,7 @@
         @foreach (var item in GamesList)
         {
             <tr>
-    @foreach (var property in typeof(GameMainTable).GetProperties())
+    @foreach (var property in typeof(Games).GetProperties())
                 {
                     <td>
 
@@ -51,16 +51,16 @@
 
 @code {
     [Parameter]
-    public List<GameMainTable> GamesList { get; set; }
+    public List<Games> GamesList { get; set; }
 
     [Parameter]
-    public EventCallback<GameMainTable> OnDeleteClicked { get; set; }
+    public EventCallback<Games> OnDeleteClicked { get; set; }
 
-    private async Task DeleteGame(GameMainTable game)
+    private async Task DeleteGame(Games game)
     {
         await OnDeleteClicked.InvokeAsync(game);
     }
-    private async Task EditGame(GameMainTable game)
+    private async Task EditGame(Games game)
     {
         await OnDeleteClicked.InvokeAsync(game);
     }

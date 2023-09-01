@@ -21,7 +21,6 @@ namespace TriangleProject.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetGamesByUser(int userId)
         {
-            Console.WriteLine("GetGamesByUser");
             int? sessionId = HttpContext.Session.GetInt32("userId");
             if (sessionId != null)
             {
@@ -37,7 +36,7 @@ namespace TriangleProject.Server.Controllers
                     if (user != null)
                     {
                         string gameQuery = "SELECT GameName FROM Games WHERE UserId = @UserId";
-                        var gamesRecords = await _db.GetRecordsAsync<string>(gameQuery, param);
+                        var gamesRecords = await _db.GetRecordsAsync<Games>(gameQuery, param);
                         user.Games = gamesRecords.ToList();
                         return Ok(user);
                     }
@@ -66,9 +65,9 @@ namespace TriangleProject.Server.Controllers
                     UserWithGames user = userRecords.FirstOrDefault();
                     if (user != null)
                     {
-                        List<GameMainTable> listGames = new List<GameMainTable>();
-                        string gameQuery = "SELECT GameName,GameCode,IsPublished FROM Games WHERE UserId = @UserId";
-                        var gamesRecords = await _db.GetRecordsAsync<GameMainTable>(gameQuery, param);
+                        List<Games> listGames = new List<Games>();
+                        string gameQuery = "SELECT ID,GameName,GameCode,IsPublished,CanPublish FROM Games WHERE UserId = @UserId";
+                        var gamesRecords = await _db.GetRecordsAsync<Games>(gameQuery, param);
                         listGames = gamesRecords.ToList();
                         return Ok(listGames);
                     }
@@ -208,6 +207,9 @@ namespace TriangleProject.Server.Controllers
         [HttpPut("updateGame/{updateGameCode}")]
         public async Task<IActionResult> UpdateGame(int userId, int updateGameCode, GameToUpdate gameToUpdate)
         {
+            Console.WriteLine(gameToUpdate.ID);
+            Console.WriteLine(gameToUpdate.GameCode);
+            Console.WriteLine(gameToUpdate.GameName);
             Console.WriteLine("updateGameCode");
             int? sessionId = HttpContext.Session.GetInt32("userId");
             if (sessionId != null)
@@ -220,23 +222,32 @@ namespace TriangleProject.Server.Controllers
                     };
                     string userQuery = "SELECT FirstName FROM Users WHERE ID = @UserId";
                     var userRecords = await _db.GetRecordsAsync<UserWithGames>(userQuery, param);
+                    
+                    
+                    //Console.WriteLine(param);
                     UserWithGames user = userRecords.FirstOrDefault();
                     if (user != null)
                     {
                         object param2 = new
                         {
-                            GameCodeId = updateGameCode
+                            GameCode = gameToUpdate.GameCode
+
                         };
-                        string gameQuery = "SELECT GameName FROM Games WHERE GameCode = @GameCodeId";
+                        string gameQuery = "SELECT GameName FROM Games WHERE GameCode = @GameCode";
                         var gameRecords = await _db.GetRecordsAsync<UserWithGames>(gameQuery, param2);
                         UserWithGames game = gameRecords.FirstOrDefault();
                         if (game != null)
                         {
                             object param3 = new
                             {
-                                GameCodeId = updateGameCode
+                                GameCode = gameToUpdate.GameCode,
+                                GameName = gameToUpdate.GameName,
+                                GameQuestion = gameToUpdate.QuestionDescription
+
                             };
-                            string updateGameQuery = "UPDATE Games SET GameName = @GameName WHERE GameCode = @GameCodeId";
+                            string updateGameQuery = "UPDATE Games SET GameName = @GameName, " +
+                                "QuestionDescription = @GameQuestion " +
+                                "WHERE GameCode = @GameCode";
                             bool isUpdate = await _db.SaveDataAsync(updateGameQuery, param3);
                             if (isUpdate == true)
                             {
@@ -280,47 +291,88 @@ namespace TriangleProject.Server.Controllers
             gameDetails.Answers = getAnswersRecords.ToList();
             return Ok(gameDetails);
 
-            //Console.WriteLine("getGame");
-            //int? sessionId = HttpContext.Session.GetInt32("userId");
-            //if (sessionId != null)
-            //{
-            //    if (userId == sessionId)
-            //    {
-            //        object param = new
-            //        {
-            //            UserId = userId
-            //        };
-            //        string userQuery = "SELECT FirstName FROM Users WHERE ID = @UserId";
-            //        var userRecords = await _db.GetRecordsAsync<UserWithGames>(userQuery, param);
-            //        UserWithGames user = userRecords.FirstOrDefault();
-            //        if (user != null)
-            //        {
-            //            object param2 = new
-            //            {
-            //                GameCodeId = gameCode
-            //            };
-            //            string gameQuery = "SELECT GameName FROM Games WHERE GameCode = @GameCodeId";
-            //            var gameRecords = await _db.GetRecordsAsync<UserWithGames>(gameQuery, param2);
-            //            UserWithGames game = gameRecords.FirstOrDefault();
-            //            if (game != null)
-            //            {
-            //                object param3 = new
-            //                {
-            //                    GameCodeId = gameCode
-            //                };
-            //                string getGameQuery = "SELECT ID,UserID,GameCode,GameName,QuestionDescription,GameEndMessage," +
-            //                    "QuestionCorrectCategory,QuestionWrongCategory,IsPublished FROM Games WHERE GameCode = @GameCodeId";
-            //                var gameRecord = await _db.GetRecordsAsync<GameWithContent>(getGameQuery, param3);
-            //                GameWithContent gameToReturn = gameRecord.FirstOrDefault();
-            //                return Ok(gameToReturn);
-            //            }
-            //            return BadRequest("Game Not Found");
-            //        }
-            //        return BadRequest("User Not Found");
-            //    }
-            //    return BadRequest("User Not Logged In");
-            //}
-            //return BadRequest("No Session");
+            
         }
+
+        [HttpPost("publishGame")]
+        public async Task<IActionResult> publishGame(int userId, PublishGame game)
+        {
+             int? sessionId = HttpContext.Session.GetInt32("userId");
+            if (sessionId != null)
+            {
+                if (userId == sessionId)
+                {
+                    object param = new
+                    {
+                        UserId = userId,
+                        gameID = game.ID
+                    };
+                    Console.WriteLine(param);
+
+                    string checkQuery = "SELECT GameName FROM Games WHERE UserId = @UserId and ID=@gameID";
+                    var checkRecords = await _db.GetRecordsAsync<string>(checkQuery, param);
+                    string gameName = checkRecords.FirstOrDefault();
+                    if (gameName != null)
+                    {
+                        if (game.IsPublished == true)
+                        {
+                            CanPublishFunc(game.ID);    
+                            object canPublishParam = new
+                            {
+                                gameID = game.ID
+                            };
+                            string canPublishQuery = "SELECT CanPublish FROM Games WHERE ID=@gameID";
+                            var canPublishRecords = await _db.GetRecordsAsync<bool>(canPublishQuery, canPublishParam);
+                            bool canPublish = canPublishRecords.FirstOrDefault();
+                            if (canPublish == false)
+                            {
+                                return BadRequest("This game cannot be published");
+                            }
+                        }
+                        string updateQuery = "UPDATE Games SET IsPublished=@IsPublished WHERE ID=@ID";
+                        bool isUpdate = await _db.SaveDataAsync(updateQuery, game);
+                        if (isUpdate == true)
+                        {
+                            return Ok();
+                        }
+                        return BadRequest("Update Failed");
+                    }
+                    return BadRequest("It's Not Your Game");
+                }
+                return BadRequest("User Not Logged In");
+            }
+            return BadRequest("No Session");
+        }
+
+        private async Task CanPublishFunc(int gameId)
+        {
+            int minQuestions = 0;
+            bool isPublished = false;
+            bool canPublish = false;
+            object param = new
+            {
+                ID = gameId
+            };
+            string queryQuestionCount = "SELECT Count(ID) from Items WHERE GameID=@ID";
+            var recordQuestionCount = await _db.GetRecordsAsync<int>(queryQuestionCount, param);
+            int numberOfQuestions = recordQuestionCount.FirstOrDefault();
+            if (numberOfQuestions >= minQuestions)
+            {
+                canPublish = true;
+            }
+            if (canPublish == true)
+            {
+                string updateQuery = "UPDATE Games SET CanPublish= true WHERE ID = @ID";
+                bool isUpdate = await _db.SaveDataAsync(updateQuery, param);
+                Console.WriteLine($"The update of game: {gameId} was completed successfully {isUpdate}");
+            }
+            else
+            {
+                string updateQuery = "UPDATE Games SET IsPublished=false, CanPublish= false WHERE ID = @ID";
+                bool isUpdate = await _db.SaveDataAsync(updateQuery, param);
+                Console.WriteLine($"The update of game: {gameId} was completed successfully {isUpdate}");
+            }
+        }
+
     }
 }

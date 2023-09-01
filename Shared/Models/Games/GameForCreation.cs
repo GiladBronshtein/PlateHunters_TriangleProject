@@ -11,7 +11,7 @@ namespace TriangleProject.Shared.Models.Games
         public int ID { get; set; }
         public string GameName { get; set; }
         public string GameCode { get; set; }
-        public bool IsPublish { get; set; }
+        public bool IsPublished { get; set; }
         public bool CanPublish { get; set; }
     }
 }

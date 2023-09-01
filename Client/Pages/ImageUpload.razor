@@ -1,0 +1,87 @@
+﻿@page "/ImageUpload"
+@inject HttpClient Http
+
+<label for="FileInputID">Choose Image</label>
+<InputFile id="FileInputID" OnChange="UploadFile" hidden/>
+<br />
+
+
+@if (msg != "")
+{
+    <p>@msg</p>
+}
+
+
+
+@if (myFileImage!="")
+{
+    <img src="@myFileImage" width="150" />
+    <input type="button" value="move to delete" @onclick="MakeDeleteList"/>
+}
+
+
+
+@if (DeleteImages.Count > 0)
+{
+    <ul>
+        @foreach (string img in DeleteImages)
+        {
+            <li>@img <img src="@img" width="50"/> </li>
+        }
+    </ul>
+    <input type="button" value="מחק תמונות נבחרות " @onclick="DeleteImage" />
+
+}
+
+
+<p>@msg</p>
+
+@code {
+    string myFileImage = "";
+    long maxFileSize = 4194304; //4MB
+    string msg = "";
+    List<string> DeleteImages = new List<string>();
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var file in imageFiles)
+        {
+            if (file.Size <= maxFileSize)
+            {
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
+                var imageBase64 = Convert.ToBase64String(buffer);
+                var saveResponse = await Http.PostAsJsonAsync("api/media/upload", imageBase64);
+
+                if (saveResponse.IsSuccessStatusCode == true)
+                {
+                    string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
+                    myFileImage = "uploadedFiles/" + resizeUrl;
+                }
+            }
+        }
+    }
+
+    private void MakeDeleteList()
+    {
+        DeleteImages.Add(myFileImage);
+        myFileImage = "";
+    }
+
+
+
+    private async Task DeleteImage()
+    {
+        var saveResponse = await Http.PostAsJsonAsync("api/Media/deleteImages", DeleteImages);
+        if (saveResponse.IsSuccessStatusCode == true)
+        {
+            msg = "deleted Successfully";
+            DeleteImages.Clear();
+        }
+        else
+        {
+            msg = "DELETE ERROR";
+        }
+    }
+}

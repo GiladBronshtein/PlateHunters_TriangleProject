@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace TriangleProject.Shared.Models.Games
 {
-    public class GameToUpdate
+    public class Games
     {
         public int ID { get; set; }
         public string GameCode { get; set; }
         public string GameName { get; set; }
-        public string QuestionDescription { get; set; }
+        public bool IsPublished { get; set; }
+        public bool CanPublish { get; set; }
     }
 }

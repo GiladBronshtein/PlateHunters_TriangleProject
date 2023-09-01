@@ -107,45 +107,10 @@
     <input type="button" value="reload" @onclick=Navigate />
 }
 
-@*
-@if (user != null)
-{
-    <div style="direction:ltr;" class="px-8 d-flex  align-items-center">
-        <ul>
-            <li>The user ID is: @UserId</li>
-            <li>The Games of: @user.FirstName</li>
-        </ul>
-    </div>
-<br />*@
-@*    <ul>
-        @foreach (string game in user.Games)
-        {
-            <li>@game</li>
-        }
-    </ul>
-}*@
 @if (user!=null)
 {
     @if (user != null)
     {
-       @* <div style="display: flex; align-items: center; gap: 16px; direction: rtl; height: 90px;">
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 90px;">
-               <button style="direction: rtl; display: flex; align-items: center; justify-content: center; border-radius: 8px; height: 90px;" class="btn btn-primary" @onclick="CreateGame">
-                    <span style="margin-left: 8px; white-space: nowrap;">@Localizer["New Game"]</span>
-                    <span><i class="fa fa-plus-square" style="font-size: 42px;"></i></span>
-                </button>
-            </div>
-            <div style="height: 90px; overflow: auto;">
-            <table class="rounded-table">
-                <tr>
-                    <td>
-                        <input type="text" @bind="gameToAdd.GameName" placeholder="שם המשחק החדש" style="height: 40px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; width: 30%;" />
-                    </td>
-                </tr>
-            </table>
-            </div>
-        </div>*@
-
         <div style="display: flex; align-items: center; gap: 16px; direction: rtl;">
             <button style="direction: rtl; display: flex; align-items: center; justify-content: center; border-radius: 8px; height: 90px;" class="btn btn-primary" @onclick="CreateGame">
                 <span style="margin-left: 8px; white-space: nowrap;">@Localizer["New Game"]</span>
@@ -164,17 +129,12 @@
 
 
 
-
-
         <br />
         <table class="rounded-table" style="height: 90px;">
             <thead >
                 <tr style="background-color:whitesmoke;">
-
                     <th>
-                        
                        @Localizer["GameCode"]
-                        
                     </th>
                     <th>@Localizer["GameName"]</th>
                     <th>
@@ -185,7 +145,6 @@
                                 איזה טולטיפ חביב ונחמד
                                 <br />
                                 וואלק וואלק
-
                             </div>
                         </div>
                     </th>
@@ -206,38 +165,50 @@
                                 איזה טולטיפ חביב ונחמד
                                 <br />
                                 וואלק וואלק
-
                             </div>
                         </div>
                     </th>
                 </tr>
             </thead>
           <tbody>
-                @foreach (var item in GamesList)
+                @foreach (var game in GamesList)
                 {
                     <tr>
                         <td>
-                            <b> @item.GameCode</b>
+                            <b> @game.GameCode</b>
                         </td>
                         <td >
-                            @item.GameName
+                            @game.GameName
                         </td>
                         <td>
-                            <i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(item)" ></i>
+                            <i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i>
                         </td>
                         <td>
-                            @if (item.IsPublished == true)
-                            {
-                                <i class="fa fa-check-square-o icon" style="font-size:24px;" @onclick="()=>EditGame(item)"></i>
-                            }
-                            else if (item.IsPublished == false)
-                            {
-                                <i class="fa fa-square-o icon" style="font-size:24px;" @onclick="()=>EditGame(item)"></i>
 
+
+                          @*  @if (game.IsPublished == true)
+                            {
+                                <i class="fa fa-check-square-o icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i>
+                            }
+                            else if (game.IsPublished == false)
+                            {
+                                <i class="fa fa-square-o icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i>
+                            }*@
+
+
+                            @if (game.CanPublish == false)
+                            {
+                                //<i class="fa fa-square-o icon" style="font-size:24px;" @onclick="()=>changePublish(game)"></i>
+                                <input type="checkbox" disabled />
+                            }
+                            else
+                            {
+                                //<i class="fa fa-check-square-o icon" style="font-size:24px;" @onclick="()=>changePublish(game)"></i>
+                                <input type="checkbox" checked="@game.IsPublished" @onchange="(() =>changePublish(game))" />
                             }
                         </td>
                         <td>
-                            <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="()=>DeleteGame(item)"></i>
+                            <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="()=>DeleteGame(game)"></i>
                         </td>
                     </tr>
                 }
@@ -248,23 +219,21 @@
 }
 
 
-
-
 @code {
     [CascadingParameter]
     public int UserId { get; set; }
 
     [Parameter]
-    public List<GameMainTable> GamesList { get; set; }
+    public List<Games> GamesList { get; set; }
 
     [Parameter]
-    public EventCallback<GameMainTable> OnDeleteClicked { get; set; }
+    public EventCallback<Games> OnDeleteClicked { get; set; }
 
     UserWithGames user;
-    GameMainTable Games;
+
+    Games Games;
 
     GameToAdd gameToAdd = new GameToAdd();
-
 
     string msg = "";    
 
@@ -277,18 +246,18 @@
         if (userRes.IsSuccessStatusCode == true)
         {
             user = userRes.Content.ReadFromJsonAsync<UserWithGames>().Result;
+
         }
+
         var gameRes = await Http.GetAsync("api/game/" + UserId + "/all");
-        Console.WriteLine(gameRes.ToString());
 
         if (gameRes.IsSuccessStatusCode == true)
         {
-            GamesList = gameRes.Content.ReadFromJsonAsync<List<GameMainTable>>().Result;
-            Console.WriteLine("Yo2");
-
+            GamesList = gameRes.Content.ReadFromJsonAsync<List<Games>>().Result;
             if (GamesList != null)
             {
                 Console.WriteLine("GameList is Full");
+
             }
             else
             {
@@ -318,6 +287,28 @@
         Nav.NavigateTo("./", true);
     }
 
+    void ShowError(string error)
+    {
+        switch (error)
+        {
+            case "No Session":
+                msg = "Session error, please reload page";
+                break;
+            case "User Not Logged In":
+                msg = "You are not logged in, please reload page to try again";
+                break;
+            case "User Not Found":
+                msg = "the user details not found, please reload page to try again";
+                break;
+            case "Game not created":
+                msg = "the game is not created, please try again later";
+                break;
+            case "Game code not created":
+                msg = "Game code is not created";
+                break;
+        }
+    }
+
     //New game creation 
     async Task CreateGame()
     {
@@ -326,23 +317,23 @@
         if (userRes.IsSuccessStatusCode == true)
         {
             //החזרת המשחק והוספתו לרשימת המשחקים כדי שיתווסף לטבלה
-            GameForCreation newGame = userRes.Content.ReadFromJsonAsync<GameForCreation>().Result;
-            user.Games.Add(newGame.GameName);
+            Games newGame = userRes.Content.ReadFromJsonAsync<Games>().Result;
+            user.Games.Add(newGame);
             gameToAdd.GameName = "";
             //call to edit game with the new gamecode created
-            
+
             Nav.NavigateTo("./EditGame/" + newGame.GameCode);
         }
         else
         {
-            //המשך הקוד כאן
+            string error = userRes.Content.ReadAsStringAsync().Result;
+            ShowError(error);
         }
 
     }
-    
 
     //deletegame method considering my controller code
-    private async Task DeleteGame(GameMainTable game)
+    private async Task DeleteGame(Games game)
     {
         //שליחת המשתנה לקונטרולר
         var res = await Http.DeleteAsync("api/game/" + UserId + "/deleteGame/" + game.GameCode);
@@ -369,39 +360,28 @@
         }
     }
 
-   
-
-
-
-    
     //edit game method to navigate to edit game page
-    private async Task EditGame(GameMainTable game)
+    private async Task EditGame(Games game)
     {
         Nav.NavigateTo("./EditGame/" + game.GameCode);
     }
-    
+
     //edit publish status method to change IsPublished value on the server db
-    private async Task ChangePublishStatus(GameMainTable game)
+    protected async Task changePublish(Games game)
     {
-        //check if published, if so, unpublish, if not, publish
-        if (game.IsPublished == true)
-                {
-                    game.IsPublished = false;
-                }
-                else
-                {
-                    game.IsPublished = true;
-                }
-        
-                
-        var res = await Http.PutAsJsonAsync("api/game/" + game.GameCode, game);
-        if (res.IsSuccessStatusCode == true)
+        PublishGame gameToSend = new PublishGame();
+        gameToSend.ID = game.ID;
+        gameToSend.IsPublished = !game.IsPublished;
+
+        var userRes = await Http.PostAsJsonAsync("api/game/" + UserId + "/publishGame", gameToSend);
+        if (userRes.IsSuccessStatusCode == true)
         {
-            GamesList.Remove(game);
+            //change the game from published to not published and vice versa
+            game.IsPublished = !game.IsPublished;
         }
         else
         {
-            string error = res.Content.ReadAsStringAsync().Result;
+            string error = userRes.Content.ReadAsStringAsync().Result;
             switch (error)
             {
                 case "No Session":
@@ -412,6 +392,18 @@
                     break;
                 case "User Not Found":
                     msg = "the user details not found, please reload page to try again";
+                    break;
+                case "Game not created":
+                    msg = "There was a problem creating the game";
+                    break;
+                case "Game code not created":
+                    msg = "There was a problem generating the game code";
+                    break;
+                case "It's Not Your Game":
+                    msg = "You tried to update a game that is not associated with your user";
+                    break;
+                case "This game cannot be published":
+                    msg = "The game does not meet the conditions of publishing";
                     break;
             }
         }
