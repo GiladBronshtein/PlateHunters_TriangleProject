@@ -101,12 +101,6 @@
 
 </style>
 
-@if (msg != "")
-{
-    <p>@msg</p>
-    <input type="button" value="reload" @onclick=Navigate />
-}
-
 @if (user!=null)
 {
     @if (user != null)
@@ -218,6 +212,11 @@
     }
 }
 
+@if (msg != "")
+{
+    <p>@msg</p>
+    <input type="button" value="reload" @onclick=Navigate />
+}
 
 @code {
     [CascadingParameter]
@@ -242,11 +241,9 @@
         var userRes = await Http.GetAsync("api/game/" + UserId);
         string error = userRes.Content.ReadAsStringAsync().Result;
 
-
         if (userRes.IsSuccessStatusCode == true)
         {
             user = userRes.Content.ReadFromJsonAsync<UserWithGames>().Result;
-
         }
 
         var gameRes = await Http.GetAsync("api/game/" + UserId + "/all");
@@ -257,7 +254,6 @@
             if (GamesList != null)
             {
                 Console.WriteLine("GameList is Full");
-
             }
             else
             {
@@ -284,7 +280,7 @@
 
     void Navigate()
     {
-        Nav.NavigateTo("./", true);
+        Nav.NavigateTo("./PagWithAuth", true);
     }
 
     void ShowError(string error)
@@ -361,7 +357,7 @@
     }
 
     //edit game method to navigate to edit game page
-    private async Task EditGame(Games game)
+    private void EditGame(Games game)
     {
         Nav.NavigateTo("./EditGame/" + game.GameCode);
     }
@@ -376,8 +372,9 @@
         var userRes = await Http.PostAsJsonAsync("api/game/" + UserId + "/publishGame", gameToSend);
         if (userRes.IsSuccessStatusCode == true)
         {
-            //change the game from published to not published and vice versa
-            game.IsPublished = !game.IsPublished;
+            int index = GamesList.FindIndex(x => x.ID == game.ID);
+            //Console.WriteLine("index is: " + index);
+            user.Games[index].IsPublished = !game.IsPublished;
         }
         else
         {

@@ -70,11 +70,47 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to חזרה.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ביטול.
         /// </summary>
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ניתן לפרסום.
+        /// </summary>
+        public static string CanPublish {
+            get {
+                return ResourceManager.GetString("CanPublish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to אישור.
+        /// </summary>
+        public static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to מספר מסיחים.
+        /// </summary>
+        public static string GameAnswersCount {
+            get {
+                return ResourceManager.GetString("GameAnswersCount", resourceCulture);
             }
         }
         
@@ -115,6 +151,15 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to מזהה משחק.
+        /// </summary>
+        public static string GameID {
+            get {
+                return ResourceManager.GetString("GameID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to שם משחק.
         /// </summary>
         public static string GameName {
@@ -124,7 +169,7 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to פרסום.
+        ///   Looks up a localized string similar to פרסום משחק.
         /// </summary>
         public static string GamePublish {
             get {
@@ -178,11 +223,29 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to פרסום.
+        /// </summary>
+        public static string Publish {
+            get {
+                return ResourceManager.GetString("Publish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to שמירה.
         /// </summary>
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to הסרת פרסום.
+        /// </summary>
+        public static string Unpublish {
+            get {
+                return ResourceManager.GetString("Unpublish", resourceCulture);
             }
         }
     }

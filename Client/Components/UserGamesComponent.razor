@@ -1,21 +1,23 @@
 ﻿@using TriangleProject.Shared.Models.Users
 @inject HttpClient Http
 @inject NavigationManager Nav
+@inject IStringLocalizer<SharedResources> Localizer
 
-<p>I'm a text from component</p>
 
 <div>
     <p>@Message</p>
-    <button @onclick="Close" class="btn btn-primary">Confirm</button>
-    <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+    <button @onclick="Confirm" class="btn btn-primary">@Localizer["Confirm"]</button>
+    <button @onclick="Cancel" class="btn btn-secondary">@Localizer["Cancel"]</button>
 </div>
 
 
 @code {
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
     [Parameter] public string? Message { get; set; }
+
     //Confirm button
-    private async Task Close() => await BlazoredModal.CloseAsync();
+    private async Task Confirm() => await BlazoredModal.CloseAsync();
     //Cancel button
     private async Task Cancel() => await BlazoredModal.CancelAsync();
+
 }
