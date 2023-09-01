@@ -241,6 +241,15 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to משחק זה אינו עומד בתנאי הפרסום.
+        /// </summary>
+        public static string The_game_does_not_meet_the_conditions_of_publishing {
+            get {
+                return ResourceManager.GetString("The game does not meet the conditions of publishing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to הסרת פרסום.
         /// </summary>
         public static string Unpublish {

@@ -177,6 +177,9 @@
   <data name="Save" xml:space="preserve">
     <value>שמירה</value>
   </data>
+  <data name="The game does not meet the conditions of publishing" xml:space="preserve">
+    <value>משחק זה אינו עומד בתנאי הפרסום</value>
+  </data>
   <data name="Unpublish" xml:space="preserve">
     <value>הסרת פרסום</value>
   </data>
