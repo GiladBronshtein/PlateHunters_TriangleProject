@@ -5,101 +5,10 @@
 @using TriangleProject.Shared.Models.Games
 @inject NavigationManager Nav
 
-<style>
-    /* Reset default table styles */
-    table {
-        border-collapse: separate; /* Change to separate */
-        border-spacing: 0; /* Remove border spacing */
-        width: 100%;
-    }
+<link href="css/MainPage.css" rel="stylesheet" type="text/css" />
+<link href="css/CustomizeCheckbox.css" rel="stylesheet" type="text/css" />
+<link href="css/CustomeCheckbox2.css" rel="stylesheet" type="text/css" />
 
-    /* Apply rounded corners */
-    .rounded-table {
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-        /* Style table headers */
-        .rounded-table th {
-            background-color: #f2f2f2;
-            padding: 10px;
-            text-align: left;
-        }
-
-            /* Align header content in specific columns */
-            .rounded-table th:nth-child(1),
-            .rounded-table th:nth-child(3),
-            .rounded-table th:nth-child(4),
-            .rounded-table th:nth-child(5) {
-                text-align: center;
-            }
-
-            .rounded-table th:nth-child(2) {
-                text-align: right;
-            }
-
-        /* Style table cells */
-        .rounded-table td {
-            padding: 10px;
-            border-top: 1px solid #e0e0e0; /* Add a small top border for separation */
-        }
-
-            /* Align content in specific columns */
-            .rounded-table td:nth-child(1),
-            .rounded-table td:nth-child(3),
-            .rounded-table td:nth-child(4),
-            .rounded-table td:nth-child(5) {
-                text-align: center;
-            }
-
-            .rounded-table td:nth-child(2) {
-                text-align: right;
-            }
-
-    /* Add outer border to the table */
-    .rounded-table {
-        border: 2px solid #ccc;
-    }
-
-    /* Change color on hover for the icons */
-    .icon {
-        font-size: 24px;
-        transition: color 0.2s; /* Add a smooth color transition */
-    }
-
-        .icon:hover {
-            color: darkorange; /* Change the color on hover */
-        }
-
-
-
-    .custom-tooltip {
-        /*position: relative;*/
-        display: inline-block;
-        cursor: pointer; /* Set cursor to indicate a tooltip */
-        top: 50px;
-    }
-
-        .custom-tooltip:hover .tooltip-content {
-            display: block;
-        }
-
-
-
-    .tooltip-content {
-        display: none;
-        position: absolute;
-        transform: translateX(-50%);
-        background-color: #333;
-        color: #fff;
-        padding: 4px;
-        border-radius: 4px;
-        white-space: nowrap;
-    }
-
-
-
-</style>
 
 @if (user!=null)
 {
@@ -110,8 +19,8 @@
                 <span style="margin-left: 8px; white-space: nowrap;">@Localizer["New Game"]</span>
                 <span><i class="fa fa-plus-square" style="font-size: 42px;"></i></span>
             </button>
-            <div style="flex: 1; max-height: 90px; overflow: auto;">
-                <table class="rounded-table" style="width: 70%;">
+            <div style="flex: 1; max-height: 91px; overflow: auto;">
+                <table class="rounded-table" style="width: 61%; height: 88px;">
                     <tr>
                         <td >
                             <input type="text" @bind="gameToAdd.GameName" placeholder="שם המשחק החדש" style="height: 40px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; width: 100%;" />
@@ -120,11 +29,9 @@
                 </table>
             </div>
         </div>
-
-
-
         <br />
-        <table class="rounded-table" style="height: 90px;">
+
+        <table class="rounded-table" style="height: 90px; width:70%;">
             <thead >
                 <tr style="background-color:whitesmoke;">
                     <th>
@@ -169,7 +76,7 @@
                 {
                     <tr>
                         <td>
-                            <b> @game.GameCode</b>
+                            <b>@game.GameCode</b>
                         </td>
                         <td >
                             @game.GameName
@@ -179,26 +86,22 @@
                         </td>
                         <td>
 
-
-                          @*  @if (game.IsPublished == true)
-                            {
-                                <i class="fa fa-check-square-o icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i>
-                            }
-                            else if (game.IsPublished == false)
-                            {
-                                <i class="fa fa-square-o icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i>
-                            }*@
-
-
                             @if (game.CanPublish == false)
                             {
-                                //<i class="fa fa-square-o icon" style="font-size:24px;" @onclick="()=>changePublish(game)"></i>
-                                <input type="checkbox" disabled />
+                                //<input type="checkbox" disabled />
+                                <div class="checkbox-wrapper-19">
+                                    <input type="checkbox"  disabled />
+                                    <label for="cbtest-1" class="check-box"></label>
+                                </div>
+
                             }
                             else
                             {
-                                //<i class="fa fa-check-square-o icon" style="font-size:24px;" @onclick="()=>changePublish(game)"></i>
-                                <input type="checkbox" checked="@game.IsPublished" @onchange="(() =>changePublish(game))" />
+                                //<input type="checkbox" checked="@game.IsPublished" @onchange="(() =>changePublish(game))" />
+                                <div class="checkbox-wrapper-19">
+                                    <input type="checkbox" id="cbtest-19" checked="@game.IsPublished" @onchange="(() =>changePublish(game))" />
+                                    <label for="cbtest-19" class="check-box"></label>
+                                </div>
                             }
                         </td>
                         <td>
@@ -208,6 +111,7 @@
                 }
             </tbody>
         </table>
+
 
     }
 }

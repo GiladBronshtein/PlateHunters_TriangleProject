@@ -280,8 +280,8 @@
     async Task ShowModal()
     {
         var parameters = new ModalParameters()
-            .Add(nameof(UserGamesComponent.Message), "האם ברצונכם לשנות את סטאטוס הפרסום?");
-        var messageForm = Modal.Show<UserGamesComponent>("פרסום משחק", parameters);
+            .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשנות את סטאטוס הפרסום?");
+        var messageForm = Modal.Show<PopUpComponent>("פרסום משחק", parameters);
 
         var result = await messageForm.Result;
         Console.WriteLine("result is: " + result);
