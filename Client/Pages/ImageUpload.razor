@@ -1,8 +1,8 @@
 ﻿@page "/ImageUpload"
 @inject HttpClient Http
 
-<label for="FileInputID">Choose Image</label>
-<InputFile id="FileInputID" OnChange="UploadFile" hidden/>
+<label class="uploadImg" for="FileInputID"><img src="assets-images/upload_img.svg" /> העלאת תמונה </label>
+<InputFile id="FileInputID" OnChange="UploadFile" hidden />
 <br />
 
 
@@ -12,6 +12,13 @@
 }
 
 
+@if (myFileImage != "")
+{
+    <div class="img-wrapper">
+        <img src="@myFileImage" width="150" />
+    </div>
+
+}
 
 @if (myFileImage!="")
 {

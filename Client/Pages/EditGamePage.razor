@@ -6,47 +6,102 @@
 @using TriangleProject.Shared.Models.GamesContent;
 @using TriangleProject.Shared.Models.Users
 
-<h4>@Localizer["GameEdit"] - GameID: @gameCode</h4>
-<br />
-<p>@pageMsg</p>
-
-@*
-    This table is going to be a form with validations
-    At the moment it is just a table with the data from the database
-    The data is displayed in the input fields
-    Some of the fields are disabled
-    We might use a BLAZORED Datagrid for this
-*@
-
 
 @if (gameData != null)
 {
-        <EditForm Model="gameData" OnSubmit="FormSubmit">
+    <EditForm Model="gameData" OnValidSubmit="formSubmit" OnInvalidSubmit="failedSubmit">
+        <table>
+            <tr>
+                <th colspan="5">
+                    @Localizer["GameSettings"] -
+                    <label>@Localizer["GameEdit"] - GameID: @gameData.GameCode</label>
+                </th>
+            </tr>
+            <tr>
+                <td style="width:12%;">
+                    <i class="fa fa-check-circle icon" style="font-size:24px;"></i>
+                    <label>@Localizer["GameName"]</label>
+                </td>
+                <td style="width:30%;">
+                    <InputText @bind-Value="gameData.GameName" style="width:300px;" />
+                </td>
+                <td rowspan="3" style="text-align:center;">
+                    PIC OR TEXT
+                </td>
+                <td>
+                    הפעלת תצוגה מקדימה
+                </td>
+            </tr>
+            <tr>
+                <td style="width:12%;">
+                    <i class="fa fa-check-circle icon" style="font-size:24px;"></i>
+                    <label>@Localizer["GameQuestion"]</label>
+                </td>
+                <td style="width:30%;">
+                    <InputText @bind-Value="gameData.QuestionDescription" style="width:300px;" />
+                </td>
+                <td>שלט עם כיתוב ותמונה</td>
 
-    <table>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <label>@Localizer["GameCorrectCategory"]</label>
+                    <InputText @bind-Value="gameData.QuestionCorrectCategory" style="width:300px;" />
+                    <div class="custom-tooltip ">
+                        <i class="fa fa-info-circle"></i>
+                        <div class="tooltip-content">
+                            איזה טולטיפ חביב ונחמד
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <label>@Localizer["GameWrongCategory"]</label>
+                    <InputText @bind-Value="gameData.QuestionWrongCategory" style="width:300px;" />
+                    <div class="custom-tooltip ">
+                        <i class="fa fa-info-circle"></i>
+                        <div class="tooltip-content">
+                            איזה טולטיפ חביב ונחמד
+                        </div>
+                    </div>
+                </td>
+                <td style="text-align:center;width:10%;">
+                    <input type="submit" class="btn btn-primary" @onclick="EditGameData" value="@Localizer["Save"]" />
+
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td style="width:12%;">
+                    <label>@Localizer["GameEndMessage"]</label>
+                </td>
+                <td style="width:30%;">
+                    <InputText @bind-Value="gameData.GameEndMessage" style="width:300px;" />
+                </td>
+                <td style="text-align:center;">
+                    @if (gameData.IsPublished == false)
+                    {
+                        <input type="submit" class="btn btn-success" @onclick="ShowModal" value="@Localizer["GamePublish"]" />
+                    }
+                    else
+                    {
+                        <input type="submit" class="btn btn-outline-success" @onclick="ShowModal" value="@Localizer["Unpublish"]" />
+                    }
+                </td>
+                <td style="text-align:center;width:10%;">
+                    <button class="btn btn-outline-secondary" @onclick="CancelEdit">@Localizer["Back"]</button>
+                </td>
+            </tr>
+        </table>
+    </EditForm>
+    
+    <br />
+    <br />
+    <table style="width:25%;">
         <tr>
-            <td>
-                <label>@Localizer["GameName"]</label>
-            </td>
-            <td>
-                <input type="text" @bind-value=newGameName style="width:300px" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>@Localizer["GameQuestion"]</label>
-            </td>
-            <td>
-                <input type="text" @bind-value=newGameQuestion style="width:300px" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>@Localizer["GameEndMessage"]</label>
-            </td>
-            <td>
-                <input type="text" @bind-value=newGameEndMessage style="width:300px" />
-            </td>
+            <th colspan="2">טבלת עזר</th>
         </tr>
         <tr>
             <td>
@@ -69,7 +124,7 @@
                 <label>@Localizer["GameAnswersCount"]</label>
             </td>
             <td>
-                <input type="number" @bind-value=gameAnswersCount disabled/>
+                <input type="number" @bind-value="gameAnswersCount" disabled />
             </td>
         </tr>
         <tr>
@@ -83,7 +138,7 @@
                 }
                 else
                 {
-                   <input type="checkbox" checked="@gameData.IsPublished" disabled />
+                    <input type="checkbox" checked="@gameData.IsPublished" disabled />
                 }
             </td>
         </tr>
@@ -102,32 +157,10 @@
                 }
             </td>
         </tr>
-        <tr>
-            <td colspan="2">@msg</td>
-        </tr>
-        <tr>
-            <td>
-                <button class="btn btn-primary" @onclick="EditGameData">@Localizer["Save"]</button>
-            </td>
-            <td>
-                <button class="btn btn-outline-secondary" @onclick="CancelEdit">@Localizer["Back"]</button>
-            </td>
-            <td>
-                @if (gameData.IsPublished == false)
-                {
-
-                    <button class="btn btn-success" @onclick="ShowModal">@Localizer["GamePublish"]</button>
-                }
-                else
-                {
-                     <button class="btn btn-outline-success" @onclick="ShowModal">@Localizer["Unpublish"]</button>
-                }
-            </td>
-        </tr>
-
     </table>
-    </EditForm>
 
+    <p>@pageMsg</p>
+    <p>@msg</p>
 }
 
 
@@ -144,15 +177,11 @@
 
     GameDetails gameData;
 
-    string newGameName = "";
-    string newGameQuestion = "";
-    string newGameEndMessage = "";
-    bool newCanPublish = false;
-    bool newIsPublished = false;
-    int gameAnswersCount = 0;
-
     List<GameAnswers> newGameAnswers = new List<GameAnswers>();
 
+    bool newIsPublished = false;
+    bool newCanPublish = false;
+    int gameAnswersCount = 0;
     string msg = "";
     string pageMsg = "";
 
@@ -161,16 +190,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        try  
+        try
         {
             gameData = await Http.GetFromJsonAsync<GameDetails>($"api/game/" + UserId + "/getGame/" + gameCode);
-
-            newGameName = gameData.GameName;
-            newGameQuestion = gameData.QuestionDescription;
-            newGameEndMessage = gameData.GameEndMessage;
             gameAnswersCount = gameData.Answers.Count();
-            newCanPublish = gameData.CanPublish;
-            newIsPublished = gameData.IsPublished;
         }
         catch (Exception ex)
         {
@@ -182,17 +205,21 @@
     //edit game data save to database using  [HttpPut("updateGame/{updateGameCode}")] and textbox values on page
     async Task EditGameData()
     {
-        var game = new GameToUpdate
-        {
-            //set gamename the value of the gamename input on page
-            ID = gameData.ID,
-            GameCode = gameCode,
-            GameName = newGameName,
-            QuestionDescription = newGameQuestion
-        };
+        //return new gameData with the form details
+        GameDetails newGame = new GameDetails()
+            {
+                ID = gameData.ID,
+                GameCode = gameData.GameCode,
+                GameName = gameData.GameName,
+                QuestionDescription = gameData.QuestionDescription,
+                GameEndMessage = gameData.GameEndMessage,
+                CanPublish = gameData.CanPublish,
+                IsPublished = gameData.IsPublished,
+                QuestionCorrectCategory = gameData.QuestionCorrectCategory,
+                QuestionWrongCategory = gameData.QuestionWrongCategory,
+            };
 
-        Console.WriteLine(game.QuestionDescription);
-        await Http.PutAsJsonAsync($"api/game/" + UserId + "/updateGame/" + gameCode, game);
+        await Http.PutAsJsonAsync($"api/game/" + UserId + "/updateGame/" + gameCode, newGame);
         Nav.NavigateTo("/Pagewithauth");
     }
 
@@ -217,16 +244,19 @@
         }
     }
 
-    void FormSubmit()
+    void formSubmit()
     {
-        Console.WriteLine("Form submitted");
         checkCanPublish();
     }
 
-    //edit publish status method to change IsPublished value on the server db
-    protected async Task changePublish()
+    void failedSubmit()
     {
+        msg = "failed to sumbit!";
+    }
 
+    //edit publish status method to change IsPublished value on the server db
+    async Task changePublish(GameDetails game)
+    {
         PublishGame gameToSend = new PublishGame();
         gameToSend.ID = gameData.ID;
         gameToSend.IsPublished = !gameData.IsPublished;
@@ -234,11 +264,9 @@
         var userRes = await Http.PostAsJsonAsync("api/game/" + UserId + "/publishGame", gameToSend);
         if (userRes.IsSuccessStatusCode == true)
         {
-            //Console.WriteLine("index is: " + index);
-            newIsPublished = !gameData.IsPublished;
-            gameData.IsPublished = newIsPublished;
-            
-            if (newIsPublished == true)
+            gameData.IsPublished = gameToSend.IsPublished;
+
+            if (gameData.IsPublished == true)
             {
                 msg = "Game published";
             }
@@ -277,28 +305,23 @@
         }
     }
 
+    //show modal method to show modal with confirmation message
     async Task ShowModal()
     {
         var parameters = new ModalParameters()
-            .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשנות את סטאטוס הפרסום?");
-        var messageForm = Modal.Show<PopUpComponent>("פרסום משחק", parameters);
-
-        var result = await messageForm.Result;
-        Console.WriteLine("result is: " + result);
+            .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשנות את סטאטוס הפרסום?"); // Pass parameter(s) to modal component
+        var messageForm = Modal.Show<PopUpComponent>("פרסום משחק", parameters); // Show modal
+        var result = await messageForm.Result; // Get result from modal
         if (result.Confirmed)
         {
-            await changePublish();
+            await changePublish(gameData);
         }
         else
         {
-            Console.WriteLine("not confirmed");
+            Console.WriteLine("Not confirmed");
         }
         var currentUrl = Nav.Uri;
-
         // Navigate to the current URL to reload the page
-        Console.WriteLine("current url is: " + currentUrl);
         Nav.NavigateTo(currentUrl);
-
     }
-
 }

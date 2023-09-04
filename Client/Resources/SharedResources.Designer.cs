@@ -115,7 +115,7 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to קוד משחק.
+        ///   Looks up a localized string similar to קוד.
         /// </summary>
         public static string GameCode {
             get {
@@ -124,7 +124,16 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to מחיקת משחק.
+        ///   Looks up a localized string similar to קטגוריה נכונה.
+        /// </summary>
+        public static string GameCorrectCategory {
+            get {
+                return ResourceManager.GetString("GameCorrectCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to מחיקה.
         /// </summary>
         public static string GameDelete {
             get {
@@ -133,7 +142,7 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to עריכת משחק.
+        ///   Looks up a localized string similar to עריכה.
         /// </summary>
         public static string GameEdit {
             get {
@@ -160,7 +169,7 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to שם משחק.
+        ///   Looks up a localized string similar to שם המשחק.
         /// </summary>
         public static string GameName {
             get {
@@ -183,6 +192,24 @@ namespace TriangleProject.Client.Resources {
         public static string GameQuestion {
             get {
                 return ResourceManager.GetString("GameQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to הגדרות משחק.
+        /// </summary>
+        public static string GameSettings {
+            get {
+                return ResourceManager.GetString("GameSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to קטגוריה לא נכונה.
+        /// </summary>
+        public static string GameWrongCategory {
+            get {
+                return ResourceManager.GetString("GameWrongCategory", resourceCulture);
             }
         }
         
@@ -237,6 +264,15 @@ namespace TriangleProject.Client.Resources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to שמירת הגדרות.
+        /// </summary>
+        public static string SaveSettings {
+            get {
+                return ResourceManager.GetString("SaveSettings", resourceCulture);
             }
         }
         

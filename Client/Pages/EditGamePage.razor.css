@@ -1,0 +1,49 @@
+﻿.custom-tooltip {
+    /*position: relative;*/
+    display: inline-block;
+    cursor: pointer; /* Set cursor to indicate a tooltip */
+    top: 50px;
+}
+
+    .custom-tooltip:hover .tooltip-content {
+        display: block;
+    }
+
+
+
+.tooltip-content {
+    display: none;
+    position: absolute;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+
+/*TABLES*/
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px;
+}
+
+table, th, td {
+    border: 0px solid black;
+}
+
+th, td {
+    padding: 10px;
+}
+
+th {
+    background-color: #ACACAC;
+    color: white;
+}
+
+tr {
+    background-color: #E8E8E8;
+}

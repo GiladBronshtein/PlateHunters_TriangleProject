@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\Images\" />
     <Folder Include="PortelemFiles\" />
+    <Folder Include="wwwroot\assets-images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\Images\Logo.png" />

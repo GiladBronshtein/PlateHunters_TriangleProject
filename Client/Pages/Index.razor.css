@@ -1,0 +1,13 @@
+﻿iframe {
+    aspect-ratio: 16/9;
+    width: 100%;
+    height: 700px;
+    border: 1px solid black;
+    overflow: hidden;
+}
+
+@media (max-width:675px) {
+    iframe {
+        height: 700px;
+    }
+}

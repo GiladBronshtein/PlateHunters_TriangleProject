@@ -12,5 +12,8 @@ namespace TriangleProject.Shared.Models.Games
         public string GameCode { get; set; }
         public string GameName { get; set; }
         public string QuestionDescription { get; set; }
+        public string GameEndMessage { get; set; }
+        public string QuestionCorrectCategory { get; set; }
+        public string QuestionWrongCategory { get; set; }
     }
 }

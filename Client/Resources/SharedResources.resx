@@ -136,13 +136,16 @@
     <value>מספר מסיחים</value>
   </data>
   <data name="GameCode" xml:space="preserve">
-    <value>קוד משחק</value>
+    <value>קוד</value>
+  </data>
+  <data name="GameCorrectCategory" xml:space="preserve">
+    <value>קטגוריה נכונה</value>
   </data>
   <data name="GameDelete" xml:space="preserve">
-    <value>מחיקת משחק</value>
+    <value>מחיקה</value>
   </data>
   <data name="GameEdit" xml:space="preserve">
-    <value>עריכת משחק</value>
+    <value>עריכה</value>
   </data>
   <data name="GameEndMessage" xml:space="preserve">
     <value>הודעת סיום</value>
@@ -151,13 +154,19 @@
     <value>מזהה משחק</value>
   </data>
   <data name="GameName" xml:space="preserve">
-    <value>שם משחק</value>
+    <value>שם המשחק</value>
   </data>
   <data name="GamePublish" xml:space="preserve">
     <value>פרסום משחק</value>
   </data>
   <data name="GameQuestion" xml:space="preserve">
     <value>גזע השאלה</value>
+  </data>
+  <data name="GameSettings" xml:space="preserve">
+    <value>הגדרות משחק</value>
+  </data>
+  <data name="GameWrongCategory" xml:space="preserve">
+    <value>קטגוריה לא נכונה</value>
   </data>
   <data name="How to play" xml:space="preserve">
     <value>איך משחקים</value>
@@ -176,6 +185,9 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>שמירה</value>
+  </data>
+  <data name="SaveSettings" xml:space="preserve">
+    <value>שמירת הגדרות</value>
   </data>
   <data name="The game does not meet the conditions of publishing" xml:space="preserve">
     <value>משחק זה אינו עומד בתנאי הפרסום</value>

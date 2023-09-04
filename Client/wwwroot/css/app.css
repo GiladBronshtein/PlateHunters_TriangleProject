@@ -1,7 +1,11 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
+﻿/*@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');*/
+@font-face {
+        font-family: 'Arimo'; 
+        src: url(css/font/fonts/Arimo-Regular.ttf) format('truetype');
+}
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
+    font-family: Arimo;
     direction: rtl; 
 }
 

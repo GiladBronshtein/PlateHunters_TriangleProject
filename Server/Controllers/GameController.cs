@@ -234,11 +234,19 @@ namespace TriangleProject.Server.Controllers
                             {
                                 GameCode = gameToUpdate.GameCode,
                                 GameName = gameToUpdate.GameName,
-                                GameQuestion = gameToUpdate.QuestionDescription
+                                GameQuestion = gameToUpdate.QuestionDescription,
+                                GameCorrectCategory = gameToUpdate.QuestionCorrectCategory,
+                                GameWrongCategory = gameToUpdate.QuestionWrongCategory,
+                                TheGameEndMessage = gameToUpdate.GameEndMessage
                                 //ADD MORE PARAMS TO UPDATE
                             };
-                            string updateGameQuery = "UPDATE Games SET GameName = @GameName, " +
-                                "QuestionDescription = @GameQuestion " +
+                            string updateGameQuery = 
+                                "UPDATE Games SET GameName = @GameName, " +
+                                "QuestionDescription = @GameQuestion, " +
+                                "QuestionCorrectCategory = @GameCorrectCategory, " +
+                                "QuestionWrongCategory = @GameWrongCategory, " +
+                                "GameEndMessage = @TheGameEndMessage " +
+
                                 "WHERE GameCode = @GameCode";
                             //CHANGE QUERY ACCORDINGLY TO ADD MORE PARAMS TO UPDATE
                             bool isUpdate = await _db.SaveDataAsync(updateGameQuery, param3);

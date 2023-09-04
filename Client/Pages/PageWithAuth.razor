@@ -1,28 +1,23 @@
 ﻿@page "/PageWithAuth";
 @inject HttpClient Http
-@using TriangleProject.Shared.Models.Users
+@inject NavigationManager Nav
 @inject IStringLocalizer<SharedResources> Localizer
 @using TriangleProject.Shared.Models.Games
-@inject NavigationManager Nav
+@using TriangleProject.Shared.Models.Users
 
-<link href="css/MainPage.css" rel="stylesheet" type="text/css" />
-<link href="css/CustomizeCheckbox.css" rel="stylesheet" type="text/css" />
-<link href="css/CustomeCheckbox2.css" rel="stylesheet" type="text/css" />
-
-
-@if (user!=null)
+@if (user != null)
 {
     @if (user != null)
     {
         <div style="display: flex; align-items: center; gap: 16px; direction: rtl;">
-            <button style="direction: rtl; display: flex; align-items: center; justify-content: center; border-radius: 8px; height: 90px;" class="btn btn-primary" @onclick="CreateGame">
+            <button style="direction: rtl; display: flex; align-items: center; justify-content: center; border-radius: 8px; height: 88px;" class="btn btn-primary" @onclick="CreateGame">
                 <span style="margin-left: 8px; white-space: nowrap;">@Localizer["New Game"]</span>
                 <span><i class="fa fa-plus-square" style="font-size: 42px;"></i></span>
             </button>
             <div style="flex: 1; max-height: 91px; overflow: auto;">
                 <table class="rounded-table" style="width: 61%; height: 88px;">
                     <tr>
-                        <td >
+                        <td>
                             <input type="text" @bind="gameToAdd.GameName" placeholder="שם המשחק החדש" style="height: 40px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; width: 100%;" />
                         </td>
                     </tr>
@@ -32,10 +27,10 @@
         <br />
 
         <table class="rounded-table" style="height: 90px; width:70%;">
-            <thead >
+            <thead>
                 <tr style="background-color:whitesmoke;">
                     <th>
-                       @Localizer["GameCode"]
+                        @Localizer["GameCode"]
                     </th>
                     <th>@Localizer["GameName"]</th>
                     <th>
@@ -49,7 +44,8 @@
                             </div>
                         </div>
                     </th>
-                    <th>@Localizer["IsPublished"]
+                    <th>
+                        @Localizer["IsPublished"]
                         <div class="custom-tooltip ">
                             <i class="fa fa-info-circle"></i>
                             <div class="tooltip-content">
@@ -59,7 +55,8 @@
                             </div>
                         </div>
                     </th>
-                    <th>@Localizer["GameDelete"]
+                    <th>
+                        @Localizer["GameDelete"]
                         <div class="custom-tooltip ">
                             <i class="fa fa-info-circle"></i>
                             <div class="tooltip-content">
@@ -71,33 +68,30 @@
                     </th>
                 </tr>
             </thead>
-          <tbody>
+            <tbody>
                 @foreach (var game in GamesList)
                 {
                     <tr>
                         <td>
                             <b>@game.GameCode</b>
                         </td>
-                        <td >
+                        <td>
                             @game.GameName
                         </td>
                         <td>
                             <i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i>
                         </td>
                         <td>
-
                             @if (game.CanPublish == false)
                             {
-                                //<input type="checkbox" disabled />
                                 <div class="checkbox-wrapper-19">
-                                    <input type="checkbox"  disabled />
+                                    <input type="checkbox" disabled />
                                     <label for="cbtest-1" class="check-box"></label>
                                 </div>
 
                             }
                             else
                             {
-                                //<input type="checkbox" checked="@game.IsPublished" @onchange="(() =>changePublish(game))" />
                                 <div class="checkbox-wrapper-19">
                                     <input type="checkbox" id="cbtest-19" checked="@game.IsPublished" @onchange="(() =>changePublish(game))" />
                                     <label for="cbtest-19" class="check-box"></label>
@@ -138,7 +132,7 @@
 
     GameToAdd gameToAdd = new GameToAdd();
 
-    string msg = "";    
+    string msg = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -209,7 +203,7 @@
         }
     }
 
-    //New game creation 
+    //New game creation
     async Task CreateGame()
     {
         //שליחת המשחק החדש לקונטרולר

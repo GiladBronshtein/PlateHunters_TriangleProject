@@ -5,9 +5,9 @@
 @using TriangleProject.Shared.Models.Games;
 @using TriangleProject.Shared.Models.Users;
 
-<h3>The user ID is: @UserId</h3>
 
-<br />
+@*תגית שמציגה את המשחק, הלינק למשחק יעבוד רק לאחר העלאה לשרת מקומי*@
+<iframe scrolling="no"  src="https://giladbronshtein.github.io/PlateHunters/Build1/index.html" frameborder="0" allowfullscreen  />
 
 
 
@@ -16,6 +16,4 @@
     public int UserId { get; set; }
 
     UserWithGames user;
-
-    
 }
