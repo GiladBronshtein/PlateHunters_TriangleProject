@@ -9,184 +9,240 @@
 
 @if (gameData != null)
 {
-    <EditForm Model="gameData" OnValidSubmit="formSubmit" OnInvalidSubmit="failedSubmit">
-        <table>
-            <tr>
-                <th colspan="5">
-                    @Localizer["GameSettings"] -
-                    <label>@Localizer["GameEdit"] - GameID: @gameData.GameCode</label>
-                </th>
-            </tr>
-            <tr>
-                <td style="width:12%;">
-                    <i class="fa fa-check-circle icon" style="font-size:24px;"></i>
-                    <label>@Localizer["GameName"]</label>
-                </td>
-                <td style="width:30%;">
-                    <InputText @bind-Value="gameData.GameName" style="width:300px;" />
-                </td>
-                <td rowspan="3" style="text-align:center;">
-                    PIC OR TEXT
-                </td>
-                <td>
-                    הפעלת תצוגה מקדימה
-                </td>
-            </tr>
-            <tr>
-                <td style="width:12%;">
-                    <i class="fa fa-check-circle icon" style="font-size:24px;"></i>
-                    <label>@Localizer["GameQuestion"]</label>
-                </td>
-                <td style="width:30%;">
-                    <InputText @bind-Value="gameData.QuestionDescription" style="width:300px;" />
-                </td>
-                <td>שלט עם כיתוב ותמונה</td>
-
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td>
-                    <label>@Localizer["GameCorrectCategory"]</label>
-                    <InputText @bind-Value="gameData.QuestionCorrectCategory" style="width:300px;" />
-                    <div class="custom-tooltip ">
-                        <i class="fa fa-info-circle"></i>
-                        <div class="tooltip-content">
-                            איזה טולטיפ חביב ונחמד
+    <div class="editform">
+        <EditForm Model="gameData" OnValidSubmit="formSubmit" OnInvalidSubmit="failedSubmit">
+            <table class="MainTable">
+                <tr>
+                    <th colspan="5">
+                        @Localizer["GameSettings"] -
+                        <label>@Localizer["GameEdit"] - GameID: @gameData.GameCode @msg</label>
+                    </th>
+                </tr>
+                <tr>
+                    <td style="width:12%;">
+                        <i class="fa fa-check-circle icon" style="font-size:24px;"></i>
+                        <label>@Localizer["GameName"]</label>
+                    </td>
+                    <td style="width:30%;">
+                        <InputText @bind-Value="gameData.GameName" style="width:300px;" />
+                    </td>
+                    <td rowspan="3" style="text-align:center;">
+                        <table style="border: 0px solid black;">
+                            <tr>
+                                <td>
+                                    <div class="checkbox-wrapper-64">
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="text-align:center;">
+                        <div class="checkbox-wrapper-64">
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <label>@Localizer["GameWrongCategory"]</label>
-                    <InputText @bind-Value="gameData.QuestionWrongCategory" style="width:300px;" />
-                    <div class="custom-tooltip ">
-                        <i class="fa fa-info-circle"></i>
-                        <div class="tooltip-content">
-                            איזה טולטיפ חביב ונחמד
-                        </div>
-                    </div>
-                </td>
-                <td style="text-align:center;width:10%;">
-                    <input type="submit" class="btn btn-primary" @onclick="EditGameData" value="@Localizer["Save"]" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:12%;">
+                        <i class="fa fa-check-circle icon" style="font-size:24px;"></i>
+                        <label>@Localizer["GameQuestion"]</label>
+                    </td>
+                    <td style="width:30%;">
+                        <InputText @bind-Value="gameData.QuestionDescription" style="width:300px;" />
+                    </td>
+                    <td style="text-align:center;">שלט עם כיתוב ותמונה</td>
 
-                </td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td style="width:12%;">
-                    <label>@Localizer["GameEndMessage"]</label>
-                </td>
-                <td style="width:30%;">
-                    <InputText @bind-Value="gameData.GameEndMessage" style="width:300px;" />
-                </td>
-                <td style="text-align:center;">
-                    @if (gameData.IsPublished == false)
-                    {
-                        <input type="submit" class="btn btn-success" @onclick="ShowModal" value="@Localizer["GamePublish"]" />
-                    }
-                    else
-                    {
-                        <input type="submit" class="btn btn-outline-success" @onclick="ShowModal" value="@Localizer["Unpublish"]" />
-                    }
-                </td>
-                <td style="text-align:center;width:10%;">
-                    <button class="btn btn-outline-secondary" @onclick="CancelEdit">@Localizer["Back"]</button>
-                </td>
-            </tr>
-        </table>
-    </EditForm>
-    
-    <br />
-    <br />
-    <table style="width:25%;">
-        <tr>
-            <th colspan="2">טבלת עזר</th>
-        </tr>
-        <tr>
-            <td>
-                <label>@Localizer["GameCode"]</label>
-            </td>
-            <td>
-                <input type="text" @bind-value=gameCode disabled />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>@Localizer["GameID"]</label>
-            </td>
-            <td>
-                <input type="text" @bind-value=gameData.ID disabled />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>@Localizer["GameAnswersCount"]</label>
-            </td>
-            <td>
-                <input type="number" @bind-value="gameAnswersCount" disabled />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>@Localizer["IsPublished"]</label>
-            </td>
-            <td>
-                @if (gameData.IsPublished == false)
-                {
-                    <input type="checkbox" disabled />
-                }
-                else
-                {
-                    <input type="checkbox" checked="@gameData.IsPublished" disabled />
-                }
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>@Localizer["CanPublish"]</label>
-            </td>
-            <td>
-                @if (gameData.CanPublish == false)
-                {
-                    <input type="checkbox" disabled />
-                }
-                else
-                {
-                    <input type="checkbox" checked="@gameData.CanPublish" disabled />
-                }
-            </td>
-        </tr>
-    </table>
+                </tr>
+            </table>
+            <table class="Categories">
+                <tr>
+                    <td>
+                        <label>@Localizer["GameCorrectCategory"]</label>
+                        <InputText @bind-Value="gameData.QuestionCorrectCategory" style="width:300px;" />
+                        <Tooltip Text="קטגוריה למסיחים עם תשובה נכונה">
+                            <i class="fa fa-info-circle">
+                            </i>
+                        </Tooltip>
+                    </td>
+                    <td>
+                        <label>@Localizer["GameWrongCategory"]</label>
+                        <InputText @bind-Value="gameData.QuestionWrongCategory" style="width:300px;" />
+                        <Tooltip Text="קטגוריה למסיחים עם תשובה לא נכונה">
+                            <i class="fa fa-info-circle">
+                            </i>
+                        </Tooltip>
+                    </td>
+                    <td style="text-align:center;width:10%;">
+                        <input type="submit" class="btn btn-primary" @onclick="EditGameData" value="@Localizer["Save"]" />
+                    </td>
+                </tr>
+            </table>
+            <div class="Answers" style="width:100%;">
+                <div class="row">
+                    <div class="col-6 col-md-4">
+                        <table style="background-color:#F7F7F7; ">
+                            <tr style="border-bottom: 3px solid white; background-color:#F7F7F7;  height:100px;">
+                                <td style="text-align:center;">
+                                    <b> הוספת תשובה </b>
+                                </td>
+                            </tr>
+                            <tr style="background-color:#F7F7F7; height:240px;">
+                                <td>
+                                    <div class="checkbox-wrapper-64">
+                                        <label class="switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="plasteanswer">
+                                        <div class="container">
+                                            <img src="assets-images/plate_Hunters_Plate.png">
+                                            <div class="centered">
+                                                <textarea id="story" placeholder="כתבו כאן תשובה" rows="3" cols="7" @bind="inputData">
+                                                    </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddToTable">הוספת תשובה</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <table class="col-6 col-md-4">
+                            <tr>
+                                <th colspan="3" style="text-align:center; background-color:#EEF3E7;">
+                                    @gameData.QuestionCorrectCategory
+                                </th>
+                            </tr>
 
+                            @foreach (var item in tempAnswersData)
+                            {
+                                @if (@item.IsCorrect)
+                                {
+
+                                <tr>
+                                    <td style="width:80%;">
+                                            @item.AnswerDescription - @item.ID
+                                    </td>
+                                    <td style="width:10%;">
+                                        <i class="fa fa-pencil icon" style="font-size:24px;"></i>
+                                    </td>
+                                    <td style="width:10%;">
+                                        <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
+                                    </td>
+                                </tr>
+                                }
+                            }
+
+                        </table>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <table class="col-6 col-md-4" style="grid-row-gap: 50px;">
+                            <tr>
+                                <th colspan="3" style="text-align:center; background-color:#EEDFDF;">
+                                    @gameData.QuestionWrongCategory
+                                </th>
+                            </tr>
+                            @foreach (var item in tempAnswersData)
+                            {
+                                @if (!@item.IsCorrect)
+                                {
+                                    <tr>
+                                        <td style="width:80%;">
+                                            @item.AnswerDescription - @item.ID
+                                        </td>
+                                        <td style="width:10%;">
+
+                                            <i class="fa fa-pencil icon" style="font-size:24px;"></i>
+                                        </td>
+                                        <td style="width:10%;">
+                                            <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <table style="width:100%;">
+                    <tr>
+                        <td style="width:12%;">
+                            <label>@Localizer["GameEndMessage"]</label>
+                        </td>
+                        <td style="width:30%;">
+                            <InputText @bind-Value="gameData.GameEndMessage" style="width:300px;" />
+                        </td>
+                        <td style="text-align:center;">
+                            @if (gameData.IsPublished == false)
+                            {
+                                <input type="submit" class="btn btn-success" @onclick="ShowModal" value="@Localizer["GamePublish"]" />
+                            }
+                            else
+                            {
+                                <input type="submit" class="btn btn-outline-success" @onclick="ShowModal" value="@Localizer["Unpublish"]" />
+                            }
+                        </td>
+                        <td style="text-align:center;width:10%;">
+                            <button class="btn btn-secondary" @onclick="CancelEdit">@Localizer["Back"]</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </EditForm>
+    </div>
     <p>@pageMsg</p>
-    <p>@msg</p>
 }
 
-
 @code {
+    ////////////////////////
+    ///                  ///
+    ///     Variables    ///
+    ///                  ///
+    ////////////////////////
+
     [CascadingParameter] public IModalService Modal { get; set; }
 
     [CascadingParameter]
     public int UserId { get; set; }
 
-    UserWithGames user;
-
     [Parameter]
     public string gameCode { get; set; }
 
+    [Parameter]
+    public List<Games> GamesList { get; set; }
+
     GameDetails gameData;
 
+    UserWithGames user;
+
     List<GameAnswers> newGameAnswers = new List<GameAnswers>();
+
+    List<GameAnswers> tempAnswersData = new List<GameAnswers>();
 
     bool newIsPublished = false;
     bool newCanPublish = false;
     int gameAnswersCount = 0;
     string msg = "";
     string pageMsg = "";
+    string inputData = "";
 
-    [Parameter]
-    public List<Games> GamesList { get; set; }
+    //////////////////////
+    ///                ///
+    ///     Methods    ///
+    ///                ///
+    //////////////////////
 
     protected override async Task OnInitializedAsync()
     {
@@ -194,6 +250,24 @@
         {
             gameData = await Http.GetFromJsonAsync<GameDetails>($"api/game/" + UserId + "/getGame/" + gameCode);
             gameAnswersCount = gameData.Answers.Count();
+
+            //get all answers from database to tempTableData
+            foreach (var answer in gameData.Answers)
+            {
+                var gameAnswer = new GameAnswers
+                    {
+                        ID = answer.ID,
+                        GameID = gameData.ID,
+                        AnswerDescription = answer.AnswerDescription,
+                        IsCorrect = answer.IsCorrect,
+                        HasImage = answer.HasImage,
+                        AnswerImageText = answer.AnswerImageText
+                    };
+
+                // Add the new GameAnswers object to the tempTableData list
+                tempAnswersData.Add(gameAnswer);
+            }
+
         }
         catch (Exception ex)
         {
@@ -201,7 +275,6 @@
             pageMsg = "Error getting game data";
         }
     }
-
     //edit game data save to database using  [HttpPut("updateGame/{updateGameCode}")] and textbox values on page
     async Task EditGameData()
     {
@@ -217,9 +290,11 @@
                 IsPublished = gameData.IsPublished,
                 QuestionCorrectCategory = gameData.QuestionCorrectCategory,
                 QuestionWrongCategory = gameData.QuestionWrongCategory,
+                Answers = tempAnswersData
             };
 
         await Http.PutAsJsonAsync($"api/game/" + UserId + "/updateGame/" + gameCode, newGame);
+        AddAnswer();
         Nav.NavigateTo("/Pagewithauth");
     }
 
@@ -324,4 +399,60 @@
         // Navigate to the current URL to reload the page
         Nav.NavigateTo(currentUrl);
     }
+
+    //method to add new item into the answers list - later add to database
+    private void AddToTable()
+    {
+        if (!string.IsNullOrWhiteSpace(inputData))
+        {
+            var gameAnswer = new GameAnswers
+                {
+                    GameID = gameData.ID,
+                    AnswerDescription = inputData,
+                    IsCorrect = true,
+                    HasImage = false,
+                    AnswerImageText = "empty"
+                };
+
+            // Add the new GameAnswers object to the tempTableData list
+            tempAnswersData.Add(gameAnswer);
+            inputData = "";
+        }
+    }
+
+    //method sending temptalbedata to database
+    async void AddAnswer()
+    {
+        foreach (GameAnswers item in tempAnswersData)
+        {
+            var response = await Http.PostAsJsonAsync($"api/game/" + UserId + "/addAnswers/" + gameData.ID, item);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                // You can display or process the response here
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(errorMessage);
+            }
+        }
+
+
+    }
+    //Remove at the index of clicked row
+    void  RemoveFromTable(int i)
+    {
+        Console.WriteLine(i);
+        foreach (var item in tempAnswersData)
+        {
+            if (item.ID == i)
+            {
+                tempAnswersData.Remove(item);
+                break;
+            }
+        }
+    }
+
 }

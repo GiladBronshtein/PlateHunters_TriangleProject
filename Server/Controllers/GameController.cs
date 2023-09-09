@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using TriangleDbRepository;
 using TriangleProject.Shared.Models.Games;
 using TriangleProject.Shared.Models.GamesContent;
@@ -12,7 +15,7 @@ namespace TriangleProject.Server.Controllers
     public class GameController : ControllerBase
     {
         private readonly DbRepository _db;
-        
+
         public GameController(DbRepository db)
         {
             _db = db;
@@ -50,7 +53,6 @@ namespace TriangleProject.Server.Controllers
         [HttpGet("All")]
         public async Task<IActionResult> GetGamesByUserWithDetails(int userId)
         {
-            Console.WriteLine("GetGamesByUserWithDetails");
             int? sessionId = HttpContext.Session.GetInt32("userId");
             if (sessionId != null)
             {
@@ -109,11 +111,11 @@ namespace TriangleProject.Server.Controllers
                             GameEndMessage = "empty",
                             GameName = gameToAdd.GameName,
                             IsPublished = false,
-                            QuestionCorrectCategory = "empty",
+                            QuestionCorrectCategory = "נכון",
                             QuestionDescription = "empty",
                             QuestionHasImage = false,
                             QuestionImageText = "empty",
-                            QuestionWrongCategory = "empty",
+                            QuestionWrongCategory = "לא נכון",
                             UserID = userId  // Use UserID instead of UserId
                         };
 
@@ -223,7 +225,7 @@ namespace TriangleProject.Server.Controllers
                     {
                         object param2 = new
                         {
-                            GameCode = gameToUpdate.GameCode
+                            GameCode = updateGameCode
                         };
                         string gameQuery = "SELECT GameName FROM Games WHERE GameCode = @GameCode";
                         var gameRecords = await _db.GetRecordsAsync<UserWithGames>(gameQuery, param2);
@@ -232,7 +234,7 @@ namespace TriangleProject.Server.Controllers
                         {
                             object param3 = new
                             {
-                                GameCode = gameToUpdate.GameCode,
+                                GameCode = updateGameCode,
                                 GameName = gameToUpdate.GameName,
                                 GameQuestion = gameToUpdate.QuestionDescription,
                                 GameCorrectCategory = gameToUpdate.QuestionCorrectCategory,
@@ -240,20 +242,42 @@ namespace TriangleProject.Server.Controllers
                                 TheGameEndMessage = gameToUpdate.GameEndMessage
                                 //ADD MORE PARAMS TO UPDATE
                             };
-                            string updateGameQuery = 
+                            string updateGameQuery =
                                 "UPDATE Games SET GameName = @GameName, " +
                                 "QuestionDescription = @GameQuestion, " +
                                 "QuestionCorrectCategory = @GameCorrectCategory, " +
                                 "QuestionWrongCategory = @GameWrongCategory, " +
                                 "GameEndMessage = @TheGameEndMessage " +
-
                                 "WHERE GameCode = @GameCode";
                             //CHANGE QUERY ACCORDINGLY TO ADD MORE PARAMS TO UPDATE
-                            bool isUpdate = await _db.SaveDataAsync(updateGameQuery, param3);
-                            if (isUpdate == true)
+                            bool isGameUpdate = await _db.SaveDataAsync(updateGameQuery, param3);
+
+
+                            //Update existing answers
+                            foreach (GameAnswers item in gameToUpdate.Answers)
+                            {
+                                object param4 = new
+                                {
+                                    id = item.ID,
+                                    answerDescription = item.AnswerDescription,
+                                    isCorrect = item.IsCorrect,
+                                    hasImage = item.HasImage,
+                                    imageText = item.AnswerImageText
+                                };
+                                string updateAnswerQuery = "UPDATE Items SET AnswerDescription = @answerDescription, " +
+                                    "IsCorrect = @isCorrect, " +
+                                    "HasImage = @hasImage, " +
+                                    "AnswerImageText = @imageText " +
+                                    "WHERE ID = @id";
+                                bool isAnswersUpdate = await _db.SaveDataAsync(updateAnswerQuery, param4);
+
+                            }
+
+                            if (isGameUpdate == true)
                             {
                                 return Ok("Game updated");
                             }
+
                             return BadRequest("Game not updated");
                         }
                         return BadRequest("Game Not Found");
@@ -319,7 +343,7 @@ namespace TriangleProject.Server.Controllers
         [HttpPost("publishGame")]
         public async Task<IActionResult> publishGame(int userId, PublishGame game)
         {
-             int? sessionId = HttpContext.Session.GetInt32("userId");
+            int? sessionId = HttpContext.Session.GetInt32("userId");
             if (sessionId != null)
             {
                 if (userId == sessionId)
@@ -340,7 +364,7 @@ namespace TriangleProject.Server.Controllers
                         if (game.IsPublished == true)
 
                         {
-                            CanPublishFunc(game.ID);
+                            await CanPublishFunc(game.ID);
 
                             object canPublishParam = new
                             {
@@ -428,5 +452,48 @@ namespace TriangleProject.Server.Controllers
                 Console.WriteLine($"The update of game: {gameId} was completed successfully {isUpdate}");
             }
         }
+        //method to check userid and add new answers to the game
+        [HttpPost("addAnswers/{gameId}")]
+        public async Task<IActionResult> AddAnswers(int userId, int gameId, GameAnswers game)
+        {
+            int? sessionId = HttpContext.Session.GetInt32("userId");
+            if (sessionId != null)
+            {
+                if (userId == sessionId)
+                {
+                    object param = new
+                    {
+                        UserId = userId
+                    };
+                    string userQuery = "SELECT FirstName FROM Users WHERE ID = @UserId";
+                    var userRecords = await _db.GetRecordsAsync<UserWithGames>(userQuery, param);
+                    UserWithGames user = userRecords.FirstOrDefault();
+                    //בדיקה שיש משתמש כזה במחולל שלנו
+                    if (user != null)
+                    {
+                        object param3 = new
+                        {
+                            GameID = gameId,
+                            AnswerDescription = game.AnswerDescription,
+                            IsCorrect = game.IsCorrect,
+                            HasImage = game.HasImage,
+                            AnswerImageText = game.AnswerImageText
+                        };
+                        string query3 = "INSERT INTO Items (GameID, AnswerDescription, IsCorrect, HasImage, AnswerImageText) " +
+                                                        "VALUES (@GameID, @AnswerDescription, @IsCorrect, @HasImage, @AnswerImageText)";
+                        bool addAnswer = await _db.SaveDataAsync(query3, param3);
+                        if (addAnswer == true)
+                        {
+                            return Ok("Answer updated");
+                        }
+                        return BadRequest("Game didnt update");
+                    }
+                    return BadRequest("User Not Found");
+                }
+                return BadRequest("User Not Logged In");
+            }
+            return BadRequest("No Session");
+        }
+
     }
 }

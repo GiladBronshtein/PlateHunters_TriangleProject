@@ -1,5 +1,23 @@
-﻿<h3>About</h3>
+﻿@using TriangleProject.Shared.Models.Users
+@inject HttpClient Http
+@inject NavigationManager Nav
+@inject IStringLocalizer<SharedResources> Localizer
+
+
+<div>
+
+    <button @onclick="Confirm" class="btn btn-success">@Localizer["Back"]</button>
+
+</div>
+
 
 @code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [Parameter] public string? Message { get; set; }
+
+    //Confirm button
+    private async Task Confirm() => await BlazoredModal.CloseAsync();
+    //Cancel button
+    private async Task Cancel() => await BlazoredModal.CancelAsync();
 
 }

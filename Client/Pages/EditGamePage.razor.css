@@ -5,11 +5,9 @@
     top: 50px;
 }
 
-    .custom-tooltip:hover .tooltip-content {
+.custom-tooltip:hover .tooltip-content {
         display: block;
     }
-
-
 
 .tooltip-content {
     display: none;
@@ -23,23 +21,26 @@
 }
 
 
+
 /*TABLES*/
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 5px;
+
 }
 
 table, th, td {
     border: 0px solid black;
+    margin-bottom: 5px;
+    background-color:whitesmoke;
 }
 
 th, td {
-    padding: 10px;
+    padding: 8px;
 }
 
-th {
+.MainTable th {
     background-color: #ACACAC;
     color: white;
 }
@@ -47,3 +48,110 @@ th {
 tr {
     background-color: #E8E8E8;
 }
+
+
+
+.checkbox-wrapper-64 input[type="checkbox"] {
+    visibility: hidden;
+    display: none;
+}
+
+.checkbox-wrapper-64 *,
+.checkbox-wrapper-64 ::after,
+.checkbox-wrapper-64 ::before {
+    box-sizing: border-box;
+}
+
+/* The switch - the box around the slider */
+    .checkbox-wrapper-64 .switch {
+    font-size: 17px;
+    position: relative;
+    display: inline-block;
+    width: 4.3em;
+    height: 2em;
+}
+
+    /* Hide default HTML checkbox */
+.checkbox-wrapper-64 .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+/* The slider */
+.checkbox-wrapper-64 .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    border: 1px solid #adb5bd;
+    transition: .2s;
+    border-radius: 30px;
+}
+
+.checkbox-wrapper-64 .slider:before {
+        position: absolute;
+        content: "";
+        height: 1.4em;
+        width: 1.4em;
+        border-radius: 20px;
+        left: 0.47em;
+        bottom: 0.25em;
+        background-color: #007bff;
+        transition: .4s;
+    }
+
+.checkbox-wrapper-64 input:checked + .slider {
+    background-color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.checkbox-wrapper-64 input:focus + .slider {
+    box-shadow: 0 0 1px #007bff;
+}
+
+.checkbox-wrapper-64 input:checked + .slider:before {
+    transform: translateX(1.9em);
+    background-color: #fff;
+}
+
+.plasteanswer {
+    display: block; /* remove extra space below image */
+    background-repeat: no-repeat;
+    padding: 10px; /* Add padding to adjust the spacing around the input */
+    position: relative;
+}
+
+.container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+    .container img {
+        height: 195px;
+        width: 195px;
+        margin: auto;
+        display: block;
+        align-content: center;
+    }
+
+.plasteanswer .centered {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+textarea {
+    border: none;
+    outline: none;
+    resize: none;
+    background-color: transparent;
+    text-align: center;
+    font: 28px Arial, sans-serif;
+}
+

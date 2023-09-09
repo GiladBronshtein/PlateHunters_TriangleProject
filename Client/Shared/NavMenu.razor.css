@@ -1,33 +1,15 @@
-﻿nav {
-    display: flex;
-    justify-content: space-between; /* Distribute items evenly along the main axis */
-    padding: 10px 20px; /* Add some padding to the navigation bar */
-    height: 100%; /* Set the height of the nav element to 100% */
-    text-align: center;
-}
+﻿
 
 .nav-link {
     text-decoration: none;
-    color: #fff; /* Text color for navigation items */
-    font-weight: bold; /* Make the text bold */
-    transition: background-color 0.3s ease; /* Add a smooth transition for background color */
+    font-weight: bold; 
+    transition: background-color 0.3s ease;  
     text-align: center;
 }
 
-.nav-link:hover {
-        background-color: lightgray; /* Background color on hover */
-        cursor: pointer; /* Change cursor to a pointer on hover */
-    }
-
-.btn-nav {
-    background: none;
-    border: none;
-    border-radius: 0;
-    text-align: center;
-}
 
 nav div:hover {
-    background-color: lightgray; /* Change the background color of the entire component */
+    background-color: lightgray; 
 }
 
 ::deep a.active {
@@ -38,6 +20,46 @@ nav div:hover {
     background-color: lightgray;
 }
 
-::deep a:active, .btn-nav:active {
-    background-color: lightgray;
+
+li {
+    list-style-type: none;
+    display: inline-block;
+    padding: 0px 1px 0px 1px;
+    margin: 0px 1px 0px 1px;
+    background-color: whitesmoke;
+    text-align: center;
+    vertical-align: middle;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    font-weight: bold;
+    color: blue;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+
+.btn-nav {
+    color: blue;
+    text-decoration: none;
+    display: inline-block;
+    padding: 6px 2px;
+    margin-bottom: 0;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.828571429;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    transition: background-color 0.3s ease;
 }

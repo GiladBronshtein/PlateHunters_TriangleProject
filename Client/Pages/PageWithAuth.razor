@@ -5,6 +5,14 @@
 @using TriangleProject.Shared.Models.Games
 @using TriangleProject.Shared.Models.Users
 
+
+
+
+
+
+
+
+
 @if (user != null)
 {
     @if (user != null)
@@ -15,7 +23,7 @@
                 <span><i class="fa fa-plus-square" style="font-size: 42px;"></i></span>
             </button>
             <div style="flex: 1; max-height: 91px; overflow: auto;">
-                <table class="rounded-table" style="width: 61%; height: 88px;">
+                <table class="rounded-table" style="width: 500px; height: 88px;">
                     <tr>
                         <td>
                             <input type="text" @bind="gameToAdd.GameName" placeholder="שם המשחק החדש" style="height: 40px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; width: 100%;" />
@@ -25,88 +33,85 @@
             </div>
         </div>
         <br />
+        <div class="=table-container">
+            <table class="rounded-table">
+                <thead>
+                    <tr style="background-color:whitesmoke;">
+                        <th>
+                            @Localizer["GameCode"]
+                        </th>
+                        <th class="tableGameName">@Localizer["GameName"]</th>
+                        <th>
+                            @Localizer["GameEdit"]
+                            <Tooltip Text="לחצו על העפרון לעריכת המשחק ומסיחי התשובות">
+                                <i class="fa fa-info-circle">
+                                </i>
+                            </Tooltip>
+                        </th>
+                        <th>
+                            @Localizer["IsPublished"]
+                            <div class="custom-tooltip">
+                                <Tooltip Text="פרסום דורש לפחות 10 שאלות">
+                                    <i class="fa fa-info-circle">
+                                    </i>
+                                </Tooltip>
 
-        <table class="rounded-table" style="height: 90px; width:70%;">
-            <thead>
-                <tr style="background-color:whitesmoke;">
-                    <th>
-                        @Localizer["GameCode"]
-                    </th>
-                    <th>@Localizer["GameName"]</th>
-                    <th>
-                        @Localizer["GameEdit"]
-                        <div class="custom-tooltip ">
-                            <i class="fa fa-info-circle"></i>
-                            <div class="tooltip-content">
-                                איזה טולטיפ חביב ונחמד
-                                <br />
-                                וואלק וואלק
                             </div>
-                        </div>
-                    </th>
-                    <th>
-                        @Localizer["IsPublished"]
-                        <div class="custom-tooltip ">
-                            <i class="fa fa-info-circle"></i>
-                            <div class="tooltip-content">
-                                איזה טולטיפ חביב ונחמד
-                                <br />
-                                וואלק וואלק
-                            </div>
-                        </div>
-                    </th>
-                    <th>
-                        @Localizer["GameDelete"]
-                        <div class="custom-tooltip ">
-                            <i class="fa fa-info-circle"></i>
-                            <div class="tooltip-content">
-                                איזה טולטיפ חביב ונחמד
-                                <br />
-                                וואלק וואלק
-                            </div>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var game in GamesList)
-                {
-                    <tr>
-                        <td>
-                            <b>@game.GameCode</b>
-                        </td>
-                        <td>
-                            @game.GameName
-                        </td>
-                        <td>
-                            <i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i>
-                        </td>
-                        <td>
-                            @if (game.CanPublish == false)
-                            {
-                                <div class="checkbox-wrapper-19">
-                                    <input type="checkbox" disabled />
-                                    <label for="cbtest-1" class="check-box"></label>
-                                </div>
+                        </th>
+                        <th>
+                            @Localizer["GameDelete"]
+                            <div class="custom-tooltip ">
+                                <Tooltip Text="מחיקת המשחק לצמיתות ללא אפשרות שחזור">
+                                    <i class="fa fa-info-circle"></i>
+                                </Tooltip>
 
-                            }
-                            else
-                            {
-                                <div class="checkbox-wrapper-19">
-                                    <input type="checkbox" id="cbtest-19" checked="@game.IsPublished" @onchange="(() =>changePublish(game))" />
-                                    <label for="cbtest-19" class="check-box"></label>
-                                </div>
-                            }
-                        </td>
-                        <td>
-                            <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="()=>DeleteGame(game)"></i>
-                        </td>
+                            </div>
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
 
 
+                <tbody>
+                    @foreach (var game in GamesList)
+                    {
+                        <tr>
+                            <td>
+                                <b>@game.GameCode</b>
+                            </td>
+                            <td>
+                                @game.GameName
+                            </td>
+                            <td>
+                                <i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i>
+                            </td>
+                            <td>
+
+                                @if (game.CanPublish == false)
+                                {
+                                    <div class="checkbox-wrapper-19">
+                                        <input type="checkbox" id="@game.ID" disabled>
+                                        <label for="@game.ID" class="check-box1" />
+                                    </div>
+                                }
+
+                                else
+                                {
+                                    <div class="checkbox-wrapper-20">
+                                        <input type="checkbox" id="@game.ID" checked="@game.IsPublished" @onchange="()=>changePublish(game)" />
+                                        <label for="@game.ID" class="check-box2"></label>
+                                    </div>
+                                }
+                            </td>
+
+                            <td>
+                                <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="()=>DeleteGame(game)"></i>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
     }
 }
 
@@ -268,10 +273,10 @@
         gameToSend.IsPublished = !game.IsPublished;
 
         var userRes = await Http.PostAsJsonAsync("api/game/" + UserId + "/publishGame", gameToSend);
+
         if (userRes.IsSuccessStatusCode == true)
         {
             int index = GamesList.FindIndex(x => x.ID == game.ID);
-            //Console.WriteLine("index is: " + index);
             user.Games[index].IsPublished = !game.IsPublished;
         }
         else

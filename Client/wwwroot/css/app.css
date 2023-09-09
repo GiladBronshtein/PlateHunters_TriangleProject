@@ -1,12 +1,14 @@
 ﻿/*@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');*/
 @font-face {
-        font-family: 'Arimo'; 
-        src: url(css/font/fonts/Arimo-Regular.ttf) format('truetype');
+    font-family: Armio, system-ui, sans-serif !important;
+    src: url(open-iconic/font/fonts/Arimo-Regular.ttf) format('truetype');
 }
 html, body {
     /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
-    font-family: Arimo;
-    direction: rtl; 
+    font-family: Armio, system-ui, sans-serif !important;
+    direction: rtl;
+    font-size: 14px;
+
 }
 
 h1:focus {
@@ -51,11 +53,11 @@ a, .btn-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
     }
 
 .blazor-error-boundary {
@@ -64,6 +66,20 @@ a, .btn-link {
     color: white;
 }
 
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
-    }
+.blazor-error-boundary::after {
+    content: "An error has occurred."
+ }
+
+
+.bm-header .bm-close{
+    position: relative;
+    display: flex;
+}
+
+.bm-close:hover{
+color: #0071c1;
+}
+
+.bm-close span{
+    margin-right: 300px;
+}
