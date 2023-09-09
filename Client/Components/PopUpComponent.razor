@@ -3,13 +3,11 @@
 @inject NavigationManager Nav
 @inject IStringLocalizer<SharedResources> Localizer
 
-
 <div>
     <p>@Message</p>
     <button @onclick="Confirm" class="btn btn-primary">@Localizer["Confirm"]</button>
     <button @onclick="Cancel" class="btn btn-secondary">@Localizer["Cancel"]</button>
 </div>
-
 
 @code {
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
@@ -19,5 +17,4 @@
     private async Task Confirm() => await BlazoredModal.CloseAsync();
     //Cancel button
     private async Task Cancel() => await BlazoredModal.CancelAsync();
-
 }

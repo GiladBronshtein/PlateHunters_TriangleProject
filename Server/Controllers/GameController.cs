@@ -452,7 +452,7 @@ namespace TriangleProject.Server.Controllers
                 Console.WriteLine($"The update of game: {gameId} was completed successfully {isUpdate}");
             }
         }
-        //method to check userid and add new answers to the game
+        
         [HttpPost("addAnswers/{gameId}")]
         public async Task<IActionResult> AddAnswers(int userId, int gameId, GameAnswers game)
         {

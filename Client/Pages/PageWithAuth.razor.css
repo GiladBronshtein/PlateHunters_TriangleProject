@@ -14,7 +14,7 @@ table {
 .checkbox-wrapper-19 {
     box-sizing: border-box;
     --background-color: #fff;
-    --checkbox-height: 25px;
+    --checkbox-height: 22px;
 }
 
 @-moz-keyframes dothabottomcheck-19 {
@@ -188,7 +188,7 @@ table {
 .checkbox-wrapper-20 {
     box-sizing: border-box;
     --background-color: #fff;
-    --checkbox-height: 25px;
+    --checkbox-height: 22px;
 }
 
 @-moz-keyframes dothabottomcheck-20 {
@@ -374,7 +374,7 @@ table {
 /* Style table headers */
     .rounded-table th {
         background-color: #f2f2f2;
-        padding: 8px;
+        padding: 7px;
         line-height: 30px;
     }
     .rounded-table tr {
@@ -421,7 +421,7 @@ table {
 
 /* Change color on hover for the icons */
 .icon {
-    font-size: 28px;
+    font-size: 18px;
     transition: color 0.2s; /* Add a smooth color transition */
 }
 
@@ -482,8 +482,8 @@ table {
 
     .checkbox-wrapper-39 label {
         display: block;
-        width: 22px;
-        height: 22px;
+        width: 20px;
+        height: 20px;
         cursor: pointer;
     }
 
@@ -521,6 +521,3 @@ table {
         border-radius: 60px;
         transition: all 0.375s;
     }
-
- /****************************************************************************/
-
