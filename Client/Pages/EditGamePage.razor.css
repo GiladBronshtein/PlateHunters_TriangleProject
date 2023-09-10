@@ -22,6 +22,16 @@
 
 
 
+/* Change color on hover for the icons */
+.icon {
+    font-size: 18px;
+    transition: color 0.2s; /* Add a smooth color transition */
+}
+
+    .icon:hover {
+        color: darkorange; /* Change the color on hover */
+    }
+
 /*TABLES*/
 
 table {
@@ -32,7 +42,7 @@ table {
 
 table, th, td {
     border: 0px solid black;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
     background-color:whitesmoke;
 }
 
@@ -48,6 +58,48 @@ th, td {
 tr {
     background-color: #E8E8E8;
 }
+
+.Answers td{
+    width: 33%;
+}
+
+#answerBTN button {
+    /*align button to left*/
+    float: left;
+
+}
+
+.picortext {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 0;
+    background: none;
+    border: none;
+    font-size: 40px;
+    font-weight: normal;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+
+    .picortext:hover {
+        color: darkorange; /* Change the color on hover */
+    }
+
+
+
+
 
 
 
@@ -121,37 +173,41 @@ tr {
 .plasteanswer {
     display: block; /* remove extra space below image */
     background-repeat: no-repeat;
-    padding: 10px; /* Add padding to adjust the spacing around the input */
+    padding: 5px; /* Add padding to adjust the spacing around the input */
     position: relative;
 }
 
 .container {
+    border: 0px solid black;
     position: relative;
     text-align: center;
     color: white;
 }
 
     .container img {
-        height: 195px;
-        width: 195px;
+        height: 130px;
+        width: 130px;
         margin: auto;
         display: block;
         align-content: center;
     }
 
 .plasteanswer .centered {
+    border: 0px solid;
     position: absolute;
-    top: 55%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    padding: 10px;
 }
 
 textarea {
-    border: none;
+    border: 0px solid black;
     outline: none;
     resize: none;
     background-color: transparent;
     text-align: center;
-    font: 28px Arial, sans-serif;
+    font: 20px Arial, sans-serif;
+    margin: 0 auto;
 }
 

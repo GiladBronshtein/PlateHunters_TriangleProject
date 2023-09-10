@@ -87,30 +87,67 @@
             <div class="Answers" style="width:100%;">
                 <div class="row">
                     <div class="col-6 col-md-4">
-                        <table style="background-color:#F7F7F7; ">
-                            <tr style="border-bottom: 3px solid white; background-color:#F7F7F7;  height:100px;">
+                        <table style="background-color:#F7F7F7; border: 0px solid black;">
+                            <tr style="background-color:#F7F7F7;  height:20px">
+                                <td style ="text-align:center;" colspan="3"> <b> הוספת תשובה </b></td>
+                            </tr>
+                            <tr style="border-bottom: 3px solid white; background-color:#F7F7F7;  height:80px;">
                                 <td style="text-align:center;">
-                                    <b> הוספת תשובה </b>
+                                    <button type="button" value="טקסט" class="picortext" id="textBTN">
+                                        <i class="fa fa-file-text-o"></i>
+
+                                  </button>
+                                    <br />
+                                    טקסט
+                                </td>
+                                
+                                <td style="text-align:center;">או</td>
+                                
+                                <td style="text-align:center;">
+                                    <button type="button"  value="תמונה" class="picortext" id="picBTN">
+                                        <i class="fa fa-picture-o"></i>
+
+                                    </button>
+                                    <br />
+                                    תמונה
                                 </td>
                             </tr>
-                            <tr style="background-color:#F7F7F7; height:240px;">
+
+
+                            <tr style="background-color:#F7F7F7; height:50px; text-align:center;">
+                                <td>
+                                    נכון
+                                </td>
                                 <td>
                                     <div class="checkbox-wrapper-64">
                                         <label class="switch">
-                                            <input type="checkbox">
+                                            <input type="checkbox" @bind="newIsCorrect">
                                             <span class="slider"></span>
                                         </label>
                                     </div>
+                                </td>
+                                <td>
+                                    לא נכון
+                                </td>
+                            </tr>
+
+
+                            <tr style="height:100px;">
+                                <td colspan="3">
                                     <div class="plasteanswer">
                                         <div class="container">
                                             <img src="assets-images/plate_Hunters_Plate.png">
                                             <div class="centered">
                                                 <textarea id="story" placeholder="כתבו כאן תשובה" rows="3" cols="7" @bind="inputData">
-                                                    </textarea>
+                                                            </textarea>
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div id="answerBTN">
                                         <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddToTable">הוספת תשובה</button>
                                     </div>
                                 </td>
@@ -130,17 +167,17 @@
                                 @if (@item.IsCorrect)
                                 {
 
-                                <tr>
-                                    <td style="width:80%;">
+                                    <tr>
+                                        <td style="width:80%;">
                                             @item.AnswerDescription - @item.ID
-                                    </td>
-                                    <td style="width:10%;">
-                                        <i class="fa fa-pencil icon" style="font-size:24px;"></i>
-                                    </td>
-                                    <td style="width:10%;">
-                                        <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td style="width:10%;">
+                                            <i class="fa fa-pencil icon" style="font-size:20px;"></i>
+                                        </td>
+                                        <td style="width:10%;">
+                                            <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
+                                        </td>
+                                    </tr>
                                 }
                             }
 
@@ -163,10 +200,10 @@
                                         </td>
                                         <td style="width:10%;">
 
-                                            <i class="fa fa-pencil icon" style="font-size:24px;"></i>
+                                            <i class="fa fa-pencil icon" style="font-size:20px;"></i>
                                         </td>
                                         <td style="width:10%;">
-                                            <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
+                                            <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
                                         </td>
                                     </tr>
                                 }
@@ -233,6 +270,8 @@
 
     bool newIsPublished = false;
     bool newCanPublish = false;
+    bool newIsCorrect = false;
+
     int gameAnswersCount = 0;
     string msg = "";
     string pageMsg = "";
@@ -409,7 +448,7 @@
                 {
                     GameID = gameData.ID,
                     AnswerDescription = inputData,
-                    IsCorrect = true,
+                    IsCorrect = newIsCorrect,
                     HasImage = false,
                     AnswerImageText = "empty"
                 };
@@ -442,7 +481,7 @@
 
     }
     //Remove at the index of clicked row
-    void  RemoveFromTable(int i)
+    void RemoveFromTable(int i)
     {
         Console.WriteLine(i);
         foreach (var item in tempAnswersData)
