@@ -65,7 +65,7 @@
                 <tr>
                     <td>
                         <label>@Localizer["GameCorrectCategory"]</label>
-                        <InputText @bind-Value="gameData.QuestionCorrectCategory" style="width:300px;" />
+                        <InputText @bind-Value="gameData.QuestionCorrectCategory" style="width:200px;" />
                         <Tooltip Text="קטגוריה למסיחים עם תשובה נכונה">
                             <i class="fa fa-info-circle">
                             </i>
@@ -73,7 +73,7 @@
                     </td>
                     <td>
                         <label>@Localizer["GameWrongCategory"]</label>
-                        <InputText @bind-Value="gameData.QuestionWrongCategory" style="width:300px;" />
+                        <InputText @bind-Value="gameData.QuestionWrongCategory" style="width:200px;" />
                         <Tooltip Text="קטגוריה למסיחים עם תשובה לא נכונה">
                             <i class="fa fa-info-circle">
                             </i>
@@ -84,74 +84,123 @@
                     </td>
                 </tr>
             </table>
-            <div class="Answers" style="width:100%;">
+            <div class="Answers">
                 <div class="row">
-                    <div class="col-6 col-md-4">
+                    <div class="col-6 col-md-4 division1">
                         <table style="background-color:#F7F7F7; border: 0px solid black;">
                             <tr style="background-color:#F7F7F7;  height:20px">
-                                <td style ="text-align:center;" colspan="3"> <b> הוספת תשובה </b></td>
+                                <td style="text-align:center;" colspan="5"> <b> הוספת תשובה </b></td>
                             </tr>
                             <tr style="border-bottom: 3px solid white; background-color:#F7F7F7;  height:80px;">
                                 <td style="text-align:center;">
-                                    <button type="button" value="טקסט" class="picortext" id="textBTN">
-                                        <i class="fa fa-file-text-o"></i>
 
-                                  </button>
-                                    <br />
-                                    טקסט
-                                </td>
-                                
-                                <td style="text-align:center;">או</td>
-                                
-                                <td style="text-align:center;">
-                                    <button type="button"  value="תמונה" class="picortext" id="picBTN">
-                                        <i class="fa fa-picture-o"></i>
+                                    <div class="textBTN">
+                                        טקסט
 
-                                    </button>
-                                    <br />
-                                    תמונה
-                                </td>
-                            </tr>
+                                        <button type="button" value="טקסט" class="picortext" @onclick="ChangeTextOrPic">
+                                            <i class="fa fa-file-text-o"></i>
+                                        </button>
 
-
-                            <tr style="background-color:#F7F7F7; height:50px; text-align:center;">
-                                <td>
-                                    נכון
-                                </td>
-                                <td>
-                                    <div class="checkbox-wrapper-64">
-                                        <label class="switch">
-                                            <input type="checkbox" @bind="newIsCorrect">
-                                            <span class="slider"></span>
-                                        </label>
                                     </div>
+
                                 </td>
-                                <td>
-                                    לא נכון
+
+                                <td style="text-align:center;width:10%;">
+                                    <h3>או</h3>
                                 </td>
+
+                                <td style="text-align:center;" id="picBTN">
+                                    <div class="picBTN">
+                                        <button type="button" value="תמונה" class="picortext" @onclick="ChangeTextOrPic">
+                                            <i class="fa fa-picture-o"></i>
+                                        </button>
+                                        תמונה
+
+                                    </div>
+
+                                </td>
+
+
                             </tr>
-
-
-                            <tr style="height:100px;">
-                                <td colspan="3">
-                                    <div class="plasteanswer">
-                                        <div class="container">
-                                            <img src="assets-images/plate_Hunters_Plate.png">
-                                            <div class="centered">
-                                                <textarea id="story" placeholder="כתבו כאן תשובה" rows="3" cols="7" @bind="inputData">
-                                                            </textarea>
+                            @if (textOrPic)
+                            {
+                                <tr style="background-color:#F7F7F7; height:40px; text-align:center;">
+                                    <td>
+                                        נכון
+                                    </td>
+                                    <td>
+                                        <div class="checkbox-wrapper-64">
+                                            <label class="switch">
+                                                <input type="checkbox" @bind="newIsCorrect" />
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        לא נכון
+                                    </td>
+                                </tr>
+                                <tr style="height:100px;">
+                                    <td colspan="3">
+                                        <div class="plasteanswer">
+                                            <div class="container">
+                                                <img src="assets-images/plate_Hunters_Plate.png">
+                                                <div class="centered">
+                                                    <textarea id="story" placeholder="כתבו תשובה" rows="2" cols="7" @bind="inputData">
+                                                     </textarea>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <div id="answerBTN">
-                                        <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddToTable">הוספת תשובה</button>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <div id="answerBTN">
+                                            <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddToTable">הוספת תשובה</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="background-color:#F7F7F7; height:50px; text-align:center;">
+                                    <td>
+                                        נכון
+                                    </td>
+                                    <td>
+                                        <div class="checkbox-wrapper-64">
+                                            <label class="switch">
+                                                <input type="checkbox" @bind="newIsCorrect" />
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        לא נכון
+                                    </td>
+                                </tr>
+                                <tr style="height:100px;">
+                                    <td colspan="3">
+                                        <div class="plasteanswer">
+                                            <div class="container">
+                                                <img src="assets-images/plate_Hunters_Plate.png">
+                                                <div class="centered">
+                                                    <textarea id="story" placeholder="כתבו תשובה" rows="2" cols="7" @bind="inputData">
+                                                                                            </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <div id="answerBTN">
+                                            <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddToTable">הוספת תשובה</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
                         </table>
                     </div>
                     <div class="col-6 col-md-4">
@@ -270,7 +319,8 @@
 
     bool newIsPublished = false;
     bool newCanPublish = false;
-    bool newIsCorrect = false;
+    bool newIsCorrect = true;
+    bool textOrPic = true;
 
     int gameAnswersCount = 0;
     string msg = "";
@@ -480,6 +530,7 @@
 
 
     }
+
     //Remove at the index of clicked row
     void RemoveFromTable(int i)
     {
@@ -493,5 +544,12 @@
             }
         }
     }
+
+    //method to change the bool type from text to image
+    void ChangeTextOrPic()
+    {
+        textOrPic = !textOrPic;
+    }
+
 
 }

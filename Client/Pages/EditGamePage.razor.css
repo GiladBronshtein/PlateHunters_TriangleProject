@@ -2,8 +2,8 @@
     /*position: relative;*/
     display: inline-block;
     cursor: pointer; /* Set cursor to indicate a tooltip */
-    top: 50px;
-}
+/*    top: 200px;
+*/}
 
 .custom-tooltip:hover .tooltip-content {
         display: block;
@@ -23,8 +23,8 @@
 
 
 /* Change color on hover for the icons */
-.icon {
-    font-size: 18px;
+.fa-check-circle:before {
+    font-size: 15px;
     transition: color 0.2s; /* Add a smooth color transition */
 }
 
@@ -47,7 +47,7 @@ table, th, td {
 }
 
 th, td {
-    padding: 8px;
+    padding: 4px;
 }
 
 .MainTable th {
@@ -59,14 +59,26 @@ tr {
     background-color: #E8E8E8;
 }
 
-.Answers td{
-    width: 33%;
-}
+
 
 #answerBTN button {
     /*align button to left*/
     float: left;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
 
+.picBTN {
+float: right;
+
+}
+
+ i:active{
+    color: green;
+}
+
+.textBTN {
+    float: left;
 }
 
 .picortext {
@@ -76,7 +88,7 @@ tr {
     margin-bottom: 0;
     background: none;
     border: none;
-    font-size: 40px;
+    font-size: 30px;
     font-weight: normal;
     font-weight: bold;
     text-align: center;
@@ -98,10 +110,59 @@ tr {
     }
 
 
+.plasteanswer {
+    display: block; /* remove extra space below image */
+    background-repeat: no-repeat;
+    position: relative;
+    border: 0px solid black;
+}
 
+.container {
+    border: 0px solid black;
+    position: relative;
+    text-align: center;
+    color: white;
+}
 
+    .container img {
+        height: 100px;
+        width: 100px;
+        margin: auto;
+        display: block;
+        align-content: center;
+        border: 0px solid black;
+    }
 
+.plasteanswer .centered {
+    border: 0px solid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0px;
+}
 
+textarea {
+    border: 0px solid black;
+    outline: none;
+    resize: none;
+    background-color: transparent;
+    text-align: center;
+    font-size: 16px;
+    margin: 0 auto;
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+    textarea::placeholder {
+        font-weight: bold;
+        opacity: 0.5;
+        text-align:center;
+        vertical-align: middle;
+        align-content: center;
+    }
+
+/************* Toggle Start ***************/
 
 .checkbox-wrapper-64 input[type="checkbox"] {
     visibility: hidden;
@@ -116,7 +177,7 @@ tr {
 
 /* The switch - the box around the slider */
     .checkbox-wrapper-64 .switch {
-    font-size: 17px;
+    font-size: 12px;
     position: relative;
     display: inline-block;
     width: 4.3em;
@@ -170,44 +231,5 @@ tr {
     background-color: #fff;
 }
 
-.plasteanswer {
-    display: block; /* remove extra space below image */
-    background-repeat: no-repeat;
-    padding: 5px; /* Add padding to adjust the spacing around the input */
-    position: relative;
-}
-
-.container {
-    border: 0px solid black;
-    position: relative;
-    text-align: center;
-    color: white;
-}
-
-    .container img {
-        height: 130px;
-        width: 130px;
-        margin: auto;
-        display: block;
-        align-content: center;
-    }
-
-.plasteanswer .centered {
-    border: 0px solid;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 10px;
-}
-
-textarea {
-    border: 0px solid black;
-    outline: none;
-    resize: none;
-    background-color: transparent;
-    text-align: center;
-    font: 20px Arial, sans-serif;
-    margin: 0 auto;
-}
+/************* Toggle END ***************/
 

@@ -1,25 +1,41 @@
-﻿
-
-.nav-link {
+﻿.nav-link {
     text-decoration: none;
-    font-weight: bold; 
-    transition: background-color 0.3s ease;  
+    font-weight: bold;
+    transition: background-color 0.3s ease;
     text-align: center;
+    text-decoration: none;
 }
 
 
 nav div:hover {
     background-color: lightgray; 
+    text-decoration:none;
 }
 
 ::deep a.active {
     color: blue;
 }
 
-::deep a:hover, .btn-nav:hover {
-    background-color: lightgray;
+.navbar a:link {
+    text-decoration: none;
 }
 
+.navbar a:visited {
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    text-decoration: none;
+}
+
+.navbar a:active {
+    text-decoration: none;
+}
+
+::deep a:hover, .btn-nav:hover {
+    background-color: lightgray;
+    text-decoration: none;
+}
 
 li {
     list-style-type: none;
@@ -49,7 +65,7 @@ li {
     border: none;
     font-size: 14px;
     font-weight: normal;
-    line-height: 1.828571429;
+    line-height: 1.7;
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
@@ -61,5 +77,6 @@ li {
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
+    text-decoration: none;
     transition: background-color 0.3s ease;
 }
