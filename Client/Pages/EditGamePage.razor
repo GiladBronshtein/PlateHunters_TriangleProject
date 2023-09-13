@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                     <td style="width:12%;">
-                        <i class="fa fa-check-circle icon" style="font-size:24px;"></i>
+                        <i class="fa fa-check-circle icon"></i>
                         <label>@Localizer["GameName"]</label>
                     </td>
                     <td style="width:30%;">
@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td style="width:12%;">
-                        <i class="fa fa-check-circle icon" style="font-size:24px;"></i>
+                        <i class="fa fa-check-circle icon"></i>
                         <label>@Localizer["GameQuestion"]</label>
                     </td>
                     <td style="width:30%;">
@@ -124,7 +124,7 @@
                             </tr>
                             @if (textOrPic)
                             {
-                                <tr style="background-color:#F7F7F7; height:40px; text-align:center;">
+                                <tr style="background-color:#F7F7F7; height:50px; text-align:center;">
                                     <td>
                                         נכון
                                     </td>
@@ -313,7 +313,7 @@
 
     UserWithGames user;
 
-    List<GameAnswers> newGameAnswers = new List<GameAnswers>();
+    List<GameAnswers> answersDataToDelete = new List<GameAnswers>();
 
     List<GameAnswers> tempAnswersData = new List<GameAnswers>();
 
@@ -364,9 +364,11 @@
             pageMsg = "Error getting game data";
         }
     }
-    //edit game data save to database using  [HttpPut("updateGame/{updateGameCode}")] and textbox values on page
+    
+    //edit game data save to database
     async Task EditGameData()
     {
+        AddToTable();
         //return new gameData with the form details
         GameDetails newGame = new GameDetails()
             {
@@ -379,11 +381,11 @@
                 IsPublished = gameData.IsPublished,
                 QuestionCorrectCategory = gameData.QuestionCorrectCategory,
                 QuestionWrongCategory = gameData.QuestionWrongCategory,
-                Answers = tempAnswersData
+                Answers = tempAnswersData,
+                AnswersToDelete = answersDataToDelete
             };
 
         await Http.PutAsJsonAsync($"api/game/" + UserId + "/updateGame/" + gameCode, newGame);
-        AddAnswer();
         Nav.NavigateTo("/Pagewithauth");
     }
 
@@ -393,6 +395,7 @@
         Nav.NavigateTo("/Pagewithauth");
     }
 
+    //check if the game can be published
     async Task checkCanPublish()
     {
         newCanPublish = gameData.CanPublish;
@@ -408,11 +411,13 @@
         }
     }
 
+    //form submit method
     void formSubmit()
     {
         checkCanPublish();
     }
 
+    //failed submit method
     void failedSubmit()
     {
         msg = "failed to sumbit!";
@@ -509,28 +514,6 @@
         }
     }
 
-    //method sending temptalbedata to database
-    async void AddAnswer()
-    {
-        foreach (GameAnswers item in tempAnswersData)
-        {
-            var response = await Http.PostAsJsonAsync($"api/game/" + UserId + "/addAnswers/" + gameData.ID, item);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                // You can display or process the response here
-            }
-            else
-            {
-                var errorMessage = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(errorMessage);
-            }
-        }
-
-
-    }
-
     //Remove at the index of clicked row
     void RemoveFromTable(int i)
     {
@@ -539,6 +522,7 @@
         {
             if (item.ID == i)
             {
+                answersDataToDelete.Add(item);
                 tempAnswersData.Remove(item);
                 break;
             }
@@ -550,6 +534,4 @@
     {
         textOrPic = !textOrPic;
     }
-
-
 }

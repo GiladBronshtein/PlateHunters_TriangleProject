@@ -252,26 +252,12 @@ namespace TriangleProject.Server.Controllers
                             //CHANGE QUERY ACCORDINGLY TO ADD MORE PARAMS TO UPDATE
                             bool isGameUpdate = await _db.SaveDataAsync(updateGameQuery, param3);
 
+                            UpdateAnswers(updateGameCode, gameToUpdate);
 
-                            //Update existing answers
-                            foreach (GameAnswers item in gameToUpdate.Answers)
-                            {
-                                object param4 = new
-                                {
-                                    id = item.ID,
-                                    answerDescription = item.AnswerDescription,
-                                    isCorrect = item.IsCorrect,
-                                    hasImage = item.HasImage,
-                                    imageText = item.AnswerImageText
-                                };
-                                string updateAnswerQuery = "UPDATE Items SET AnswerDescription = @answerDescription, " +
-                                    "IsCorrect = @isCorrect, " +
-                                    "HasImage = @hasImage, " +
-                                    "AnswerImageText = @imageText " +
-                                    "WHERE ID = @id";
-                                bool isAnswersUpdate = await _db.SaveDataAsync(updateAnswerQuery, param4);
+                            AddAnswers(gameToUpdate.ID, gameToUpdate);
 
-                            }
+                            DeleteAnswers(gameToUpdate.ID, gameToUpdate);
+
 
                             if (isGameUpdate == true)
                             {
@@ -425,7 +411,7 @@ namespace TriangleProject.Server.Controllers
 
         private async Task CanPublishFunc(int gameId)
         {
-            int minQuestions = 2;
+            int minQuestions = 4;
             bool isPublished = false;
             bool canPublish = false;
             object param = new
@@ -452,48 +438,69 @@ namespace TriangleProject.Server.Controllers
                 Console.WriteLine($"The update of game: {gameId} was completed successfully {isUpdate}");
             }
         }
-        
-        [HttpPost("addAnswers/{gameId}")]
-        public async Task<IActionResult> AddAnswers(int userId, int gameId, GameAnswers game)
+
+        private async Task UpdateAnswers(int gameCode, GameToUpdate gameToUpdate)
         {
-            int? sessionId = HttpContext.Session.GetInt32("userId");
-            if (sessionId != null)
+            //Update existing answers
+            foreach (GameAnswers item in gameToUpdate.Answers)
             {
-                if (userId == sessionId)
+                object param2 = new
                 {
-                    object param = new
-                    {
-                        UserId = userId
-                    };
-                    string userQuery = "SELECT FirstName FROM Users WHERE ID = @UserId";
-                    var userRecords = await _db.GetRecordsAsync<UserWithGames>(userQuery, param);
-                    UserWithGames user = userRecords.FirstOrDefault();
-                    //בדיקה שיש משתמש כזה במחולל שלנו
-                    if (user != null)
-                    {
-                        object param3 = new
-                        {
-                            GameID = gameId,
-                            AnswerDescription = game.AnswerDescription,
-                            IsCorrect = game.IsCorrect,
-                            HasImage = game.HasImage,
-                            AnswerImageText = game.AnswerImageText
-                        };
-                        string query3 = "INSERT INTO Items (GameID, AnswerDescription, IsCorrect, HasImage, AnswerImageText) " +
-                                                        "VALUES (@GameID, @AnswerDescription, @IsCorrect, @HasImage, @AnswerImageText)";
-                        bool addAnswer = await _db.SaveDataAsync(query3, param3);
-                        if (addAnswer == true)
-                        {
-                            return Ok("Answer updated");
-                        }
-                        return BadRequest("Game didnt update");
-                    }
-                    return BadRequest("User Not Found");
-                }
-                return BadRequest("User Not Logged In");
+                    id = item.ID,
+                    answerDescription = item.AnswerDescription,
+                    isCorrect = item.IsCorrect,
+                    hasImage = item.HasImage,
+                    imageText = item.AnswerImageText
+                };
+                string updateAnswerQuery = "UPDATE Items SET AnswerDescription = @answerDescription, " +
+                    "IsCorrect = @isCorrect, " +
+                    "HasImage = @hasImage, " +
+                    "AnswerImageText = @imageText " +
+                    "WHERE ID = @id";
+                bool isAnswersUpdate = await _db.SaveDataAsync(updateAnswerQuery, param2);
+
             }
-            return BadRequest("No Session");
         }
 
+        private async Task AddAnswers(int gameId, GameToUpdate gameToUpdate)
+        {
+            //check if there are new answers
+            foreach (GameAnswers item in gameToUpdate.Answers)
+            {
+                if (item.ID == 0)
+                {
+                    //add new answers
+                    object param1 = new
+                    {
+                        GameID = gameId,
+                        AnswerDescription = item.AnswerDescription,
+                        IsCorrect = item.IsCorrect,
+                        HasImage = item.HasImage,
+                        AnswerImageText = item.AnswerImageText
+                    };
+                    string insertAnswerQuery = "INSERT INTO Items (GameID, AnswerDescription, IsCorrect, HasImage, AnswerImageText) " +
+                                                    "VALUES (@GameID, @AnswerDescription, @IsCorrect, @HasImage, @AnswerImageText)";
+                    bool addAnswer = await _db.SaveDataAsync(insertAnswerQuery, param1);
+                }
+            }
+
+        }
+
+        public async Task DeleteAnswers(int gameId, GameToUpdate gameToUpdate)
+        {
+            foreach (GameAnswers item in gameToUpdate.AnswersToDelete)
+            {
+                if (item.ID != 0)
+                {
+                    //delete answers
+                    object param1 = new
+                    {
+                        ID = item.ID
+                    };
+                    string deleteAnswerQuery = "DELETE FROM Items WHERE ID = @ID";
+                    bool deleteAnswer = await _db.SaveDataAsync(deleteAnswerQuery, param1);
+                }
+            }
+        }
     }
 }

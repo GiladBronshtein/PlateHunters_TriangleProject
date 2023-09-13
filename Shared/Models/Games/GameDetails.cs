@@ -7,12 +7,12 @@ using TriangleProject.Shared.Models.GamesContent;
 
 namespace TriangleProject.Shared.Models.Games
 {
-	public class GameDetails
-	{
-		public int ID { get; set; }
-		public string GameCode { get; set; }
-		public string GameName { get; set; }
-		public int UserID { get; set; }
+    public class GameDetails
+    {
+        public int ID { get; set; }
+        public string GameCode { get; set; }
+        public string GameName { get; set; }
+        public int UserID { get; set; }
         public string GameEndMessage { get; set; }
         public bool IsPublished { get; set; }
         public bool CanPublish { get; set; }
@@ -22,5 +22,6 @@ namespace TriangleProject.Shared.Models.Games
         public string QuestionCorrectCategory { get; set; }
         public string QuestionWrongCategory { get; set; }
         public List<GameAnswers> Answers { get; set; }
+        public List<GameAnswers> AnswersToDelete { get; set; }
     }
 }
