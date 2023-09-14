@@ -185,8 +185,11 @@
                                             <div class="container">
                                                 <img src="assets-images/plate_Hunters_Plate.png">
                                                 <div class="centered">
-                                                    <textarea id="story" placeholder="כתבו תשובה" rows="2" cols="7" @bind="inputData">
-                                                                                            </textarea>
+
+                                              <label class="uploadImg" for="FileInputID"> 
+                                                  <i class="fa fa-upload" aria-hidden="true" style="color:black;font-size:44px;"></i>
+                                                 </label>
+                                                    <InputFile id="FileInputID" OnChange="UploadFile" hidden />
                                                 </div>
                                             </div>
                                         </div>
@@ -316,7 +319,12 @@
     List<GameAnswers> answersDataToDelete = new List<GameAnswers>();
 
     List<GameAnswers> tempAnswersData = new List<GameAnswers>();
+    
+    List<string> DeleteImages = new List<string>();
 
+    string myFileImage = "";
+    long maxFileSize = 4194304; //4MB
+    
     bool newIsPublished = false;
     bool newCanPublish = false;
     bool newIsCorrect = true;
@@ -533,5 +541,50 @@
     void ChangeTextOrPic()
     {
         textOrPic = !textOrPic;
+    }
+
+
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var file in imageFiles)
+        {
+            if (file.Size <= maxFileSize)
+            {
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
+                var imageBase64 = Convert.ToBase64String(buffer);
+                var saveResponse = await Http.PostAsJsonAsync("api/media/upload", imageBase64);
+
+                if (saveResponse.IsSuccessStatusCode == true)
+                {
+                    string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
+                    myFileImage = "uploadedFiles/" + resizeUrl;
+                }
+            }
+        }
+    }
+
+    private void MakeDeleteList()
+    {
+        DeleteImages.Add(myFileImage);
+        myFileImage = "";
+    }
+
+
+
+    private async Task DeleteImage()
+    {
+        var saveResponse = await Http.PostAsJsonAsync("api/Media/deleteImages", DeleteImages);
+        if (saveResponse.IsSuccessStatusCode == true)
+        {
+            msg = "deleted Successfully";
+            DeleteImages.Clear();
+        }
+        else
+        {
+            msg = "DELETE ERROR";
+        }
     }
 }

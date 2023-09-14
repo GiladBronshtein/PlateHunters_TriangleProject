@@ -27,59 +27,32 @@
             </div>
         </div>
         <br />
-        <div class="=table-container">
+        <div class="table-container">
             <table class="rounded-table">
                 <thead>
                     <tr style="background-color:whitesmoke;">
-                        <th>
-                            @Localizer["GameCode"]
-                        </th>
+                        <th>@Localizer["GameCode"]</th>
                         <th class="tableGameName">@Localizer["GameName"]</th>
                         <th>
                             @Localizer["GameEdit"]
-                            <Tooltip Text="לחצו על העפרון לעריכת המשחק ומסיחי התשובות">
-                                <i class="fa fa-info-circle">
-                                </i>
-                            </Tooltip>
+                            <Tooltip Text="לחצו על העפרון לעריכת המשחק ומסיחי התשובות"><i class="fa fa-info-circle"> </i> </Tooltip>
                         </th>
                         <th>
-                            @Localizer["IsPublished"]
-                            <div class="custom-tooltip">
-                                <Tooltip Text="פרסום דורש לפחות 10 שאלות">
-                                    <i class="fa fa-info-circle">
-                                    </i>
-                                </Tooltip>
-
-                            </div>
+                            @Localizer["IsPublished"]<Tooltip Text="פרסום דורש לפחות 10 שאלות"> <i class="fa fa-info-circle"> </i> </Tooltip>
                         </th>
                         <th>
-                            @Localizer["GameDelete"]
-                            <div class="custom-tooltip ">
-                                <Tooltip Text="מחיקת המשחק לצמיתות ללא אפשרות שחזור">
-                                    <i class="fa fa-info-circle"></i>
-                                </Tooltip>
-
-                            </div>
+                            @Localizer["GameDelete"]<Tooltip Text="מחיקת המשחק לצמיתות ללא אפשרות שחזור"><i class="fa fa-info-circle"></i></Tooltip>
                         </th>
                     </tr>
                 </thead>
-
-
-                <tbody>
+                <tbody >
                     @foreach (var game in GamesList)
                     {
                         <tr>
+                            <td><b>@game.GameCode</b></td>
+                            <td>@game.GameName</td>
+                            <td><i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i> </td>
                             <td>
-                                <b>@game.GameCode</b>
-                            </td>
-                            <td>
-                                @game.GameName
-                            </td>
-                            <td>
-                                <i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i>
-                            </td>
-                            <td>
-
                                 @if (game.CanPublish == false)
                                 {
                                     <div class="checkbox-wrapper-19">

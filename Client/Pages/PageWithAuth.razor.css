@@ -1,15 +1,11 @@
 ﻿/* Reset default table styles */
 body {
     background-image: url('../wwwroot/assets-images/BG_Opacity.png');
-/*    background-repeat: no-repeat;
-*/    background-size: 2300px 1200px;
+    /*    background-repeat: no-repeat;
+*/ background-size: 2300px 1200px;
 }
-table {
-    border-collapse: separate; /* Change to separate */
-    border-spacing: 0; /* Remove border spacing */
-    position: relative;
-    background-color:white;
-}
+
+
 
 .checkbox-wrapper-19 {
     box-sizing: border-box;
@@ -164,23 +160,23 @@ table {
         border-color: #ccc;
     }
 
-        .checkbox-wrapper-19 input[type=checkbox]:checked + .check-box1::after,
-        .checkbox-wrapper-19 .check-box1.checked::after {
-            height: calc(var(--checkbox-height) / 2);
-            -moz-animation: dothabottomcheck-19 0.2s ease 0s forwards;
-            -o-animation: dothabottomcheck-19 0.2s ease 0s forwards;
-            -webkit-animation: dothabottomcheck-19 0.2s ease 0s forwards;
-            animation: dothabottomcheck-19 0.2s ease 0s forwards;
-        }
+    .checkbox-wrapper-19 input[type=checkbox]:checked + .check-box1::after,
+    .checkbox-wrapper-19 .check-box1.checked::after {
+        height: calc(var(--checkbox-height) / 2);
+        -moz-animation: dothabottomcheck-19 0.2s ease 0s forwards;
+        -o-animation: dothabottomcheck-19 0.2s ease 0s forwards;
+        -webkit-animation: dothabottomcheck-19 0.2s ease 0s forwards;
+        animation: dothabottomcheck-19 0.2s ease 0s forwards;
+    }
 
-        .checkbox-wrapper-19 input[type=checkbox]:checked + .check-box1::before,
-        .checkbox-wrapper-19 .check-box1.checked::before {
-            height: calc(var(--checkbox-height) * 1.2);
-            -moz-animation: dothatopcheck-19 0.4s ease 0s forwards;
-            -o-animation: dothatopcheck-19 0.4s ease 0s forwards;
-            -webkit-animation: dothatopcheck-19 0.4s ease 0s forwards;
-            animation: dothatopcheck-19 0.4s ease 0s forwards;
-        }
+    .checkbox-wrapper-19 input[type=checkbox]:checked + .check-box1::before,
+    .checkbox-wrapper-19 .check-box1.checked::before {
+        height: calc(var(--checkbox-height) * 1.2);
+        -moz-animation: dothatopcheck-19 0.4s ease 0s forwards;
+        -o-animation: dothatopcheck-19 0.4s ease 0s forwards;
+        -webkit-animation: dothatopcheck-19 0.4s ease 0s forwards;
+        animation: dothatopcheck-19 0.4s ease 0s forwards;
+    }
 
 
 
@@ -360,6 +356,15 @@ table {
 
 
 /************ Rounded Table *******************/
+
+table.rounded-table {
+    border-collapse: separate; /* Change to separate */
+    border-spacing: 0; /* Remove border spacing */
+    position: relative;
+    background-color: white;
+    height: 200px;
+}
+
 .rounded-table tr:hover {
     background-color: #fff8ea;
 }
@@ -369,48 +374,113 @@ table {
     border-radius: 8px;
     overflow: hidden;
     width: 652px;
+
 }
 
-/* Style table headers */
+    /* Align header content in specific columns */
+    .rounded-table th:nth-child(3),
+    .rounded-table th:nth-child(4),
+    .rounded-table th:nth-child(5) {
+        text-align: center;
+        border: 0px solid black;
+        width: 138px;
+    }
+
+    .rounded-table th:nth-child(1) {
+        text-align: center;
+        width: 80px;
+    }
+
+
+
+
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #F90;
+    background-image: -webkit-linear-gradient(90deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
+}
+
+
+
+
+
+
+
+
+/**********MAGIC***********/
+tbody {
+    background-color: white;
+    display: block;
+    max-height: 390px;
+    overflow-y: scroll;
+}
+
+    thead, tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+/* Align content in specific columns */
+.rounded-table td:nth-child(3),
+.rounded-table td:nth-child(4),
+.rounded-table td:nth-child(5) {
+    width: 130px;
+}
+.rounded-table td:nth-child(2)
+{
+    width:240px; /*GAME NAME*/
+    text-align:right;
+}
+.rounded-table td:nth-child(1) {
+    width: 80px;
+}
+
+
+
+ /**************************/
+
+    /* Style table headers */
     .rounded-table th {
         background-color: #f2f2f2;
         padding: 7px;
         line-height: 30px;
+        top: 0;
     }
+
     .rounded-table tr {
         line-height: 1px;
         padding: 1px;
     }
 
-/* Align header content in specific columns */
-.rounded-table th:nth-child(1),
-.rounded-table th:nth-child(3),
-.rounded-table th:nth-child(4),
-.rounded-table th:nth-child(5) {
-    text-align: center;
-}
 
-.rounded-table th:nth-child(2) {
-    text-align: right;
-}
+    /* Style table cells */
+    .rounded-table td {
+        padding: 6px;
+        border-top: 1px solid #e0e0e0; /* Add a small top border for separation */
+    }
 
-/* Style table cells */
-.rounded-table td {
-    padding: 7px;
-    border-top: 1px solid #e0e0e0; /* Add a small top border for separation */
-}
+        /* Align content in specific columns */
+        .rounded-table td:nth-child(1),
+        .rounded-table td:nth-child(3),
+        .rounded-table td:nth-child(4),
+        .rounded-table td:nth-child(5) {
+            text-align: center;
+        }
 
-/* Align content in specific columns */
-.rounded-table td:nth-child(1),
-.rounded-table td:nth-child(3),
-.rounded-table td:nth-child(4),
-.rounded-table td:nth-child(5) {
-    text-align: center;
-}
-
-.rounded-table td:nth-child(2) {
-    text-align: right;
-}
+        .rounded-table td:nth-child(2) {
+            text-align: right;
+        }
 
 /* Add outer border to the table */
 .rounded-table {
@@ -425,9 +495,12 @@ table {
     transition: color 0.2s; /* Add a smooth color transition */
 }
 
-.icon:hover {
-    color: darkorange; /* Change the color on hover */
-}
+    .icon:hover {
+        color: darkorange; /* Change the color on hover */
+    }
+
+
+
 
 
 /************ Tooltip *******************/
@@ -456,68 +529,3 @@ table {
     border-radius: 4px;
     white-space: nowrap;
 }
-
-
-
-
-
-
-
-.checkbox-wrapper-39
-{
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    vertical-align: middle;
-}
-
-
-
-
-    .checkbox-wrapper-39 *,
-    .checkbox-wrapper-39 *::before,
-    .checkbox-wrapper-39 *::after {
-        box-sizing: border-box;
-    }
-
-    .checkbox-wrapper-39 label {
-        display: block;
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-    }
-
-    .checkbox-wrapper-39 input {
-        visibility: hidden;
-        display: none;
-    }
-
-        .checkbox-wrapper-39 input[type=checkbox]:disabled + .check-box {
-            display: block;
-            border: 1px solid #ccc;
-            background-color: #f2f2f2;
-            border-radius: 60px;
-            cursor: not-allowed;
-        }
-
-
-        .checkbox-wrapper-39 input:checked ~ .checkbox {
-            transform: rotate(45deg);
-            width: 12px;
-            margin-left: 12px;
-            border-color: #24c78e;
-            border-top-color: transparent;
-            border-left-color: transparent;
-            border-radius: 0;
-        }
-
-
-
-    .checkbox-wrapper-39 .checkbox {
-        display: block;
-        width: inherit;
-        height: inherit;
-        border: 3px solid #434343;
-        border-radius: 60px;
-        transition: all 0.375s;
-    }
