@@ -401,7 +401,7 @@ table.rounded-table {
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 15px;
     background-color: #F5F5F5;
 }
 
@@ -422,7 +422,8 @@ tbody {
     background-color: white;
     display: block;
     max-height: 390px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x:hidden;
 }
 
     thead, tbody tr {
