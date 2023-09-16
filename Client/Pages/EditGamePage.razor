@@ -144,7 +144,7 @@
                                                 <img src="assets-images/plate_Hunters_Plate.png">
                                                 <div class="centered">
                                                     <textarea id="story" placeholder="כתבו תשובה" rows="2" cols="7" @bind="inputData">
-                                                             </textarea>
+                                                                     </textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -153,7 +153,7 @@
                                 <tr>
                                     <td colspan="3">
                                         <div id="answerBTN">
-                                            <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddToTable">הוספת תשובה</button>
+                                            <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddTextAnswerToTable">הוספת תשובה</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -182,10 +182,29 @@
                                             <div class="container">
                                                 <img src="assets-images/plate_Hunters_Plate.png">
                                                 <div class="centered">
-                                                    <label class="uploadImg" for="FileInputID">
-                                                        <i class="fa fa-upload" aria-hidden="true" style="color:black;font-size:44px;"></i>
-                                                    </label>
-                                                    <InputFile id="FileInputID" OnChange="UploadFile" hidden />
+                                                    <div class="tablerow">
+                                                    @if (myFileImage != "")
+                                                    {
+
+                                                        <div class="img-wrapper">
+                                                            <img src="@myFileImage"/>
+                                                        </div>
+                                                        <div class="trashImage">
+                                                            @if (myFileImage != "")
+                                                            {
+                                                                <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="MakeDeleteList"></i>
+                                                            }
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label class="uploadImg" for="FileInputID">
+                                                            <i class="fa fa-upload" aria-hidden="true" style="color:black;font-size:44px;"></i>
+                                                        </label>
+                                                        <InputFile id="FileInputID" OnChange="UploadFile" hidden />
+                                                    }
+                                                    
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -194,7 +213,7 @@
                                 <tr>
                                     <td colspan="3">
                                         <div id="answerBTN">
-                                            <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddToTable">הוספת תשובה</button>
+                                            <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddPicAnswerToTable">הוספת תשובה</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -216,7 +235,16 @@
 
                                         <tr>
                                             <td style="width:80%;">
-                                                @item.AnswerDescription - @item.ID
+                                                @if(@item.HasImage)
+                                                {
+                                                    <div class="img-present">
+                                                        <img src="@item.AnswerImageText"/>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    @item.AnswerDescription
+                                                }
                                             </td>
                                             <td style="width:10%;">
                                                 <i class="fa fa-pencil icon" style="font-size:20px;"></i>
@@ -244,7 +272,16 @@
                                     {
                                         <tr>
                                             <td style="width:80%;">
-                                                @item.AnswerDescription - @item.ID
+                                                @if (@item.HasImage)
+                                                {
+                                                    <div class="img-present">
+                                                        <img src="@item.AnswerImageText" />
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    @item.AnswerDescription
+                                                }
                                             </td>
                                             <td style="width:10%;">
 
@@ -326,6 +363,7 @@
     bool newCanPublish = false;
     bool newIsCorrect = true;
     bool textOrPic = true;
+    bool uploadButton = true;
 
     int gameAnswersCount = 0;
     string msg = "";
@@ -373,7 +411,9 @@
     //edit game data save to database
     async Task EditGameData()
     {
-        AddToTable();
+        //AddToTable(); ---------------> LATEST CHANGE
+
+
         //return new gameData with the form details
         GameDetails newGame = new GameDetails()
             {
@@ -500,7 +540,7 @@
     }
 
     //method to add new item into the answers list - later add to database
-    private void AddToTable()
+    private void AddTextAnswerToTable()
     {
         if (!string.IsNullOrWhiteSpace(inputData))
         {
@@ -516,6 +556,25 @@
             // Add the new GameAnswers object to the tempTableData list
             tempAnswersData.Add(gameAnswer);
             inputData = "";
+        }
+    }
+
+    private void AddPicAnswerToTable()
+    {
+        if (!string.IsNullOrWhiteSpace(myFileImage))
+        {
+            var gameAnswer = new GameAnswers
+                {
+                    GameID = gameData.ID,
+                    AnswerDescription = "-",
+                    IsCorrect = newIsCorrect,
+                    HasImage = true,
+                    AnswerImageText = myFileImage
+                };
+
+            // Add the new GameAnswers object to the tempTableData list
+            tempAnswersData.Add(gameAnswer);
+            myFileImage = "";
         }
     }
 
@@ -538,15 +597,11 @@
     void ChangeToPic()
     {
         //if textorpic clicked textorpic equals true
-
-
         textOrPic = true;
     }
     void ChangeToText()
     {
         //if textorpic clicked textorpic equals true
-
-
         textOrPic = false;
     }
 
@@ -571,6 +626,7 @@
                 }
             }
         }
+
     }
 
     private void MakeDeleteList()
@@ -579,7 +635,10 @@
         myFileImage = "";
     }
 
+    private void HideUploadButton()
+    {
 
+    }
 
     private async Task DeleteImage()
     {
