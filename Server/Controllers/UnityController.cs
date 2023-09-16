@@ -37,7 +37,7 @@ namespace TriangleProject.Server.Controllers
             }           
 
             //Get question details for the game code
-            string getAnswersQuery = "select i.id,i.AnswerDescription,i.IsCorrect,i.HasImage,i.AnswerImageText " +
+            string getAnswersQuery = "select i.id,i.AnswerDescription,i.IsCorrect,i.HasImage,i.AnswerImageText,i.GameID " +
                 "from items i, games g where i.GameID = g.id and g.GameCode = @codeFromUser";
             var getAnswersRecords = await _db.GetRecordsAsync<GameAnswers>(getAnswersQuery, getParam);
             gameDetails.Answers = getAnswersRecords.ToList();

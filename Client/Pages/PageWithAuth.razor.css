@@ -1,8 +1,6 @@
 ﻿/* Reset default table styles */
 body {
-    background-image: url('../wwwroot/assets-images/BG_Opacity.png');
-    /*    background-repeat: no-repeat;
-*/ background-size: 2300px 1200px;
+    background-color:yellow !important;
 }
 
 
@@ -396,7 +394,7 @@ table.rounded-table {
 
 
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.05);
     background-color: #F5F5F5;
 }
 

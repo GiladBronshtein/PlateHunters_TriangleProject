@@ -14,6 +14,6 @@ namespace TriangleProject.Shared.Models.GamesContent
         public bool HasImage { get; set; }
         public string AnswerImageText { get; set; }
         public bool IsCorrect { get; set; }
-        public int GameID { get; set; }
+        //public int GameID { get; set; }
     }
 }
