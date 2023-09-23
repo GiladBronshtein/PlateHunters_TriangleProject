@@ -13,8 +13,8 @@ namespace TriangleProject.Shared.Models.Games
         public int ID { get; set; }
         public string GameCode { get; set; }
 
-        [Required(ErrorMessage = "Game name is required")]
-        [StringLength(30, ErrorMessage = "A game max name can have 30 chars")]
+        [Required(ErrorMessage = "Game Name is required")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Game Name must be between 3 and 30 characters")]
         [MinLength(3, ErrorMessage = "A game min name can have 3 chars")]
         public string GameName { get; set; }
         public int UserID { get; set; }

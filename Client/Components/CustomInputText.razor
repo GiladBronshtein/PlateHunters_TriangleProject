@@ -11,6 +11,7 @@
 
 <input @attributes="AdditionalAttributes" class="@CssClass @inputClass"
 @bind="CurrentValueAsString" @bind:event="oninput" @onkeyup="countChars" required />
+
 <span>@CurrentValueAsString.Length/30</span>
 
 

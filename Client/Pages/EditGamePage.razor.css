@@ -165,6 +165,19 @@ i:active {
     margin: 1px;
 }
 
+.rightText {
+    float: left;
+    padding: 1px;
+    margin: 1px;
+}
+.wrongText {
+    float: right;
+    padding: 1px;
+    margin: 1px;
+}
+
+
+
 .picortext {
     color: black;
     text-decoration: none;
