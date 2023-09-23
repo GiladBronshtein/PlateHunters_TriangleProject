@@ -8,15 +8,19 @@
 
 .good-input {
     outline-color: green !important;
-    color: green;
+    color: seagreen;
 }
 
 .warnning-input {
-    outline-color: orange !important;
-    color: orange;
+    outline-color: coral !important;
+    color: sandybrown;
 }
 
 .danger-input {
     outline-color: red !important;
-    color: red;
+    color: darkred;
+}
+
+i {
+    margin-left: 5px;
 }

@@ -1,17 +1,33 @@
 ﻿@inherits InputText
 
-<Tooltip Text="@alert"> <i class="fa fa-info-circle">  </i></Tooltip>
-<input @attributes="AdditionalAttributes" class="@CssClass  @inputClass"
-@bind="CurrentValueAsString" @bind:event="oninput" @onkeyup="countChars" />
+@if (!string.IsNullOrEmpty(alert) && alertIsSet)
+{
+    <span>
+        <Tooltip Text="@alert">
+            <i class="fa fa-info-circle">  </i>
+        </Tooltip>
+    </span>
+}
+
+<input @attributes="AdditionalAttributes" class="@CssClass @inputClass"
+@bind="CurrentValueAsString" @bind:event="oninput" @onkeyup="countChars" required />
 <span>@CurrentValueAsString.Length/30</span>
 
 
 @code {
-
-
     string inputClass = "";
     [Parameter] public string alert { get; set; }
-    //string alert = "";
+
+    bool alertIsSet = false; // Indicates whether the alert has been set at least once
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (!string.IsNullOrEmpty(alert))
+        {
+            alertIsSet = true; // Initial alert value is set
+        }
+    }
 
     void countChars()
     {
@@ -19,22 +35,13 @@
         string minChars = AdditionalAttributes["minChars"].ToString();
         int minCharsInt = Convert.ToInt32(minChars);
 
-        if (length > minCharsInt && length <= 10)
+        if (length > minCharsInt && length <= 24)
         {
             inputClass = "good-input";
             alert = $"יש בין {minCharsInt} ל10 תווים";
         }
-        else if (length > 10 && length <= 15)
-        {
-            inputClass = "good-input";
-            alert = "יש בין 10 ל15 תווים";
-        }
-        else if (length > 10 && length <= 20)
-        {
-            inputClass = "good-input";
-            alert = "יש בין 10 ל15 תווים";
-        }
-        else if (length > 20 && length <= 29)
+       
+        else if (length > 24 && length <= 29)
         {
             inputClass = "warnning-input";
             alert = "יש יותר מ15 תווים";
@@ -49,29 +56,5 @@
             inputClass = "";
             alert = "אין מספיק תווים";
         }
-
-        //switch (length)
-        //{
-        //    case > minCharsInt and <= 10:
-        //        inputClass = "good-input";
-        //        alert = "יש בין 2 ל10 תווים";
-        //        break;
-        //    case > 10 and <= 15:
-        //        inputClass = "warnning-input";
-        //        alert = "יש בין 10 ל15 תווים";
-        //        break;
-        //    case > 15 and < 30:
-        //        inputClass = "danger-input";
-        //        alert = "יש יותר מ15 תווים";
-        //        break;
-        //    case >= 30:
-        //        inputClass = "danger-input";
-        //        alert = "הגעת למקסימום התווים";
-        //        break;
-        //    default:
-        //        inputClass = "";
-        //        alert = "אין מספיק תווים";
-        //        break;
-        //}
     }
 }

@@ -2,7 +2,7 @@
 tbody.wrong-table {
     background-color: white;
     display: block;
-    max-height: 290px;
+    max-height: 260px;
     overflow-y: auto;
 }
 
@@ -15,7 +15,7 @@ tbody.wrong-table {
 tbody.correct-table {
     background-color: white;
     display: block;
-    max-height: 290px;
+    max-height: 260px;
     overflow-y: auto;
 }
 
@@ -26,11 +26,12 @@ tbody.correct-table {
     }
 
 
-.table1{
+.table1 {
     background-color: whitesmoke;
     border-spacing: 0;
     padding: 0;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
+    max-height: 300px;
 }
 
 
@@ -38,8 +39,8 @@ tbody.correct-table {
 .table2 {
     background-color: whitesmoke;
     padding: 0 10px 0 11px;
-    margin-bottom: 2px;
     background-clip: content-box, padding-box;
+    max-height: 299px;
 }
 
 
@@ -102,18 +103,38 @@ table {
 
 table, th, td {
     border: 0px solid black;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     background-color: whitesmoke;
 }
 
-th, td {
+.MainTable th, .MainTable td {
     padding: 6px;
 }
+
+.Categories th, .Categories td{
+    padding: 3px;
+}
+
+ .Answers td {
+    padding: 2px;
+    padding-right: 10px;
+}
+
+ .Answers th {
+     padding:7px;
+ }
+
+ .footer td {
+     padding: 5px;
+ }
+
+
 
 .MainTable th {
     background-color: #ACACAC;
     color: white;
 }
+
 
 tr {
     background-color: #E8E8E8;
@@ -124,12 +145,14 @@ tr {
 #answerBTN button {
     /*align button to left*/
     float: left;
-    margin-left: 5px;
-    margin-bottom: 5px;
+    margin-left: 3px;
+    margin-bottom: 3px;
 }
 
 .picBTN {
     float: right;
+    padding: 1px;
+    margin: 1px;
 }
 
 i:active {
@@ -138,6 +161,8 @@ i:active {
 
 .textBTN {
     float: left;
+    padding: 1px;
+    margin: 1px;
 }
 
 .picortext {

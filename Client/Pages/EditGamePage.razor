@@ -13,19 +13,19 @@
         <EditForm Model="gameData" OnValidSubmit="formSubmit" OnInvalidSubmit="failedSubmit">
             <DataAnnotationsValidator />
             <table class="MainTable">
-                <tr>
+                <tr id="GameSettingTitle">
                     <th colspan="5">
                         @Localizer["GameSettings"] -
                         <label>@Localizer["GameEdit"] - GameID: @gameData.GameCode @msg</label>
                     </th>
                 </tr>
-                <tr>
+                <tr id="GameNameSettings">
                     <td>
                         <i class="fa fa-check-circle icon"></i>
                         <label>@Localizer["GameName"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.GameName" alert="כתבו את שם המשחק" class="default-input" maxlength="30" minChars="2" style="width:300px;" />
+                        <CustomInputText @bind-Value="gameData.GameName" alert="" class="default-input" maxlength="30" minChars="2" style="width:300px;" />
                     </td>
                     <td rowspan="3" style="text-align:center;">
                         <table>
@@ -50,13 +50,13 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr id="GameQuestionSettings">
                     <td>
                         <i class="fa fa-check-circle icon"></i>
                         <label>@Localizer["GameQuestion"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionDescription" alert="כתוב את שאלת המשחק" class="default-input" maxlength="30" minChars="2" style="width:300px;" />
+                        <CustomInputText @bind-Value="gameData.QuestionDescription" alert="" class="default-input" maxlength="30" minChars="2" style="width:300px;" />
                     </td>
                     <td style="text-align:center;">שלט עם כיתוב ותמונה</td>
 
@@ -64,20 +64,20 @@
             </table>
             <table class="Categories">
                 <tr>
-                    <td>
+                    <td style="width:10%;">
                         <label>@Localizer["GameCorrectCategory"]</label>
                     </td>
                     <td>
                         <CustomInputText @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה" class="default-input" maxlength="30" minChars="2" style="width:200px;" />
                     </td>
-                    <td>
+                    <td style="width:12%;">
                         <label>@Localizer["GameWrongCategory"]</label>
                     </td>
                     <td>
                         <CustomInputText @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="30" minChars="2" style="width:200px;" />
                     </td>
                     <td style="text-align:center;width:10%;">
-                        <input type="submit" class="btn btn-primary" @onclick="EditGameData" value="@Localizer["Save"]" />
+                        <input type="submit" class="btn btn-primary" @onclick="formSubmit" value="@Localizer["Save"]" />
                     </td>
                 </tr>
             </table>
@@ -85,21 +85,17 @@
                 <div class="row">
                     <div class="col-6 col-md-4 division1">
                         <table style="background-color:#F7F7F7; border: 0px solid black;">
-                            <tr style="background-color:#F7F7F7;  height:20px">
-                                <td style="text-align:center;" colspan="5"> <b> הוספת תשובה </b></td>
+                            <tr style="background-color:#F7F7F7;">
+                                <td style="text-align:center; height:15px;" colspan="5"> <b> הוספת תשובה </b></td>
                             </tr>
                             <tr style="border-bottom: 3px solid white; background-color:#F7F7F7;  height:80px;">
                                 <td style="text-align:center;">
-
                                     <div class="textBTN">
                                         טקסט
-
                                         <button type="button" value="טקסט" class="picortext" @onclick="ChangeToPic">
                                             <i class="fa fa-file-text-o"></i>
                                         </button>
-
                                     </div>
-
                                 </td>
 
                                 <td style="text-align:center;width:10%;">
@@ -217,8 +213,8 @@
                             }
                         </table>
                     </div>
-                    <div class="col-6 col-md-4  table1">
-                        <table class="col-6 col-md-4">
+                    <div class="col-6 col-md-4 table1">
+                        <table class="col-6 col-md-4 table table-hover">
                             <tr>
                                 <th colspan="3" style="text-align:center; background-color:#EEF3E7;">
                                     @gameData.QuestionCorrectCategory
@@ -256,7 +252,7 @@
                         </table>
                     </div>
                     <div class="col-6 col-md-4  table2">
-                        <table class="col-6 col-md-4">
+                        <table class="col-6 col-md-4 table table-hover">
                             <tr>
                                 <th colspan="3" style="text-align:center; background-color:#EEDFDF;">
                                     @gameData.QuestionWrongCategory
@@ -458,6 +454,7 @@
     //form submit method
     void formSubmit()
     {
+        EditGameData();
         checkCanPublish();
     }
 
