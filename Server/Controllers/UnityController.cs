@@ -26,7 +26,7 @@ namespace TriangleProject.Server.Controllers
             };
            
             //Get course details for the codeFromUser if it exists and is published
-            string getGameDetailsQuery = "select * from games g where GameCode = @codeFromUser and IsPublished = 1";
+            string getGameDetailsQuery = "select * from games g where GameCode = @codeFromUser";
             var getGameDetailsRecords = await _db.GetRecordsAsync<GameDetails>(getGameDetailsQuery, getParam);
             GameDetails gameDetails = getGameDetailsRecords.FirstOrDefault();
 

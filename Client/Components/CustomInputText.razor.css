@@ -1,0 +1,22 @@
+﻿.default-input {
+    border: none !important;
+    border-radius: 2px !important;
+    outline-width: 2px !important;
+    outline-color: gray !important;
+    outline-style: solid !important;
+}
+
+.good-input {
+    outline-color: green !important;
+    color: green;
+}
+
+.warnning-input {
+    outline-color: orange !important;
+    color: orange;
+}
+
+.danger-input {
+    outline-color: red !important;
+    color: red;
+}

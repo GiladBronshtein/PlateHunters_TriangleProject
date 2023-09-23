@@ -2,15 +2,16 @@
 @inject HttpClient Http
 @inject NavigationManager Nav
 @inject IStringLocalizer<SharedResources> Localizer
-@using TriangleProject.Shared.Models.Games
+@using TriangleProject.Shared.Models.Games;
 @using TriangleProject.Shared.Models.GamesContent;
-@using TriangleProject.Shared.Models.Users
+@using TriangleProject.Shared.Models.Users;
 
 
 @if (gameData != null)
 {
     <div class="editform">
         <EditForm Model="gameData" OnValidSubmit="formSubmit" OnInvalidSubmit="failedSubmit">
+            <DataAnnotationsValidator />
             <table class="MainTable">
                 <tr>
                     <th colspan="5">
@@ -19,15 +20,15 @@
                     </th>
                 </tr>
                 <tr>
-                    <td style="width:12%;">
+                    <td>
                         <i class="fa fa-check-circle icon"></i>
                         <label>@Localizer["GameName"]</label>
                     </td>
-                    <td style="width:30%;">
-                        <InputText @bind-Value="gameData.GameName" style="width:300px;" />
+                    <td>
+                        <CustomInputText @bind-Value="gameData.GameName" alert="כתבו את שם המשחק" class="default-input" maxlength="30" minChars="2" style="width:300px;" />
                     </td>
                     <td rowspan="3" style="text-align:center;">
-                        <table style="border: 0px solid black;">
+                        <table>
                             <tr>
                                 <td>
                                     <div class="checkbox-wrapper-64">
@@ -50,12 +51,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:12%;">
+                    <td>
                         <i class="fa fa-check-circle icon"></i>
                         <label>@Localizer["GameQuestion"]</label>
                     </td>
-                    <td style="width:30%;">
-                        <InputText @bind-Value="gameData.QuestionDescription" style="width:300px;" />
+                    <td>
+                        <CustomInputText @bind-Value="gameData.QuestionDescription" alert="כתוב את שאלת המשחק" class="default-input" maxlength="30" minChars="2" style="width:300px;" />
                     </td>
                     <td style="text-align:center;">שלט עם כיתוב ותמונה</td>
 
@@ -65,19 +66,15 @@
                 <tr>
                     <td>
                         <label>@Localizer["GameCorrectCategory"]</label>
-                        <InputText @bind-Value="gameData.QuestionCorrectCategory" style="width:200px;" />
-                        <Tooltip Text="קטגוריה למסיחים עם תשובה נכונה">
-                            <i class="fa fa-info-circle">
-                            </i>
-                        </Tooltip>
+                    </td>
+                    <td>
+                        <CustomInputText @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה" class="default-input" maxlength="30" minChars="2" style="width:200px;" />
                     </td>
                     <td>
                         <label>@Localizer["GameWrongCategory"]</label>
-                        <InputText @bind-Value="gameData.QuestionWrongCategory" style="width:200px;" />
-                        <Tooltip Text="קטגוריה למסיחים עם תשובה לא נכונה">
-                            <i class="fa fa-info-circle">
-                            </i>
-                        </Tooltip>
+                    </td>
+                    <td>
+                        <CustomInputText @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="30" minChars="2" style="width:200px;" />
                     </td>
                     <td style="text-align:center;width:10%;">
                         <input type="submit" class="btn btn-primary" @onclick="EditGameData" value="@Localizer["Save"]" />
@@ -144,7 +141,7 @@
                                                 <img src="assets-images/plate_Hunters_Plate.png">
                                                 <div class="centered">
                                                     <textarea id="story" placeholder="כתבו תשובה" rows="2" cols="7" @bind="inputData">
-                                                                     </textarea>
+                                                                                             </textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -183,27 +180,27 @@
                                                 <img src="assets-images/plate_Hunters_Plate.png">
                                                 <div class="centered">
                                                     <div class="tablerow">
-                                                    @if (myFileImage != "")
-                                                    {
+                                                        @if (myFileImage != "")
+                                                        {
 
-                                                        <div class="img-wrapper">
-                                                            <img src="@myFileImage"/>
-                                                        </div>
-                                                        <div class="trashImage">
-                                                            @if (myFileImage != "")
-                                                            {
-                                                                <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="MakeDeleteList"></i>
-                                                            }
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <label class="uploadImg" for="FileInputID">
-                                                            <i class="fa fa-upload" aria-hidden="true" style="color:black;font-size:44px;"></i>
-                                                        </label>
-                                                        <InputFile id="FileInputID" OnChange="UploadFile" hidden />
-                                                    }
-                                                    
+                                                            <div class="img-wrapper">
+                                                                <img src="@myFileImage" />
+                                                            </div>
+                                                            <div class="trashImage">
+                                                                @if (myFileImage != "")
+                                                                {
+                                                                    <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="MakeDeleteList"></i>
+                                                                }
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <label class="uploadImg" for="FileInputID">
+                                                                <i class="fa fa-upload" aria-hidden="true" style="color:black;font-size:44px;"></i>
+                                                            </label>
+                                                            <InputFile id="FileInputID" OnChange="UploadFile" hidden />
+                                                        }
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,10 +232,10 @@
 
                                         <tr>
                                             <td style="width:80%;">
-                                                @if(@item.HasImage)
+                                                @if (@item.HasImage)
                                                 {
                                                     <div class="img-present">
-                                                        <img src="@item.AnswerImageText"/>
+                                                        <img src="@item.AnswerImageText" />
                                                     </div>
                                                 }
                                                 else
@@ -364,6 +361,7 @@
     bool newIsCorrect = true;
     bool textOrPic = true;
     bool uploadButton = true;
+    int gameNameLength = 0; // New variable to hold the length of gameData.GameName
 
     int gameAnswersCount = 0;
     string msg = "";
@@ -381,6 +379,7 @@
         try
         {
             gameData = await Http.GetFromJsonAsync<GameDetails>($"api/game/" + UserId + "/getGame/" + gameCode);
+            gameNameLength = gameData.GameName.Count();
             gameAnswersCount = gameData.Answers.Count();
 
             //get all answers from database to tempTableData
@@ -599,13 +598,12 @@
         //if textorpic clicked textorpic equals true
         textOrPic = true;
     }
+
     void ChangeToText()
     {
         //if textorpic clicked textorpic equals true
         textOrPic = false;
     }
-
-
 
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
@@ -652,5 +650,48 @@
         {
             msg = "DELETE ERROR";
         }
+    }
+
+
+    string inputClass = "";
+    string alert = "";
+
+    void countChars(string field)
+    {
+        // Get the length of the input field
+        int length = field.Length;
+
+        if (length > 3 && length <= 10)
+        {
+            inputClass = "good-input";
+            alert = $"יש בין 3 ל10 תווים";
+        }
+        else if (length > 10 && length <= 15)
+        {
+            inputClass = "warnning-input";
+            alert = "יש בין 10 ל15 תווים";
+        }
+        else if (length > 10 && length <= 15)
+        {
+            inputClass = "warnning-input";
+            alert = "יש בין 10 ל15 תווים";
+        }
+        else if (length > 15 && length < 30)
+        {
+            inputClass = "danger-input";
+            alert = "יש יותר מ15 תווים";
+        }
+        else if (length >= 30)
+        {
+            inputClass = "danger-input";
+            alert = "הגעת למקסימום התווים";
+        }
+        else
+        {
+            inputClass = "";
+            alert = "אין מספיק תווים";
+        }
+
+
     }
 }

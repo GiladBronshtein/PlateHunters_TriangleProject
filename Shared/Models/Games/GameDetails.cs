@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,10 @@ namespace TriangleProject.Shared.Models.Games
     {
         public int ID { get; set; }
         public string GameCode { get; set; }
+
+        [Required(ErrorMessage = "Game name is required")]
+        [StringLength(30, ErrorMessage = "A game max name can have 30 chars")]
+        [MinLength(3, ErrorMessage = "A game min name can have 3 chars")]
         public string GameName { get; set; }
         public int UserID { get; set; }
         public string GameEndMessage { get; set; }
