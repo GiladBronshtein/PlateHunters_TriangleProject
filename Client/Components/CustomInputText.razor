@@ -10,10 +10,10 @@
 }
 
 <input @attributes="AdditionalAttributes" class="@CssClass @inputClass"
-@bind="CurrentValueAsString" @bind:event="oninput" @onkeyup="countChars" required />
+@bind="CurrentValueAsString" @bind:event="oninput" @onkeyup="countChars"  required />
 
-<span>@CurrentValueAsString.Length/30</span>
-
+@* <span>@CurrentValueAsString.Length/30</span> *@
+<span>@(CurrentValueAsString?.Length ?? 0)/30</span>
 
 @code {
     string inputClass = "";
@@ -29,11 +29,14 @@
             alertIsSet = true; // Initial alert value is set
         }
     }
+   
 
     void countChars()
     {
         int length = CurrentValueAsString.Length;
-        string minChars = AdditionalAttributes["minChars"].ToString();
+        // string minChars = AdditionalAttributes["minChars"].ToString();
+        string minChars = AdditionalAttributes.ContainsKey("minChars") ? AdditionalAttributes["minChars"].ToString() : "2";
+
         int minCharsInt = Convert.ToInt32(minChars);
 
         if (length > minCharsInt && length <= 24)

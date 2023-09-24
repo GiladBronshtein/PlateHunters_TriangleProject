@@ -103,7 +103,7 @@ table {
 
 table, th, td {
     border: 0px solid black;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     background-color: whitesmoke;
 }
 
@@ -112,7 +112,7 @@ table, th, td {
 }
 
 .Categories th, .Categories td{
-    padding: 3px;
+    padding: 4px;
 }
 
  .Answers td {

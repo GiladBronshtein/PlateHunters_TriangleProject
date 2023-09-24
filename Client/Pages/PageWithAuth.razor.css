@@ -3,7 +3,9 @@ body {
     background-color:yellow !important;
 }
 
-
+table, th, td {
+    border: 0px solid black;
+}
 
 .checkbox-wrapper-19 {
     box-sizing: border-box;
@@ -363,16 +365,21 @@ table.rounded-table {
     height: 200px;
 }
 
-.rounded-table tr:hover {
+/*.rounded-table tr:hover {
+    background-color: #fff8ea;
+}*/
+
+
+.roundedTbody tr:hover {
     background-color: #fff8ea;
 }
+
 
 /* Apply rounded corners */
 .rounded-table {
     border-radius: 8px;
     overflow: hidden;
     width: 652px;
-
 }
 
     /* Align header content in specific columns */
@@ -466,7 +473,7 @@ tbody {
     /* Style table cells */
     .rounded-table td {
         padding: 6px;
-        border-top: 1px solid #e0e0e0; /* Add a small top border for separation */
+        border-top: 0px solid #e0e0e0; /* Add a small top border for separation */
     }
 
         /* Align content in specific columns */
@@ -528,3 +535,63 @@ tbody {
     border-radius: 4px;
     white-space: nowrap;
 }
+
+#newGameButton {
+    direction: rtl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    height: 88px;
+    z-index: 1;
+    position: relative; /* Required for z-index to work */
+   
+}
+
+.newGameButtonOut {
+    transition: width 1.5s ease-out; /* Smooth transition effect */
+    opacity: 0;
+}
+
+/* Container holding the div */
+.newGameDIV {
+    flex: 1;
+    max-height: 91px;
+    overflow: auto;
+    opacity: 0; /* Initially invisible */
+    transform: translateX(100%); /* Initially positioned to the right of its normal position */
+    visibility: hidden; /* Initially hidden */
+    animation-name: slideIn; /* Name of the animation */
+    animation-duration: 0.8s; /* Duration of the animation */
+    animation-fill-mode: forwards; /* Makes sure the final state of animation is retained */
+    z-index: 2; /* Higher than the button */
+    position: absolute; /* Required for z-index to work */
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+@keyframes slideIn {
+    to {
+        opacity: 1; /* Fully visible */
+        transform: translateX(0); /* At its normal position */
+        visibility: visible; /* Visible */
+    }
+}
+
+.addGameTitle {
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 18px;
+    border-bottom: 1px solid white;
+    margin-right: 26px;
+    text-align: right;
+    direction: rtl;
+    position: relative;
+}
+
+    .addGameTitle span {
+        font-size: 11px;
+        color: slategray;
+   }

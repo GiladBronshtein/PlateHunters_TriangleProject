@@ -10,19 +10,49 @@
     @if (user != null)
     {
         <div style="display: flex; align-items: center; gap: 16px; direction: rtl;">
-            <button style="direction: rtl; display: flex; align-items: center; justify-content: center; border-radius: 8px; height: 88px;" class="btn btn-primary" @onclick="CreateGame">
+            <button id="newGameButton" class="btn btn-primary @buttonClass" @onclick="ToggleTable">
                 <span style="margin-left: 8px; white-space: nowrap;">@Localizer["New Game"]</span>
                 <span><i class="fa fa-plus-square" style="font-size: 42px;"></i></span>
             </button>
-            <div style="flex: 1; max-height: 91px; overflow: auto;">
-                <table class="rounded-table" style="width: 500px; height: 88px;">
-                    <tr>
-                        <td>
-                            <input type="text" @bind="gameToAdd.GameName" placeholder="שם המשחק החדש" style="height: 40px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; width: 100%;" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            @if (showTable)
+            {
+                <div class="newGameDIV">
+                    <EditForm Model="gameToAdd" OnValidSubmit="formSubmit" OnInvalidSubmit="failedSubmit">
+                        <table class="rounded-table newGame" style="width:500px; height: 88px;">
+                            <tr style="border-bottom: 1px solid white;">
+                                <td colspan="3">
+                                    <div class="addGameTitle">
+                                        שם המשחק
+                                        <span>(2-30 תווים)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <CustomInputText Value="@gameToAdd.GameName"
+                                                     ValueChanged="@((string value) => gameToAdd.GameName = value)"
+                                                     ValueExpression="() => gameToAdd.GameName"
+                                                     alert=""
+                                                     class="default-input"
+                                                     maxlength="30"
+                                                     minChars="2"
+                                                     style="width:250px;" />
+
+                                </td>
+                                <td style="width:13%;">
+                                    <button type="submit" class="btn btn-primary" value="שמירה"> שמירה </button>
+                                </td>
+                                <td style="width:13%;">
+                                    <button type="button" class="btn btn-secondary" value="ביטול" @onclick="ToggleTable"> ביטול </button>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </EditForm>
+
+
+                </div>
+            }
         </div>
         <br />
         <div class="table-container">
@@ -43,10 +73,10 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody >
+                <tbody class="roundedTbody">
                     @foreach (var game in GamesList)
                     {
-                        <tr>
+                        <tr style="border-top: 1px solid #e0e0e0;">
                             <td><b>@game.GameCode</b></td>
                             <td>@game.GameName</td>
                             <td><i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i> </td>
@@ -58,7 +88,6 @@
                                         <label for="@game.ID" class="check-box1" />
                                     </div>
                                 }
-
                                 else
                                 {
                                     <div class="checkbox-wrapper-20">
@@ -67,7 +96,6 @@
                                     </div>
                                 }
                             </td>
-
                             <td>
                                 <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="()=>DeleteGame(game)"></i>
                             </td>
@@ -96,13 +124,12 @@
     [Parameter]
     public EventCallback<Games> OnDeleteClicked { get; set; }
 
+    bool showTable = false;
     UserWithGames user;
-
     Games Games;
-
     GameToAdd gameToAdd = new GameToAdd();
-
     string msg = "";
+    private string buttonClass = ""; // Initially, no additional class
 
     protected override async Task OnInitializedAsync()
     {
@@ -273,4 +300,28 @@
             }
         }
     }
+
+    private void ToggleTable()
+    {
+        showTable = !showTable;
+        buttonClass = showTable ? "newGameButtonOut" : ""; // Toggle the widerButton class based on showTable
+        gameToAdd.GameName = string.Empty;
+
+    }
+
+    void formSubmit()
+    {
+        //if minimum cahraceters for the name, create game 
+        if (gameToAdd.GameName.Length >= 2)
+        {
+            CreateGame();
+        }
+
+        
+    }
+    void failedSubmit()
+    {
+
+    }
+
 }
