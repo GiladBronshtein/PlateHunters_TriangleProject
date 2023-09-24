@@ -29,6 +29,7 @@
                             </tr>
                             <tr>
                                 <td>
+                                    <div class="customInputContainer">
                                     <CustomInputText Value="@gameToAdd.GameName"
                                                      ValueChanged="@((string value) => gameToAdd.GameName = value)"
                                                      ValueExpression="() => gameToAdd.GameName"
@@ -37,7 +38,7 @@
                                                      maxlength="30"
                                                      minChars="2"
                                                      style="width:250px;" />
-
+                                    </div>
                                 </td>
                                 <td style="width:13%;">
                                     <button type="submit" class="btn btn-primary" value="שמירה"> שמירה </button>

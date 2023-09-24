@@ -585,7 +585,7 @@ tbody {
     font-weight: bold;
     margin-top: 18px;
     border-bottom: 1px solid white;
-    margin-right: 26px;
+    margin-right: 18px;
     text-align: right;
     direction: rtl;
     position: relative;
@@ -594,4 +594,20 @@ tbody {
     .addGameTitle span {
         font-size: 11px;
         color: slategray;
+        margin-right:3px;
    }
+
+.customInputContainer {
+    flex-grow: 1; /* Allows the input to take the available space */
+    text-align: center;
+    align-items: center;
+    
+    display: flex;
+    width: 320px; /* Adjust as needed */
+    margin-right: 18px;
+}
+
+
+::deep .customInputContainer span {
+    margin-right: 5px;
+}
