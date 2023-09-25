@@ -245,7 +245,7 @@
                                                 }
                                             </td>
                                             <td style="width:10%;">
-                                                <i class="fa fa-pencil icon" style="font-size:20px;"></i>
+                                                <i class="fa fa-pencil icon" style="font-size:20px;" @onclick="@(()=>EditAnswer(item.ID))"></i>
                                             </td>
                                             <td style="width:10%;">
                                                 <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
@@ -283,7 +283,7 @@
                                             </td>
                                             <td style="width:10%;">
 
-                                                <i class="fa fa-pencil icon" style="font-size:20px;"></i>
+                                                <i class="fa fa-pencil icon" style="font-size:20px;" @onclick="@(()=>EditAnswer(item.ID))"></i>
                                             </td>
                                             <td style="width:10%;">
                                                 <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
@@ -576,6 +576,31 @@
             // Add the new GameAnswers object to the tempTableData list
             tempAnswersData.Add(gameAnswer);
             myFileImage = "";
+        }
+    }
+
+    //Edit answer at the index of clicked row
+    void EditAnswer(int i)
+    {
+        //present the row information in the input fields 
+        foreach (var item in tempAnswersData)
+        {
+            if (item.ID == i)
+            {
+                if (item.HasImage)
+                {
+                    myFileImage = item.AnswerImageText;
+                    newIsCorrect = item.IsCorrect;
+                    textOrPic = false;
+                }
+                else
+                {
+                    inputData = item.AnswerDescription;
+                    newIsCorrect = item.IsCorrect;
+                    textOrPic = true;
+                    
+                }
+            }
         }
     }
 

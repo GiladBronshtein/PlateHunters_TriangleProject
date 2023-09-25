@@ -39,13 +39,13 @@
 
         int minCharsInt = Convert.ToInt32(minChars);
 
-        if (length > minCharsInt && length <= 24)
+        if (length >= minCharsInt && length <= 27)
         {
             inputClass = "good-input";
             alert = $"יש בין {minCharsInt} ל10 תווים";
         }
        
-        else if (length > 24 && length <= 29)
+        else if (length > 27 && length <= 29)
         {
             inputClass = "warnning-input";
             alert = "יש יותר מ15 תווים";

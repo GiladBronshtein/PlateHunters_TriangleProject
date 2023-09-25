@@ -18,13 +18,22 @@
             {
                 <div class="newGameDIV">
                     <EditForm Model="gameToAdd" OnValidSubmit="formSubmit" OnInvalidSubmit="failedSubmit">
-                        <table class="rounded-table newGame" style="width:500px; height: 88px;">
+                        <DataAnnotationsValidator  />
+
+                        <table class="rounded-table newGame" style="width:580px; height: 88px;">
                             <tr style="border-bottom: 1px solid white;">
                                 <td colspan="3">
                                     <div class="addGameTitle">
                                         שם המשחק
-                                        <span>(2-30 תווים)</span>
-                                    </div>
+                                        <span>
+                                            (2-30 תווים)
+                                            @if (showValidationMessage)
+                                            {
+                                                <ValidationMessage For="@(() => gameToAdd.GameName)" style="color:Red;margin-right:1px;" />
+
+                                            }      
+                                            </span>
+                                   </div>
                                 </td>
                             </tr>
                             <tr>
@@ -37,7 +46,7 @@
                                                      class="default-input"
                                                      maxlength="30"
                                                      minChars="2"
-                                                     style="width:250px;" />
+                                                     style="width:330px;" />
                                     </div>
                                 </td>
                                 <td style="width:13%;">
@@ -130,7 +139,9 @@
     Games Games;
     GameToAdd gameToAdd = new GameToAdd();
     string msg = "";
+    string errormsg = "";
     private string buttonClass = ""; // Initially, no additional class
+    bool showValidationMessage = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -307,22 +318,21 @@
         showTable = !showTable;
         buttonClass = showTable ? "newGameButtonOut" : ""; // Toggle the widerButton class based on showTable
         gameToAdd.GameName = string.Empty;
+        errormsg = string.Empty;
 
     }
 
     void formSubmit()
     {
-        //if minimum cahraceters for the name, create game 
-        if (gameToAdd.GameName.Length >= 2)
-        {
-            CreateGame();
-        }
 
-        
+        CreateGame();
+
     }
     void failedSubmit()
     {
+        showValidationMessage = true;
 
+        Console.WriteLine("Form submission failed due to validation errors.");
     }
 
 }

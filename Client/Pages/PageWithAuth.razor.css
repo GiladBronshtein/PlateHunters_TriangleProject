@@ -583,9 +583,9 @@ tbody {
 .addGameTitle {
     font-size: 17px;
     font-weight: bold;
-    margin-top: 18px;
+    margin-top: 15px;
     border-bottom: 1px solid white;
-    margin-right: 18px;
+    margin-right: 15px;
     text-align: right;
     direction: rtl;
     position: relative;
@@ -603,11 +603,12 @@ tbody {
     align-items: center;
     
     display: flex;
-    width: 320px; /* Adjust as needed */
+    width: 380px; /* Adjust as needed */
     margin-right: 18px;
 }
 
 
 ::deep .customInputContainer span {
-    margin-right: 5px;
+    margin-right: 10px;
 }
+
