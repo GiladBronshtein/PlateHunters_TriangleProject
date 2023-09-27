@@ -142,7 +142,7 @@
                                                 <img src="assets-images/plate_Hunters_Plate.png">
                                                 <div class="centered">
                                                     <textarea id="story" placeholder="כתבו תשובה" rows="2" cols="7" @bind="inputData">
-                                                                                                     </textarea>
+                                                                                                             </textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,7 +151,7 @@
                                 <tr>
                                     <td colspan="3">
                                         <div id="answerBTN">
-                                            <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddTextAnswerToTable">הוספת תשובה</button>
+                                            <button type="button" class="btn btn-primary" value="שמירת תשובה" @onclick="AddTextAnswerToTable">שמירת תשובה</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -211,7 +211,7 @@
                                 <tr>
                                     <td colspan="3">
                                         <div id="answerBTN">
-                                            <button type="button" class="btn btn-primary" value="הוספת תשובה" @onclick="AddPicAnswerToTable">הוספת תשובה</button>
+                                            <button type="button" class="btn btn-primary" value="שמירת תשובה" @onclick="AddPicAnswerToTable">שמירת תשובה</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -308,11 +308,11 @@
                         <td style="text-align:center;">
                             @if (gameData.IsPublished == false)
                             {
-                                <input type="submit" class="btn btn-success" @onclick="ShowModal" value="@Localizer["GamePublish"]" />
+                                <input type="submit" class="btn btn-success" @onclick="ShowPublishModal" value="@Localizer["GamePublish"]" />
                             }
                             else
                             {
-                                <input type="submit" class="btn btn-outline-success" @onclick="ShowModal" value="@Localizer["Unpublish"]" />
+                                <input type="submit" class="btn btn-outline-success" @onclick="ShowPublishModal" value="@Localizer["Unpublish"]" />
                             }
                         </td>
                         <td style="text-align:center;width:10%;">
@@ -333,7 +333,8 @@
     ///                  ///
     ////////////////////////
 
-    [CascadingParameter] public IModalService Modal { get; set; }
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
 
     [CascadingParameter]
     public int UserId { get; set; }
@@ -345,35 +346,34 @@
     public List<Games> GamesList { get; set; }
 
     GameDetails gameData;
-
     UserWithGames user;
 
     List<GameAnswers> answersDataToDelete = new List<GameAnswers>();
-
     List<GameAnswers> tempAnswersData = new List<GameAnswers>();
-
     List<string> DeleteImages = new List<string>();
 
-    string myFileImage = "";
+    string inputClass = ""; // variable to hold the input class
+    string alert = ""; // variable to hold the alert message
+    string myFileImage = ""; // New variable to hold the image file name
     long maxFileSize = 4194304; //4MB
+    bool newIsPublished = false; // variable to hold the is published state
+    bool newCanPublish = false; // variable to hold the can publish state
+    bool newIsCorrect = true; // variable to hold the is correct state
+    bool textOrPic = true; // variable to hold the text or pic state
+    bool uploadButton = true; // variable to hold the upload button state
+    int gameNameLength = 0; // variable to hold the length of gameData.GameName
+    int gameAnswersCount = 0; // variable to hold the number of answers in the game
+    string msg = ""; // variable to hold the message to display to the user
+    string pageMsg = ""; // variable to hold the message to display to the user
+    string inputData = ""; // variable to hold the input data from the user
 
-    bool newIsPublished = false;
-    bool newCanPublish = false;
-    bool newIsCorrect = true;
-    bool textOrPic = true;
-    bool uploadButton = true;
-    int gameNameLength = 0; // New variable to hold the length of gameData.GameName
-
-    int gameAnswersCount = 0;
-    string msg = "";
-    string pageMsg = "";
-    string inputData = "";
 
     //////////////////////
     ///                ///
     ///     Methods    ///
     ///                ///
     //////////////////////
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -395,7 +395,6 @@
                         HasImage = answer.HasImage,
                         AnswerImageText = answer.AnswerImageText
                     };
-
                 // Add the new GameAnswers object to the tempTableData list
                 tempAnswersData.Add(gameAnswer);
             }
@@ -411,9 +410,6 @@
     //edit game data save to database
     async Task EditGameData()
     {
-        //AddToTable(); ---------------> LATEST CHANGE
-
-
         //return new gameData with the form details
         GameDetails newGame = new GameDetails()
             {
@@ -435,7 +431,7 @@
     }
 
     //cancel edit and return to page with auth
-    void CancelEdit()
+    private void CancelEdit()
     {
         Nav.NavigateTo("/Pagewithauth");
     }
@@ -444,7 +440,6 @@
     async Task checkCanPublish()
     {
         newCanPublish = gameData.CanPublish;
-
         newCanPublish = await Http.GetFromJsonAsync<bool>($"api/game/" + UserId + "/canPublish/" + gameData.ID);
         if (newCanPublish == true)
         {
@@ -457,14 +452,14 @@
     }
 
     //form submit method
-    void formSubmit()
+    private void formSubmit()
     {
         EditGameData();
         checkCanPublish();
     }
 
     //failed submit method
-    void failedSubmit()
+    private void failedSubmit()
     {
         msg = "failed to sumbit!";
     }
@@ -472,6 +467,7 @@
     //edit publish status method to change IsPublished value on the server db
     async Task changePublish(GameDetails game)
     {
+        //return new gameData with the form details
         PublishGame gameToSend = new PublishGame();
         gameToSend.ID = gameData.ID;
         gameToSend.IsPublished = !gameData.IsPublished;
@@ -521,7 +517,7 @@
     }
 
     //show modal method to show modal with confirmation message
-    async Task ShowModal()
+    async Task ShowPublishModal()
     {
         var parameters = new ModalParameters()
             .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשנות את סטאטוס הפרסום?"); // Pass parameter(s) to modal component
@@ -560,6 +556,7 @@
         }
     }
 
+    //method to add new item into the answers list - later add to database
     private void AddPicAnswerToTable()
     {
         if (!string.IsNullOrWhiteSpace(myFileImage))
@@ -580,9 +577,9 @@
     }
 
     //Edit answer at the index of clicked row
-    void EditAnswer(int i)
+    private void EditAnswer(int i)
     {
-        //present the row information in the input fields 
+        //present the row information in the input fields
         foreach (var item in tempAnswersData)
         {
             if (item.ID == i)
@@ -598,14 +595,13 @@
                     inputData = item.AnswerDescription;
                     newIsCorrect = item.IsCorrect;
                     textOrPic = true;
-                    
                 }
             }
         }
     }
 
     //Remove at the index of clicked row
-    void RemoveFromTable(int i)
+    private void RemoveFromTable(int i)
     {
         Console.WriteLine(i);
         foreach (var item in tempAnswersData)
@@ -620,18 +616,20 @@
     }
 
     //method to change the bool type from text to image
-    void ChangeToPic()
+    private void ChangeToPic()
     {
         //if textorpic clicked textorpic equals true
         textOrPic = true;
     }
 
-    void ChangeToText()
+    //method to change the bool type from image to text
+    private void ChangeToText()
     {
         //if textorpic clicked textorpic equals true
         textOrPic = false;
     }
 
+    //method to upload image to server
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
         var imageFiles = e.GetMultipleFiles();
@@ -654,17 +652,20 @@
 
     }
 
+    //method to delete image from server
     private void MakeDeleteList()
     {
         DeleteImages.Add(myFileImage);
         myFileImage = "";
     }
 
+    //method to hide upload button
     private void HideUploadButton()
     {
 
     }
 
+    //method to delete image from server
     private async Task DeleteImage()
     {
         var saveResponse = await Http.PostAsJsonAsync("api/Media/deleteImages", DeleteImages);
@@ -679,10 +680,7 @@
         }
     }
 
-
-    string inputClass = "";
-    string alert = "";
-
+    //method to count the chars in the input field
     void countChars(string field)
     {
         // Get the length of the input field
