@@ -1,23 +1,30 @@
 ﻿@inherits InputText
 
-@if (!string.IsNullOrEmpty(alert) && alertIsSet)
-{
-    <span>
-        <Tooltip Text="@alert">
-            <i class="fa fa-info-circle">  </i>
-        </Tooltip>
-    </span>
-}
-
-<input @attributes="AdditionalAttributes" class="@CssClass @inputClass"
-@bind="CurrentValueAsString" @bind:event="oninput" @onkeyup="countChars"  required />
-
-@* <span>@CurrentValueAsString.Length/30</span> *@
-<span>@(CurrentValueAsString?.Length ?? 0)/30</span>
+<div class="parent" style="--component-width: @inputWidth;">
+    <div class="new-wrapper">
+        @if (!string.IsNullOrEmpty(alert) && alertIsSet)
+        {
+            <span>
+                <Tooltip Text="@alert">
+                    <i class="fa fa-info-circle">  </i>
+                </Tooltip>
+            </span>
+        }
+        <div class="wrapper">
+            <input @attributes="AdditionalAttributes" class="@CssClass @inputClass"
+            @bind="CurrentValueAsString" @bind:event="oninput" @onkeyup="countChars" required />
+            <span class="counter">@(CurrentValueAsString?.Length ?? 0)/@maxChars </span>
+        </div>
+    </div>
+</div>
 
 @code {
     string inputClass = "";
     [Parameter] public string alert { get; set; }
+
+    [Parameter] public string inputWidth { get; set; }
+
+    [Parameter] public string maxChars { get; set; }
 
     bool alertIsSet = false; // Indicates whether the alert has been set at least once
 
@@ -29,34 +36,40 @@
             alertIsSet = true; // Initial alert value is set
         }
     }
-   
+
 
     void countChars()
     {
         int length = CurrentValueAsString.Length;
-        // string minChars = AdditionalAttributes["minChars"].ToString();
-        string minChars = AdditionalAttributes.ContainsKey("minChars") ? AdditionalAttributes["minChars"].ToString() : "2";
 
+        string minChars = AdditionalAttributes.ContainsKey("minChars") ? AdditionalAttributes["minChars"].ToString() : "2";
         int minCharsInt = Convert.ToInt32(minChars);
 
-        if (length >= minCharsInt && length <= 27)
+        int maxCharsInt = Convert.ToInt32(maxChars);
+
+
+        if (length >= minCharsInt && length <= (maxCharsInt - 3))
         {
             inputClass = "good-input";
             alert = $"יש בין {minCharsInt} ל10 תווים";
         }
-       
-        else if (length > 27 && length <= 29)
+
+        else if (length > (maxCharsInt - 3) && length <= (maxCharsInt - 1))
         {
             inputClass = "warnning-input";
             alert = "יש יותר מ15 תווים";
         }
-        else if (length >= 30)
+        else if (length >= maxCharsInt)
         {
             inputClass = "danger-input";
             alert = "הגעת למקסימום התווים";
         }
         else
         {
+            Console.WriteLine(length);
+
+            Console.WriteLine(length - 3);
+            Console.WriteLine(maxCharsInt);
             inputClass = "";
             alert = "אין מספיק תווים";
         }

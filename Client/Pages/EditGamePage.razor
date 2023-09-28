@@ -25,7 +25,7 @@
                         <label>@Localizer["GameName"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.GameName" alert="" class="default-input" maxlength="30" minChars="2" style="width:300px;" />
+                        <CustomInputText @bind-Value="gameData.GameName" alert="" class="default-input" maxlength="30" maxChars="30" minChars="2" inputWidth="320px" />
                     </td>
                     <td rowspan="3" style="text-align:center;">
                         <table>
@@ -56,7 +56,7 @@
                         <label>@Localizer["GameQuestion"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionDescription" alert="" class="default-input" maxlength="30" minChars="2" style="width:300px;" />
+                        <CustomInputText @bind-Value="gameData.QuestionDescription" alert="" class="default-input" maxlength="20" maxChars="30" minChars="2" inputWidth="320px" />
                     </td>
                     <td style="text-align:center;">שלט עם כיתוב ותמונה</td>
 
@@ -68,13 +68,13 @@
                         <label>@Localizer["GameCorrectCategory"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה" class="default-input" maxlength="30" minChars="2" style="width:200px;" />
+                        <CustomInputText @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה" class="default-input" maxlength="20" maxChars="20" minChars="2" inputWidth="320px" />
                     </td>
                     <td style="width:12%;">
                         <label>@Localizer["GameWrongCategory"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="30" minChars="2" style="width:200px;" />
+                        <CustomInputText @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="20" maxChars="20" minChars="2" inputWidth="320px" />
                     </td>
                     <td style="text-align:center;width:10%;">
                         <input type="submit" class="btn btn-primary" @onclick="formSubmit" value="@Localizer["Save"]" />
