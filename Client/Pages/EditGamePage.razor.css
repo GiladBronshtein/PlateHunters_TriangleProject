@@ -31,7 +31,7 @@ tbody.correct-table {
     border-spacing: 0;
     padding: 0;
     margin-bottom: 5px;
-    max-height: 300px;
+    max-height: 312px;
 }
 
 
@@ -40,7 +40,7 @@ tbody.correct-table {
     background-color: whitesmoke;
     padding: 0 10px 0 11px;
     background-clip: content-box, padding-box;
-    max-height: 299px;
+    max-height: 312px;
 }
 
 
@@ -112,11 +112,11 @@ table, th, td {
 }
 
 .Categories th, .Categories td{
-    padding: 4px;
+    padding: 6px;
 }
 
  .Answers td {
-    padding: 2px;
+    padding: 4px;
     padding-right: 10px;
 }
 
@@ -359,8 +359,8 @@ display: table-row;
 
 
 .img-present img {
-    height: 26px;
-    width: 26px;
+    height: 19px;
+    width: 19px;
     object-fit: contain; /*Contain OR COVER*/
     margin-left: 0px;
     border-radius: 50%;
@@ -378,6 +378,9 @@ display: table-row;
 }
 
 
+.picortext:focus .fa {
+    color: darkorange; /* New color when clicked */
+}
 
 
 
@@ -395,3 +398,67 @@ display: table-row;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+.img-present {
+    position: relative;
+    display: inline-block;
+}
+
+.img-container {
+    position: relative;
+    cursor: pointer;
+}
+
+
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+    .overlay i {
+        color: white;
+        font-size: 16px;
+    }
+
+.img-container:hover .overlay {
+    opacity: 1;
+}
+
+.img-container:focus .image,
+.img-container:active .image {
+    position: fixed; /* Changed from relative to fixed */
+    top: 50%; /* Center the image vertically */
+    left: 50%; /* Center the image horizontally */
+    transform: translate(-50%, -50%) scale(16); /* Centering and Scaling */
+    z-index: 1000; /* Bring to front */
+    box-shadow: 0px 0px 1px rgba(0,0,0,0.5); /* Optional: Add shadow for effect */
+    border: 0px solid lightgray; /* Optional: Add border for effect */
+    background-color: white; /* Optional: Add background color for effect */
+}
+
+.img-container:focus .overlay,
+.img-container:active .overlay {
+    display: none; /* Hide the overlay when the image is enlarged */
+}

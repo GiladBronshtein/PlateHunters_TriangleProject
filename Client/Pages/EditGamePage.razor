@@ -92,8 +92,8 @@
                                 <td style="text-align:center;">
                                     <div class="textBTN">
                                         טקסט
-                                        <button type="button" value="טקסט" class="picortext" @onclick="ChangeToPic">
-                                            <i class="fa fa-file-text-o"></i>
+                                        <button type="button" value="טקסט" class="picortext " @onclick="ChangeToPic">
+                                            <i class="fa fa-file-text-o textButton"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -104,8 +104,8 @@
 
                                 <td style="text-align:center;" id="picBTN">
                                     <div class="picBTN">
-                                        <button type="button" value="תמונה" class="picortext" @onclick="ChangeToText">
-                                            <i class="fa fa-picture-o"></i>
+                                        <button type="button" value="תמונה" class="picortext " @onclick="ChangeToText">
+                                            <i class="fa fa-picture-o picButton"></i>
                                         </button>
                                         תמונה
 
@@ -236,8 +236,14 @@
                                                 @if (@item.HasImage)
                                                 {
                                                     <div class="img-present">
-                                                        <img src="@item.AnswerImageText" />
+                                                        <div class="img-container" tabindex="0">
+                                                            <img src="@item.AnswerImageText" class="image" />
+                                                            <div class="overlay">
+                                                                <i class="fa fa-search-plus"></i>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
                                                 }
                                                 else
                                                 {
@@ -273,8 +279,14 @@
                                                 @if (@item.HasImage)
                                                 {
                                                     <div class="img-present">
-                                                        <img src="@item.AnswerImageText" />
+                                                        <div class="img-container" tabindex="0">
+                                                            <img src="@item.AnswerImageText" class="image" />
+                                                            <div class="overlay">
+                                                                <i class="fa fa-search-plus"></i>
+                                                            </div>
+                                                        </div>
                                                     </div>
+
                                                 }
                                                 else
                                                 {
