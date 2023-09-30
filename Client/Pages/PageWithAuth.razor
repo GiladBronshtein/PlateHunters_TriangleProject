@@ -245,10 +245,11 @@
     //deletegame method considering my controller code
     private async Task DeleteGame(Games game)
     {
-        var parameters = new ModalParameters()
-            .Add(nameof(PopUpComponent.Message), "האם ברצונכם למחוק את המשחק?"); // Pass parameter(s) to modal component
+        var parameters = new ModalParameters().Add(nameof(PopUpComponent.Message), "האם ברצונכם למחוק את המשחק?"); // Pass parameter(s) to modal component
         var messageForm = Modal.Show<PopUpComponent>("מחיקת משחק", parameters); // Show modal
+        
         var result = await messageForm.Result; // Get result from modal
+        
         if (result.Confirmed)
         {
             //שליחת המשתנה לקונטרולר
@@ -281,11 +282,7 @@
         }
         var currentUrl = Nav.Uri;
         // Navigate to the current URL to reload the page
-        Nav.NavigateTo(currentUrl);
-
-
-
-        
+        Nav.NavigateTo(currentUrl); 
     }
 
     //edit game method to navigate to edit game page
@@ -344,16 +341,12 @@
         buttonClass = showTable ? "newGameButtonOut" : ""; // Toggle the widerButton class based on showTable
         gameToAdd.GameName = string.Empty;
         errormsg = string.Empty;
-        
         grayedclass = showTable ? "grayed-table-container" : "";
-
     }
 
     void formSubmit()
     {
-
         CreateGame();
-
     }
     
     void failedSubmit()

@@ -320,11 +320,13 @@
                         <td style="text-align:center;">
                             @if (gameData.IsPublished == false)
                             {
-                                <input type="submit" class="btn btn-success" @onclick="ShowPublishModal" value="@Localizer["GamePublish"]" />
+                                <input type="button" class="btn btn-success" @onclick="ShowModal" value="@Localizer["GamePublish"]" />
+                                //BUTTON AND NOT SUBMIT - SHOULD CHECK IT
                             }
                             else
                             {
-                                <input type="submit" class="btn btn-outline-success" @onclick="ShowPublishModal" value="@Localizer["Unpublish"]" />
+                                <input type="button" class="btn btn-outline-success" @onclick="ShowModal" value="@Localizer["Unpublish"]" />
+                                //BUTTON AND NOT SUBMIT - SHOULD CHECK IT
                             }
                         </td>
                         <td style="text-align:center;width:10%;">
@@ -339,12 +341,6 @@
 }
 
 @code {
-    ////////////////////////
-    ///                  ///
-    ///     Variables    ///
-    ///                  ///
-    ////////////////////////
-
     [CascadingParameter]
     public IModalService Modal { get; set; }
 
@@ -378,14 +374,13 @@
     string msg = ""; // variable to hold the message to display to the user
     string pageMsg = ""; // variable to hold the message to display to the user
     string inputData = ""; // variable to hold the input data from the user
-
+    bool publishConfirm = false; // variable to hold the publish confirmation state
 
     //////////////////////
     ///                ///
     ///     Methods    ///
     ///                ///
     //////////////////////
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -529,7 +524,7 @@
     }
 
     //show modal method to show modal with confirmation message
-    async Task ShowPublishModal()
+    async Task ShowModal()
     {
         var parameters = new ModalParameters()
             .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשנות את סטאטוס הפרסום?"); // Pass parameter(s) to modal component
@@ -547,6 +542,8 @@
         // Navigate to the current URL to reload the page
         Nav.NavigateTo(currentUrl);
     }
+
+
 
     //method to add new item into the answers list - later add to database
     private void AddTextAnswerToTable()

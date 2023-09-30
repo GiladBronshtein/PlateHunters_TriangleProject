@@ -4,7 +4,7 @@
 
 <div>
     <p>@Message</p>
-    <button @onclick="Confirm" class="btn btn-primary">@Localizer["Confirm"]</button>
+    <button @onclick="Confirmed" class="btn btn-primary">@Localizer["Confirm"]</button>
     <button @onclick="Cancel" class="btn btn-secondary">@Localizer["Cancel"]</button>
 </div>
 
@@ -13,7 +13,7 @@
     [Parameter] public string? Message { get; set; }
 
     //Confirm button
-    private async Task Confirm() => await BlazoredModal.CloseAsync();
+    private async Task Confirmed() => await BlazoredModal.CloseAsync();
     //Cancel button
     private async Task Cancel() => await BlazoredModal.CancelAsync();
 }
