@@ -1,4 +1,4 @@
-﻿/**********MAGIC***********/
+﻿﻿ /**********MAGIC***********/
 tbody.wrong-table {
     background-color: white;
     display: block;
@@ -6,11 +6,11 @@ tbody.wrong-table {
     overflow-y: auto;
 }
 
-    thead.wrong-table, tbody.wrong-table tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
+thead.wrong-table, tbody.wrong-table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
 
 tbody.correct-table {
     background-color: white;
@@ -40,7 +40,7 @@ tbody.correct-table {
     background-color: whitesmoke;
     padding: 0 10px 0 11px;
     background-clip: content-box, padding-box;
-    max-height: 312px;
+    max-height: 300px;
 }
 
 
@@ -111,22 +111,22 @@ table, th, td {
     padding: 6px;
 }
 
-.Categories th, .Categories td{
+.Categories th, .Categories td {
     padding: 6px;
 }
 
- .Answers td {
+.Answers td {
     padding: 4px;
     padding-right: 10px;
 }
 
- .Answers th {
-     padding:7px;
- }
+.Answers th {
+    padding: 7px;
+}
 
- .footer td {
-     padding: 5px;
- }
+.footer td {
+    padding: 5px;
+}
 
 
 
@@ -142,12 +142,7 @@ tr {
 
 
 
-#answerBTN button {
-    /*align button to left*/
-    float: left;
-    margin-left: 3px;
-    margin-bottom: 3px;
-}
+
 
 .picBTN {
     float: right;
@@ -170,6 +165,7 @@ i:active {
     padding: 1px;
     margin: 1px;
 }
+
 .wrongText {
     float: right;
     padding: 1px;
@@ -337,18 +333,19 @@ textarea {
     border-radius: 50%;
     height: 79%;
 }
-.tablerow
-{
-display: table-row;
-}
-.container .img-wrapper img {
 
+.tablerow {
+    display: table-row;
+}
+
+.container .img-wrapper img {
     border: 0px solid black;
-    position:fixed;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
 .img-wrapper img {
     height: 74px;
     width: 74px;
@@ -381,33 +378,6 @@ display: table-row;
 .picortext:focus .fa {
     color: darkorange; /* New color when clicked */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -448,17 +418,30 @@ display: table-row;
 
 .img-container:focus .image,
 .img-container:active .image {
-    position: fixed; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%) scale(16); 
-    z-index: 1000; 
-    box-shadow: 0px 0px 1px rgba(0,0,0,0.5); 
-    border: 0px solid lightgray; 
-    background-color: white; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(16);
+    z-index: 1000;
+    box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+    border: 0px solid lightgray;
+    background-color: white;
 }
 
 .img-container:focus .overlay,
 .img-container:active .overlay {
-    display: none; 
+    display: none;
+}
+
+#answerEditCancel {
+    float: right;
+    margin-left: 1px;
+    margin-bottom: 1px;
+}
+
+#answerBTN button {
+    /*align button to left*/
+    float: left;
+    margin-left: 1px;
+    margin-bottom: 1px;
 }

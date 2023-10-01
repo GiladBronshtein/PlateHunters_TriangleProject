@@ -77,7 +77,7 @@
                         <CustomInputText @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="20" maxChars="20" minChars="2" inputWidth="320px" />
                     </td>
                     <td style="text-align:center;width:10%;">
-                        <input type="submit" class="btn btn-primary" @onclick="formSubmit" value="@Localizer["Save"]" />
+                        <input type="button" class="btn btn-primary" @onclick="formSubmit" value="@Localizer["Save"]" />
                     </td>
                 </tr>
             </table>
@@ -114,7 +114,7 @@
                             </tr>
                             @if (textOrPic)
                             {
-                                <tr style="background-color:#F7F7F7; height:50px; text-align:center;">
+                                <tr style="background-color:#F7F7F7; height:40px; text-align:center;">
                                     <td>
                                         <div class="rightText">
                                             נכון
@@ -141,24 +141,38 @@
                                             <div class="container">
                                                 <img src="assets-images/plate_Hunters_Plate.png">
                                                 <div class="centered">
-                                                    <textarea id="story" placeholder="כתבו תשובה" rows="2" cols="7" @bind="inputData">
-                                                                                                             </textarea>
+                                                    <textarea id="story" placeholder="כתבו תשובה" rows="2" cols="7" @bind="inputData"></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr colspan="3">
+                                    @if(!editAnswer)
+                                    {
                                     <td colspan="3">
-                                        <div id="answerBTN">
-                                            <button type="button" class="btn btn-primary" value="שמירת תשובה" @onclick="AddTextAnswerToTable">שמירת תשובה</button>
-                                        </div>
-                                    </td>
+                                            <div id="answerBTN">
+                                                <button type="button" class="btn btn-primary" value="שמירת תשובה" @onclick="AddTextAnswerToTable">שמירת תשובה</button>
+                                            </div>
+                                      </td>
+                                        
+                                    }
+                                    else
+                                    {
+                                        <td colspan="3">
+                                            <div id="answerEditCancel">
+                                                <button type="button" class="btn btn-secondary" value="ביטול" @onclick="cancelEdit">ביטול</button>
+                                            </div>
+                                            <div id="answerBTN">
+                                                <button type="button" class="btn btn-success" value="שמירת תשובה" @onclick="submitEdit">עריכת תשובה</button>
+                                            </div>
+                                        </td>
+                                    }
                                 </tr>
                             }
                             else
                             {
-                                <tr style="background-color:#F7F7F7; height:50px; text-align:center;">
+                                <tr style="background-color:#F7F7F7; height:40px; text-align:center;">
                                     <td>
                                         נכון
                                     </td>
@@ -208,12 +222,27 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <div id="answerBTN">
-                                            <button type="button" class="btn btn-primary" value="שמירת תשובה" @onclick="AddPicAnswerToTable">שמירת תשובה</button>
-                                        </div>
-                                    </td>
+                                <tr colspan="3">
+                                    @if (!editAnswer)
+                                    {
+                                        <td colspan="3">
+                                            <div id="answerBTN">
+                                                <button type="button" class="btn btn-primary" value="שמירת תשובה" @onclick="AddPicAnswerToTable">שמירת תשובה</button>
+                                            </div>
+                                        </td>
+
+                                    }
+                                    else
+                                    {
+                                        <td colspan="3">
+                                            <div id="answerEditCancel">
+                                                <button type="button" class="btn btn-secondary" value="ביטול" @onclick="cancelEdit">ביטול</button>
+                                            </div>
+                                            <div id="answerBTN">
+                                                <button type="button" class="btn btn-success" value="שמירת תשובה" @onclick="submitEdit">עריכת תשובה</button>
+                                            </div>
+                                        </td>
+                                    }
                                 </tr>
                             }
                         </table>
@@ -242,8 +271,8 @@
                                                                 <i class="fa fa-search-plus"></i>
                                                             </div>
                                                         </div>
-                                                    </div>
-
+                                                    </div> 
+                                                   
                                                 }
                                                 else
                                                 {
@@ -254,7 +283,7 @@
                                                 <i class="fa fa-pencil icon" style="font-size:20px;" @onclick="@(()=>EditAnswer(item.ID))"></i>
                                             </td>
                                             <td style="width:10%;">
-                                                <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
+                                                <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(()=>RemoveFromTable(item.ID))"></i>
                                             </td>
                                         </tr>
                                     }
@@ -375,6 +404,8 @@
     string pageMsg = ""; // variable to hold the message to display to the user
     string inputData = ""; // variable to hold the input data from the user
     bool publishConfirm = false; // variable to hold the publish confirmation state
+    bool editAnswer = false;
+    int edititem = 0;
 
     //////////////////////
     ///                ///
@@ -432,7 +463,10 @@
                 Answers = tempAnswersData,
                 AnswersToDelete = answersDataToDelete
             };
-
+            foreach (var item in tempAnswersData)
+            {
+                Console.WriteLine("LOG NEW: " +item.ID);
+            }
         await Http.PutAsJsonAsync($"api/game/" + UserId + "/updateGame/" + gameCode, newGame);
         Nav.NavigateTo("/Pagewithauth");
     }
@@ -543,8 +577,6 @@
         Nav.NavigateTo(currentUrl);
     }
 
-
-
     //method to add new item into the answers list - later add to database
     private void AddTextAnswerToTable()
     {
@@ -588,11 +620,13 @@
     //Edit answer at the index of clicked row
     private void EditAnswer(int i)
     {
+        editAnswer = true;
         //present the row information in the input fields
         foreach (var item in tempAnswersData)
         {
             if (item.ID == i)
             {
+                edititem = i;
                 if (item.HasImage)
                 {
                     myFileImage = item.AnswerImageText;
@@ -607,6 +641,42 @@
                 }
             }
         }
+    }
+
+    //submit edit answer (change the temptabledata)
+    private void submitEdit()
+    {
+        foreach (var item in tempAnswersData)
+        {
+            if (item.ID == edititem)
+            {
+                if (textOrPic)
+                {
+                    item.AnswerDescription = inputData;
+                    item.IsCorrect = newIsCorrect;
+                    item.HasImage = false;
+                    item.AnswerImageText = "empty";
+                }
+                else
+                {
+                    item.AnswerDescription = "-";
+                    item.IsCorrect = newIsCorrect;
+                    item.HasImage = true;
+                    item.AnswerImageText = myFileImage;
+                }
+            }
+        }
+        editAnswer = false;
+
+    }
+
+    //cancel edit answer (change the temptabledata)
+    private void cancelEdit()
+    {
+        editAnswer = false;
+        myFileImage = "";
+        inputData = "";
+        textOrPic = true;
     }
 
     //Remove at the index of clicked row
@@ -728,4 +798,5 @@
 
 
     }
+
 }
