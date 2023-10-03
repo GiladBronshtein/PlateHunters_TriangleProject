@@ -20,34 +20,66 @@
                     </th>
                 </tr>
                 <tr id="GameNameSettings">
-                    <td>
+                    <td style="width:12%;">
                         <i class="fa fa-check-circle icon"></i>
                         <label>@Localizer["GameName"]</label>
                     </td>
-                    <td>
+                    <td style="width:15%;">
                         <CustomInputText @bind-Value="gameData.GameName" alert="" class="default-input" maxlength="30" maxChars="30" minChars="2" inputWidth="320px" />
                     </td>
-                    <td rowspan="3" style="text-align:center;">
-                        <table>
-                            <tr>
-                                <td>
-                                    <div class="checkbox-wrapper-64">
-                                        <label class="switch">
-                                            <input type="checkbox">
-                                            <span class="slider"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+                    <td rowspan="3" style="text-align:center;" class="gameQuestionTD">
+                        <div class="flexContainer">
+                            <div class="flexItem">
+                                הנחייה עם טקסט בלבד
+                            </div>
+                            <div class="flexItem">
+                                <div class="checkbox-wrapper-64">
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="flexItem">
+                                הנחייה עם טקסט ותמונה
+                            </div>
+                            <div class="flexItem">
+                                <button type="button" value="תמונה" class="picortext">
+                                    <i class="fa fa-picture-o picButton"></i>
+                                </button>
+                            </div>
+                        </div>
                     </td>
-                    <td style="text-align:center;">
+
+
+                    <td rowspan="2" style="text-align:center; " class="GezaTextandPicture">
                         <div class="checkbox-wrapper-64">
+                            <span class="switchText">הפעלת תצוגה מקדימה</span>
                             <label class="switch">
-                                <input type="checkbox">
+                                <input type="checkbox" @bind="isPreviewOn">
                                 <span class="slider"></span>
                             </label>
                         </div>
+
+
+                        @if (isPreviewOn)
+                        {
+                            <div class="preview">
+                                @if (!string.IsNullOrEmpty(gameData.QuestionDescription))
+                                {
+                                    <p>@gameData.QuestionDescription</p>
+                                }
+                                @if(gameData.QuestionHasImage)
+                                {
+                                    @if (!string.IsNullOrEmpty(gameData.QuestionImageText)) // Assuming you have a property for the uploaded image path
+                                    {
+                                        <img src="@gameData.QuestionImageText" />
+                                    }
+                                }
+                               
+                            </div>
+                        }
+
                     </td>
                 </tr>
                 <tr id="GameQuestionSettings">
@@ -56,10 +88,10 @@
                         <label>@Localizer["GameQuestion"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionDescription" alert="" class="default-input" maxlength="20" maxChars="30" minChars="2" inputWidth="320px" />
+                        <CustomInputText @bind-Value="gameData.QuestionDescription" alert="" class="default-input" maxlength="70" maxChars="70" minChars="2" inputWidth="320px" />
                     </td>
-                    <td style="text-align:center;">שלט עם כיתוב ותמונה</td>
-
+@*                     <td style="text-align:center;"></td>
+ *@
                 </tr>
             </table>
             <table class="Categories">
@@ -68,13 +100,13 @@
                         <label>@Localizer["GameCorrectCategory"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה" class="default-input" maxlength="20" maxChars="20" minChars="2" inputWidth="320px" />
+                        <CustomInputText @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
                     </td>
                     <td style="width:12%;">
                         <label>@Localizer["GameWrongCategory"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="20" maxChars="20" minChars="2" inputWidth="320px" />
+                        <CustomInputText @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
                     </td>
                     <td style="text-align:center;width:10%;">
                         <input type="button" class="btn btn-primary" @onclick="formSubmit" value="@Localizer["Save"]" />
@@ -136,7 +168,7 @@
                                     </td>
                                 </tr>
                                 <tr style="height:100px;">
-                                    <td colspan="3">
+                                    <td colspan="3" >
                                         <div class="plasteanswer">
                                             <div class="container">
                                                 <img src="assets-images/plate_Hunters_Plate.png">
@@ -148,14 +180,14 @@
                                     </td>
                                 </tr>
                                 <tr colspan="3">
-                                    @if(!editAnswer)
+                                    @if (!editAnswer)
                                     {
-                                    <td colspan="3">
+                                        <td colspan="3">
                                             <div id="answerBTN">
                                                 <button type="button" class="btn btn-primary" value="שמירת תשובה" @onclick="AddTextAnswerToTable">שמירת תשובה</button>
                                             </div>
-                                      </td>
-                                        
+                                        </td>
+
                                     }
                                     else
                                     {
@@ -264,15 +296,25 @@
                                             <td style="width:80%;">
                                                 @if (@item.HasImage)
                                                 {
+                                                    @* <div class="img-present">
+                                    <div class="img-container" tabindex="0">
+                                    <img src="@item.AnswerImageText" class="image" />
+                                    <div class="overlay">
+                                    <i class="fa fa-search-plus"></i>
+                                    </div>
+                                    </div>
+                                    </div> *@
+
                                                     <div class="img-present">
-                                                        <div class="img-container" tabindex="0">
+                                                        <input type="checkbox" id="enlargeImageToggle_@item.ID" class="enlarge-toggle">
+                                                        <label for="enlargeImageToggle_@item.ID" class="img-container" tabindex="0">
                                                             <img src="@item.AnswerImageText" class="image" />
                                                             <div class="overlay">
                                                                 <i class="fa fa-search-plus"></i>
                                                             </div>
-                                                        </div>
-                                                    </div> 
-                                                   
+                                                        </label>
+                                                        <label for="enlargeImageToggle_@item.ID" class="close-button">X</label>
+                                                    </div>
                                                 }
                                                 else
                                                 {
@@ -307,15 +349,25 @@
                                             <td style="width:80%;">
                                                 @if (@item.HasImage)
                                                 {
+                                                    @*  <div class="img-present">
+                                    <div class="img-container" tabindex="0">
+                                    <img src="@item.AnswerImageText" class="image" />
+                                    <div class="overlay">
+                                    <i class="fa fa-search-plus"></i>
+                                    </div>
+                                    </div>
+                                    </div> *@
+
                                                     <div class="img-present">
-                                                        <div class="img-container" tabindex="0">
+                                                        <input type="checkbox" id="enlargeImageToggle_@item.ID" class="enlarge-toggle">
+                                                        <label for="enlargeImageToggle_@item.ID" class="img-container" tabindex="0">
                                                             <img src="@item.AnswerImageText" class="image" />
                                                             <div class="overlay">
                                                                 <i class="fa fa-search-plus"></i>
                                                             </div>
-                                                        </div>
+                                                        </label>
+                                                        <label for="enlargeImageToggle_@item.ID" class="close-button">X</label>
                                                     </div>
-
                                                 }
                                                 else
                                                 {
@@ -323,7 +375,6 @@
                                                 }
                                             </td>
                                             <td style="width:10%;">
-
                                                 <i class="fa fa-pencil icon" style="font-size:20px;" @onclick="@(()=>EditAnswer(item.ID))"></i>
                                             </td>
                                             <td style="width:10%;">
@@ -344,7 +395,9 @@
                             <label>@Localizer["GameEndMessage"]</label>
                         </td>
                         <td style="width:30%;">
-                            <InputText @bind-Value="gameData.GameEndMessage" style="width:300px;" />
+                            @*<InputText @bind-Value="gameData.GameEndMessage" style="width:300px;" /> *@
+                            <CustomInputText @bind-Value="gameData.GameEndMessage" alert="" class="default-input" maxlength="50" maxChars="50" minChars="2" inputWidth="380px" />
+
                         </td>
                         <td style="text-align:center;">
                             @if (gameData.IsPublished == false)
@@ -406,6 +459,7 @@
     bool publishConfirm = false; // variable to hold the publish confirmation state
     bool editAnswer = false;
     int edititem = 0;
+    bool isPreviewOn = false;
 
     //////////////////////
     ///                ///
@@ -463,10 +517,10 @@
                 Answers = tempAnswersData,
                 AnswersToDelete = answersDataToDelete
             };
-            foreach (var item in tempAnswersData)
-            {
-                Console.WriteLine("LOG NEW: " +item.ID);
-            }
+        foreach (var item in tempAnswersData)
+        {
+            Console.WriteLine("LOG NEW: " + item.ID);
+        }
         await Http.PutAsJsonAsync($"api/game/" + UserId + "/updateGame/" + gameCode, newGame);
         Nav.NavigateTo("/Pagewithauth");
     }

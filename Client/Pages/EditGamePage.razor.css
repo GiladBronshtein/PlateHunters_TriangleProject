@@ -379,6 +379,20 @@ textarea {
     color: darkorange; /* New color when clicked */
 }
 
+#answerEditCancel {
+    float: right;
+    margin-left: 1px;
+    margin-bottom: 1px;
+}
+
+#answerBTN button {
+    /*align button to left*/
+    float: left;
+    margin-left: 1px;
+    margin-bottom: 1px;
+}
+
+
 
 
 .img-present {
@@ -390,8 +404,6 @@ textarea {
     position: relative;
     cursor: pointer;
 }
-
-
 
 .overlay {
     position: absolute;
@@ -416,32 +428,174 @@ textarea {
     opacity: 1;
 }
 
-.img-container:focus .image,
-.img-container:active .image {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(16);
-    z-index: 1000;
-    box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
-    border: 0px solid lightgray;
-    background-color: white;
-}
-
-.img-container:focus .overlay,
-.img-container:active .overlay {
+.enlarge-toggle {
     display: none;
 }
 
-#answerEditCancel {
-    float: right;
-    margin-left: 1px;
-    margin-bottom: 1px;
+    .enlarge-toggle:checked + .img-container .image {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(16);
+        z-index: 1000;
+        box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+        border: 0px solid lightgray;
+        background-color: white;
+    }
+
+    .enlarge-toggle:checked + .img-container .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0,0,0, 0.5);
+        z-index: 999;
+        cursor: pointer;
+        display: flex;
+    }
+
+.close-button {
+    position: fixed;
+    top: 0;
+    Left: 0;
+    background-color: #ffffff;
+    color: #000000;
+    border: 3px solid;
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    cursor: pointer;
+    font-size: 32px;
+    font-weight: bold;
+    display: none;
+    z-index: 1001;
+    line-height: 45px; /* Adjust as needed */
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
-#answerBTN button {
-    /*align button to left*/
-    float: left;
-    margin-left: 1px;
-    margin-bottom: 1px;
+    /* ... other styles ... */
+
+    .close-button:hover {
+        background-color: #ffffff; /* Keeps the background of the X button white */
+        color: #ff0000; /* Changes the color of X to red, adjust as needed */
+    }
+
+/* ... other styles ... */
+
+
+.enlarge-toggle:checked ~ .close-button {
+    display: block;
+}
+
+.gameQuestionTD
+{
+    width: 27%;
+}
+
+.gameQuestionTable {
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+.GezaTextandPicture {
+    position: relative;
+    padding: 0 !important; /* This will override any other padding set for tds */
+
+    vertical-align: top !important; /* This ensures the content starts from the top of the td */
+}
+
+.checkbox-wrapper-64 {
+    display: block;
+    width: 100%;
+    text-align: center;
+    position: relative; /* Changed from absolute to relative */
+    top: 0;
+    left: 0;
+    z-index: 2;
+    padding-top: 1px !important; /* Added padding to give some space from the top */
+}
+
+.switchText {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    padding-left: 10px !important;
+    font-size: 11px;
+}
+
+.switch {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/assets-images/geza.png');
+    background-size: 100% 100%; /* width height */
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1;
+    display: flex;
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
+}
+
+    .preview p {
+        text-align: right;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .preview p, .preview img {
+        margin: 25px 10px 1px 60px; /* Add some space between the text and the image */
+    }
+
+
+td.preview {
+    background-image: url('/assets-images/geza.png');
+    background-size: cover;
+    background-position: center;
+    position: relative; /* This ensures the td can contain positioned children */
+}
+
+    /* Any direct child of the td that you want to appear on top of the background */
+    td.preview > * {
+        position: relative;
+        z-index: 1;
+    }
+
+.checkbox-wrapper-64 .switchText {
+    margin-right: 10px;
+}
+
+td .checkbox-wrapper-64 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1000;
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: center; /* Horizontally center the items */
+    align-items: center; /* Vertically center the items */
+    height: 100%; /* Take full height of the parent td */
+}
+
+.flexItem {
+    flex: 1;
+    text-align: center;
+    padding: 1px;
+    margin: 0 0;
+    font-size: 12px;
 }
