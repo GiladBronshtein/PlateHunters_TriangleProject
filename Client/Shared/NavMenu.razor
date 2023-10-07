@@ -12,7 +12,10 @@
             <a class="nav-link" href="PageWithAuth">עורך</a>
         </li>
         <li class="nav-item">
-                <input class="btn-nav" type="button" value="אודות"  @onclick="ShowModal"/>
+            <input class="btn-nav" type="button" value="איך משחקים" @onclick="ShowModalHowToPlay" />
+        </li>
+        <li class="nav-item">
+                <input class="btn-nav" type="button" value="אודות"  @onclick="ShowModalOdot"/>
         </li>
        
     </ul>
@@ -22,20 +25,12 @@
 @code {
     [CascadingParameter] public IModalService Modal { get; set; }
 
-    //show modal method to show modal with confirmation message
-    async Task ShowModal()
+    async Task ShowModalOdot()
     {
-
         var messageForm = Modal.Show<About>("אודות"); // Show modal
-        // var result = await messageForm.Result; // Get result from modal
-        // if (result.Confirmed)
-        // {
-        //     Console.WriteLine("Not confirmed");
-        // }
-        // else
-        // {
-        //     Console.WriteLine("Not confirmed");
-        // }
-       
+    }
+    async Task ShowModalHowToPlay()
+    {
+        var messageForm = Modal.Show<About>("איך משחקים"); // Show modal
     }
 }

@@ -50,8 +50,6 @@
                             </div>
                         </div>
                     </td>
-
-
                     <td rowspan="2" style="text-align:center; " class="GezaTextandPicture">
                         <div class="checkbox-wrapper-64">
                             <span class="switchText">הפעלת תצוגה מקדימה</span>
@@ -60,8 +58,6 @@
                                 <span class="slider"></span>
                             </label>
                         </div>
-
-
                         @if (isPreviewOn)
                         {
                             <div class="preview">
@@ -69,14 +65,14 @@
                                 {
                                     <p>@gameData.QuestionDescription</p>
                                 }
-                                @if(gameData.QuestionHasImage)
+                                @if (gameData.QuestionHasImage)
                                 {
                                     @if (!string.IsNullOrEmpty(gameData.QuestionImageText)) // Assuming you have a property for the uploaded image path
                                     {
                                         <img src="@gameData.QuestionImageText" />
                                     }
                                 }
-                               
+
                             </div>
                         }
 
@@ -90,8 +86,8 @@
                     <td>
                         <CustomInputText @bind-Value="gameData.QuestionDescription" alert="" class="default-input" maxlength="70" maxChars="70" minChars="2" inputWidth="320px" />
                     </td>
-@*                     <td style="text-align:center;"></td>
- *@
+                    @*                     <td style="text-align:center;"></td>
+                *@
                 </tr>
             </table>
             <table class="Categories">
@@ -109,7 +105,7 @@
                         <CustomInputText @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
                     </td>
                     <td style="text-align:center;width:10%;">
-                        <input type="button" class="btn btn-primary" @onclick="formSubmit" value="@Localizer["Save"]" />
+                        <input type="button" class="btn btn-primary saveBTN" @onclick="formSubmit" value="@Localizer["SaveSettings"]" />
                     </td>
                 </tr>
             </table>
@@ -168,7 +164,7 @@
                                     </td>
                                 </tr>
                                 <tr style="height:100px;">
-                                    <td colspan="3" >
+                                    <td colspan="3">
                                         <div class="plasteanswer">
                                             <div class="container">
                                                 <img src="assets-images/plate_Hunters_Plate.png">
@@ -247,7 +243,6 @@
                                                             </label>
                                                             <InputFile id="FileInputID" OnChange="UploadFile" hidden />
                                                         }
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -262,7 +257,6 @@
                                                 <button type="button" class="btn btn-primary" value="שמירת תשובה" @onclick="AddPicAnswerToTable">שמירת תשובה</button>
                                             </div>
                                         </td>
-
                                     }
                                     else
                                     {
@@ -291,20 +285,10 @@
                                 {
                                     @if (@item.IsCorrect)
                                     {
-
                                         <tr>
                                             <td style="width:80%;">
                                                 @if (@item.HasImage)
                                                 {
-                                                    @* <div class="img-present">
-                                    <div class="img-container" tabindex="0">
-                                    <img src="@item.AnswerImageText" class="image" />
-                                    <div class="overlay">
-                                    <i class="fa fa-search-plus"></i>
-                                    </div>
-                                    </div>
-                                    </div> *@
-
                                                     <div class="img-present">
                                                         <input type="checkbox" id="enlargeImageToggle_@item.ID" class="enlarge-toggle">
                                                         <label for="enlargeImageToggle_@item.ID" class="img-container" tabindex="0">
@@ -325,7 +309,7 @@
                                                 <i class="fa fa-pencil icon" style="font-size:20px;" @onclick="@(()=>EditAnswer(item.ID))"></i>
                                             </td>
                                             <td style="width:10%;">
-                                                <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(()=>RemoveFromTable(item.ID))"></i>
+                                                <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(()=>ShowDeleteModal(item.ID))"></i>
                                             </td>
                                         </tr>
                                     }
@@ -349,15 +333,6 @@
                                             <td style="width:80%;">
                                                 @if (@item.HasImage)
                                                 {
-                                                    @*  <div class="img-present">
-                                    <div class="img-container" tabindex="0">
-                                    <img src="@item.AnswerImageText" class="image" />
-                                    <div class="overlay">
-                                    <i class="fa fa-search-plus"></i>
-                                    </div>
-                                    </div>
-                                    </div> *@
-
                                                     <div class="img-present">
                                                         <input type="checkbox" id="enlargeImageToggle_@item.ID" class="enlarge-toggle">
                                                         <label for="enlargeImageToggle_@item.ID" class="img-container" tabindex="0">
@@ -378,7 +353,7 @@
                                                 <i class="fa fa-pencil icon" style="font-size:20px;" @onclick="@(()=>EditAnswer(item.ID))"></i>
                                             </td>
                                             <td style="width:10%;">
-                                                <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(() => RemoveFromTable(item.ID))"></i>
+                                                <i class="fa fa-trash-o icon" style="font-size:20px;" @onclick="@(() => ShowDeleteModal(item.ID))"></i>
                                             </td>
                                         </tr>
                                     }
@@ -395,24 +370,21 @@
                             <label>@Localizer["GameEndMessage"]</label>
                         </td>
                         <td style="width:30%;">
-                            @*<InputText @bind-Value="gameData.GameEndMessage" style="width:300px;" /> *@
                             <CustomInputText @bind-Value="gameData.GameEndMessage" alert="" class="default-input" maxlength="50" maxChars="50" minChars="2" inputWidth="380px" />
 
                         </td>
-                        <td style="text-align:center;">
+                        <td style="text-align:center;width:20%;">
                             @if (gameData.IsPublished == false)
                             {
-                                <input type="button" class="btn btn-success" @onclick="ShowModal" value="@Localizer["GamePublish"]" />
-                                //BUTTON AND NOT SUBMIT - SHOULD CHECK IT
+                                <input type="button" class="btn btn-success" @onclick="ShowPublishModal" value="@Localizer["GamePublish"]" />
                             }
                             else
                             {
-                                <input type="button" class="btn btn-outline-success" @onclick="ShowModal" value="@Localizer["Unpublish"]" />
-                                //BUTTON AND NOT SUBMIT - SHOULD CHECK IT
+                                <input type="button" class="btn btn-outline-success" @onclick="ShowPublishModal" value="@Localizer["Unpublish"]" />
                             }
                         </td>
-                        <td style="text-align:center;width:10%;">
-                            <button class="btn btn-secondary" @onclick="CancelEdit">@Localizer["Back"]</button>
+                        <td style="text-align:center;width:20%;">
+                            <button class="btn btn-secondary backBTN" @onclick="CancelEdit">@Localizer["Back"]</button>
                         </td>
                     </tr>
                 </table>
@@ -424,54 +396,64 @@
 
 @code {
     [CascadingParameter]
-    public IModalService Modal { get; set; }
+    public IModalService Modal { get; set; } // Inject IModalService
 
     [CascadingParameter]
-    public int UserId { get; set; }
+    public int UserId { get; set; } // Inject UserId
 
     [Parameter]
-    public string gameCode { get; set; }
+    public string gameCode { get; set; } // Inject gameCode
 
     [Parameter]
-    public List<Games> GamesList { get; set; }
+    public List<Games> GamesList { get; set; } // Inject GamesList
 
-    GameDetails gameData;
-    UserWithGames user;
+    GameDetails gameData; // Object to hold the game data
+    UserWithGames user; // Object to hold the user data
 
-    List<GameAnswers> answersDataToDelete = new List<GameAnswers>();
-    List<GameAnswers> tempAnswersData = new List<GameAnswers>();
-    List<string> DeleteImages = new List<string>();
+    List<GameAnswers> answersDataToDelete = new List<GameAnswers>(); // List to hold the answers to delete
+    List<GameAnswers> tempAnswersData = new List<GameAnswers>(); // List to hold the answers data
+    List<string> DeleteImages = new List<string>(); // List to hold the images to delete
 
     string inputClass = ""; // variable to hold the input class
     string alert = ""; // variable to hold the alert message
     string myFileImage = ""; // New variable to hold the image file name
+    string msg = ""; // variable to hold the message to display to the user
+    string pageMsg = ""; // variable to hold the message to display to the user
+    string inputData = ""; // variable to hold the input data from the user
+
     long maxFileSize = 4194304; //4MB
+    int edititem = 0; // variable to hold the edit item id
+    int gameNameLength = 0; // variable to hold the length of gameData.GameName
+    int gameAnswersCount = 0; // variable to hold the number of answers in the game
+
+    bool publishConfirm = false; // variable to hold the publish confirmation state
+    bool editAnswer = false; // variable to hold the edit answer state
+    bool isPreviewOn = false; // variable to hold the preview state
     bool newIsPublished = false; // variable to hold the is published state
     bool newCanPublish = false; // variable to hold the can publish state
     bool newIsCorrect = true; // variable to hold the is correct state
     bool textOrPic = true; // variable to hold the text or pic state
     bool uploadButton = true; // variable to hold the upload button state
-    int gameNameLength = 0; // variable to hold the length of gameData.GameName
-    int gameAnswersCount = 0; // variable to hold the number of answers in the game
-    string msg = ""; // variable to hold the message to display to the user
-    string pageMsg = ""; // variable to hold the message to display to the user
-    string inputData = ""; // variable to hold the input data from the user
-    bool publishConfirm = false; // variable to hold the publish confirmation state
-    bool editAnswer = false;
-    int edititem = 0;
-    bool isPreviewOn = false;
 
-    //////////////////////
-    ///                ///
-    ///     Methods    ///
-    ///                ///
-    //////////////////////
+
+
+    //////////////////////////////////////////////////////////
+    ////////////////////     Methods    //////////////////////
+    //////////////////////////////////////////////////////////
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            gameData = await Http.GetFromJsonAsync<GameDetails>($"api/game/" + UserId + "/getGame/" + gameCode);
+            var response = await Http.GetAsync($"api/game/" + UserId + "/getGame/" + gameCode);
+
+            if (response.Headers.Contains("X-Error") && response.Headers.GetValues("X-Error").FirstOrDefault() == "BadRequest")
+            {
+                Nav.NavigateTo("/badrequest");
+                return; // Exit the method early since we're navigating away
+            }
+
+            gameData = await response.Content.ReadFromJsonAsync<GameDetails>();
             gameNameLength = gameData.GameName.Count();
             gameAnswersCount = gameData.Answers.Count();
 
@@ -481,7 +463,6 @@
                 var gameAnswer = new GameAnswers
                     {
                         ID = answer.ID,
-                        // GameID = gameData.ID,
                         AnswerDescription = answer.AnswerDescription,
                         IsCorrect = answer.IsCorrect,
                         HasImage = answer.HasImage,
@@ -490,7 +471,6 @@
                 // Add the new GameAnswers object to the tempTableData list
                 tempAnswersData.Add(gameAnswer);
             }
-
         }
         catch (Exception ex)
         {
@@ -612,7 +592,7 @@
     }
 
     //show modal method to show modal with confirmation message
-    async Task ShowModal()
+    async Task ShowPublishModal()
     {
         var parameters = new ModalParameters()
             .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשנות את סטאטוס הפרסום?"); // Pass parameter(s) to modal component
@@ -621,6 +601,25 @@
         if (result.Confirmed)
         {
             await changePublish(gameData);
+        }
+        else
+        {
+            Console.WriteLine("Not confirmed");
+        }
+        var currentUrl = Nav.Uri;
+        // Navigate to the current URL to reload the page
+        Nav.NavigateTo(currentUrl);
+    }
+
+    async Task ShowDeleteModal(int itemToDelete)
+    {
+        var parameters = new ModalParameters()
+            .Add(nameof(PopUpComponent.Message), "האם ברצונכם למחוק את המסיח?"); // Pass parameter(s) to modal component
+        var messageForm = Modal.Show<PopUpComponent>("מחיקת מסיח", parameters); // Show modal
+        var result = await messageForm.Result; // Get result from modal
+        if (result.Confirmed)
+        {
+            RemoveFromTable(itemToDelete);
         }
         else
         {
@@ -782,7 +781,6 @@
                 }
             }
         }
-
     }
 
     //method to delete image from server

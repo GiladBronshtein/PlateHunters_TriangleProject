@@ -23,11 +23,13 @@
 
   <ItemGroup>
     <None Remove="Components\CustomInputText.razor.css" />
+    <None Remove="Pages\BadRequest.razor.css" />
     <None Remove="PortelemFiles\" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Components\CustomInputText.razor.css" />
+    <Content Include="Pages\BadRequest.razor.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\Images\" />

@@ -18,6 +18,7 @@ nav div:hover {
 
 .navbar a:link {
     text-decoration: none;
+    margin: 0;
 }
 
 .navbar a:visited {
@@ -41,7 +42,7 @@ li {
     list-style-type: none;
     display: inline-block;
     padding: 0px 1px 0px 1px;
-    margin: 0px 1px 0px 1px;
+    margin: 0px 10px 0px 1px;
     background-color: whitesmoke;
     text-align: center;
     vertical-align: middle;

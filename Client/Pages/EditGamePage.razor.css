@@ -103,7 +103,7 @@ table {
 
 table, th, td {
     border: 0px solid black;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     background-color: whitesmoke;
 }
 
@@ -582,7 +582,7 @@ td .checkbox-wrapper-64 {
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 1000;
+    z-index: 3;
 }
 
 .flexContainer {
@@ -598,4 +598,16 @@ td .checkbox-wrapper-64 {
     padding: 1px;
     margin: 0 0;
     font-size: 12px;
+}
+
+.backBTN{
+float: left;
+    margin-left: 1px;
+    margin-bottom: 1px;
+}
+
+.saveBTN {
+    float: left;
+    margin-left: 1px;
+    margin-bottom: 1px;
 }

@@ -309,7 +309,10 @@ namespace TriangleProject.Server.Controllers
                         //If no game found, return bad request
                         if (gameDetails == null)
                         {
-                            return BadRequest("No game found for game code: " + gameCode);
+                            //return BadRequest("No game found for game code: " + gameCode);
+                            //navigate the user to badrequest page
+                            Response.Headers.Add("X-Error", "BadRequest");
+                            return BadRequest(new { message = "No game found for game code: " + gameCode });
                         }
 
                         //Get question details for the game code

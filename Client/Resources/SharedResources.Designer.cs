@@ -70,7 +70,7 @@ namespace TriangleProject.Client.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to חזרה.
+        ///   Looks up a localized string similar to חזרה למשחקים שלי.
         /// </summary>
         public static string Back {
             get {
