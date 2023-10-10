@@ -25,7 +25,8 @@
                         <label>@Localizer["GameName"]</label>
                     </td>
                     <td style="width:15%;">
-                        <CustomInputText @bind-Value="gameData.GameName" alert="" class="default-input" maxlength="30" maxChars="30" minChars="2" inputWidth="320px" />
+                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.GameName" 
+                        alert="" class="default-input" maxlength="30" maxChars="30" minChars="2" inputWidth="320px" />
                     </td>
                     <td rowspan="3" style="text-align:center;" class="gameQuestionTD">
                         <div class="flexContainer">
@@ -67,7 +68,7 @@
                                 }
                                 @if (gameData.QuestionHasImage)
                                 {
-                                    @if (!string.IsNullOrEmpty(gameData.QuestionImageText)) // Assuming you have a property for the uploaded image path
+                                    @if (!string.IsNullOrEmpty(gameData.QuestionImageText))
                                     {
                                         <img src="@gameData.QuestionImageText" />
                                     }
@@ -84,10 +85,8 @@
                         <label>@Localizer["GameQuestion"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionDescription" alert="" class="default-input" maxlength="70" maxChars="70" minChars="2" inputWidth="320px" />
+                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.QuestionDescription" alert="" class="default-input" maxlength="70" maxChars="70" minChars="2" inputWidth="320px" />
                     </td>
-                    @*                     <td style="text-align:center;"></td>
-                *@
                 </tr>
             </table>
             <table class="Categories">
@@ -96,16 +95,23 @@
                         <label>@Localizer["GameCorrectCategory"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
+                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
                     </td>
                     <td style="width:12%;">
                         <label>@Localizer["GameWrongCategory"]</label>
                     </td>
                     <td>
-                        <CustomInputText @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
+                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
                     </td>
                     <td style="text-align:center;width:10%;">
-                        <input type="button" class="btn btn-primary saveBTN" @onclick="formSubmit" value="@Localizer["SaveSettings"]" />
+                        @if (hasChanges)
+                        {
+                            <input type="button" class="btn btn-primary saveBTN" @onclick="ShowSaveSettingsModal" value="@Localizer["SaveSettings"]" />
+                        }
+                        else
+                        {
+                            <input type="button" class="btn btn-primary saveBTN" @onclick="ShowNothingChangedModal" value="@Localizer["SaveSettings"]" />
+                        }
                     </td>
                 </tr>
             </table>
@@ -370,7 +376,7 @@
                             <label>@Localizer["GameEndMessage"]</label>
                         </td>
                         <td style="width:30%;">
-                            <CustomInputText @bind-Value="gameData.GameEndMessage" alert="" class="default-input" maxlength="50" maxChars="50" minChars="2" inputWidth="380px" />
+                            <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.GameEndMessage" alert="" class="default-input" maxlength="50" maxChars="50" minChars="2" inputWidth="380px" />
 
                         </td>
                         <td style="text-align:center;width:20%;">
@@ -384,7 +390,14 @@
                             }
                         </td>
                         <td style="text-align:center;width:20%;">
-                            <button class="btn btn-secondary backBTN" @onclick="CancelEdit">@Localizer["Back"]</button>
+                            @if (hasChanges)
+                            {
+                                <button class="btn btn-secondary backBTN" @onclick="ShowSaveModal">@Localizer["Back"]</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary backBTN" @onclick="CancelEdit">@Localizer["Back"]</button>
+                            }
                         </td>
                     </tr>
                 </table>
@@ -404,12 +417,13 @@
     [Parameter]
     public string gameCode { get; set; } // Inject gameCode
 
-    [Parameter]
-    public List<Games> GamesList { get; set; } // Inject GamesList
+    // [Parameter]
+    // public List<Games> GamesList { get; set; } // Inject GamesList
 
     GameDetails gameData; // Object to hold the game data
     UserWithGames user; // Object to hold the user data
 
+    // List<GameDetails> orignialGameData = new List<GameDetails>(); // List to hold the original game data
     List<GameAnswers> answersDataToDelete = new List<GameAnswers>(); // List to hold the answers to delete
     List<GameAnswers> tempAnswersData = new List<GameAnswers>(); // List to hold the answers data
     List<string> DeleteImages = new List<string>(); // List to hold the images to delete
@@ -434,7 +448,7 @@
     bool newIsCorrect = true; // variable to hold the is correct state
     bool textOrPic = true; // variable to hold the text or pic state
     bool uploadButton = true; // variable to hold the upload button state
-
+    bool hasChanges = false; // variable to hold the has changes state
 
 
     //////////////////////////////////////////////////////////
@@ -471,6 +485,9 @@
                 // Add the new GameAnswers object to the tempTableData list
                 tempAnswersData.Add(gameAnswer);
             }
+
+            //save all gamedata details to orignialGameData
+            // orignialGameData.Add(gameData);
         }
         catch (Exception ex)
         {
@@ -482,6 +499,7 @@
     //edit game data save to database
     async Task EditGameData()
     {
+        hasChanges = true;
         //return new gameData with the form details
         GameDetails newGame = new GameDetails()
             {
@@ -502,7 +520,6 @@
             Console.WriteLine("LOG NEW: " + item.ID);
         }
         await Http.PutAsJsonAsync($"api/game/" + UserId + "/updateGame/" + gameCode, newGame);
-        Nav.NavigateTo("/Pagewithauth");
     }
 
     //cancel edit and return to page with auth
@@ -630,6 +647,60 @@
         Nav.NavigateTo(currentUrl);
     }
 
+    async Task ShowSaveModal()
+    {
+
+        var parameters = new ModalParameters()
+          .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשמור את המשחק?"); // Pass parameter(s) to modal component
+        var messageForm = Modal.Show<PopUpComponent>("שמירת משחק", parameters); // Show modal
+        var result = await messageForm.Result; // Get result from modal
+        if (result.Confirmed)
+        {
+            EditGameData();
+            checkCanPublish();
+            Nav.NavigateTo("/Pagewithauth");
+
+        }
+        else
+        {
+            Console.WriteLine("Not confirmed");
+        }
+        var currentUrl = Nav.Uri;
+        // Navigate to the current URL to reload the page
+        Nav.NavigateTo("/Pagewithauth");
+    }
+
+    async Task ShowSaveSettingsModal()
+    {
+        var parameters = new ModalParameters()
+          .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשמור את הגדרות המשחק?"); // Pass parameter(s) to modal component
+        var messageForm = Modal.Show<PopUpComponent>("שמירת משחק", parameters); // Show modal
+        var result = await messageForm.Result; // Get result from modal
+        if (result.Confirmed)
+        {
+            Console.WriteLine("Confirmed");
+            EditGameData();
+            checkCanPublish();
+            Nav.NavigateTo("/Pagewithauth");
+
+        }
+        else
+        {
+            Console.WriteLine("Not confirmed");
+        }
+        var currentUrl = Nav.Uri;
+        // Navigate to the current URL to reload the page
+        Nav.NavigateTo(currentUrl);
+    }
+
+    async Task ShowNothingChangedModal()
+    {
+
+        var parameters = new ModalParameters();
+        parameters.Add("Message", "לא שיניתם כלום? המשיכו לערוך");
+        Modal.Show<About>("מה נשתנה?", parameters);
+    }
+
     //method to add new item into the answers list - later add to database
     private void AddTextAnswerToTable()
     {
@@ -647,6 +718,7 @@
             // Add the new GameAnswers object to the tempTableData list
             tempAnswersData.Add(gameAnswer);
             inputData = "";
+            hasChanges = true;
         }
     }
 
@@ -667,6 +739,7 @@
             // Add the new GameAnswers object to the tempTableData list
             tempAnswersData.Add(gameAnswer);
             myFileImage = "";
+            hasChanges = true;
         }
     }
 
@@ -720,6 +793,7 @@
             }
         }
         editAnswer = false;
+        hasChanges = true;
 
     }
 
@@ -745,6 +819,8 @@
                 break;
             }
         }
+        hasChanges = true;
+
     }
 
     //method to change the bool type from text to image
@@ -851,4 +927,9 @@
 
     }
 
+    private void HandleInputChange(string newValue)
+    {
+        hasChanges = true;
+        Console.WriteLine(hasChanges);
+    }
 }
