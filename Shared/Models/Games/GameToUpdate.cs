@@ -15,6 +15,8 @@ namespace TriangleProject.Shared.Models.Games
         public string GameEndMessage { get; set; }
         public string QuestionCorrectCategory { get; set; }
         public string QuestionWrongCategory { get; set; }
+        public string QuestionImageText { get; set; }
+        public bool QuestionHasImage { get; set; }
         public List<GameAnswers> Answers { get; set; }
         public List<GameAnswers> AnswersToDelete { get; set; }
     }

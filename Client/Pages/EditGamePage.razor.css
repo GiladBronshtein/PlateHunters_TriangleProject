@@ -2,7 +2,7 @@
 tbody.wrong-table {
     background-color: white;
     display: block;
-    max-height: 260px;
+    max-height: 354px;
     overflow-y: auto;
 }
 
@@ -15,7 +15,7 @@ thead.wrong-table, tbody.wrong-table tr {
 tbody.correct-table {
     background-color: white;
     display: block;
-    max-height: 260px;
+    max-height: 354px;
     overflow-y: auto;
 }
 
@@ -31,7 +31,7 @@ tbody.correct-table {
     border-spacing: 0;
     padding: 0;
     margin-bottom: 5px;
-    max-height: 312px;
+    max-height: 391px;
 }
 
 
@@ -40,7 +40,7 @@ tbody.correct-table {
     background-color: whitesmoke;
     padding: 0 10px 0 11px;
     background-clip: content-box, padding-box;
-    max-height: 300px;
+    max-height: 392px;
 }
 
 
@@ -108,11 +108,11 @@ table, th, td {
 }
 
 .MainTable th, .MainTable td {
-    padding: 6px;
+    padding: 10px;
 }
 
 .Categories th, .Categories td {
-    padding: 6px;
+    padding: 8px;
 }
 
 .Answers td {
@@ -539,29 +539,37 @@ textarea {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('/assets-images/geza.png');
+    background-image: url('assets-images/geza.png');
     background-size: 100% 100%; /* width height */
     background-repeat: no-repeat;
     background-position: center;
     z-index: 1;
     display: flex;
     align-items: center; /* Vertically center */
-    justify-content: center; /* Horizontally center */
+    justify-content: flex-start; /* Horizontally center */
 }
 
     .preview p {
         text-align: right;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: bold;
+        margin: 35px 20px 1px 60px; /* Add some space between the text and the image */
+        flex: 1; /* Allow the paragraph to take up the remaining space */
     }
 
-    .preview p, .preview img {
-        margin: 25px 10px 1px 60px; /* Add some space between the text and the image */
+
+
+    .preview img {
+        margin: 24px 2px 1px 12px;
+        float: left;
     }
+
+
+
 
 
 td.preview {
-    background-image: url('/assets-images/geza.png');
+    background-image: url('assets-images/geza.png');
     background-size: cover;
     background-position: center;
     position: relative; /* This ensures the td can contain positioned children */

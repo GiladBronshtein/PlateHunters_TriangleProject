@@ -69,56 +69,82 @@
             }
         </div>
         <br/>
-        <div class="table-container @grayedclass">
-            <table class="rounded-table">
-                <thead>
-                    <tr style="background-color:whitesmoke;">
-                        <th>@Localizer["GameCode"]</th>
-                        <th class="tableGameName">@Localizer["GameName"]</th>
-                        <th>
-                            @Localizer["GameEdit"]
-                            <Tooltip Text="לחצו על העפרון לעריכת המשחק ומסיחי התשובות"><i class="fa fa-info-circle"> </i> </Tooltip>
-                        </th>
-                        <th>
-                            @Localizer["IsPublished"]<Tooltip Text="פרסום דורש לפחות 10 שאלות"> <i class="fa fa-info-circle"> </i> </Tooltip>
-                        </th>
-                        <th>
-                            @Localizer["GameDelete"]<Tooltip Text="מחיקת המשחק לצמיתות ללא אפשרות שחזור"><i class="fa fa-info-circle"></i></Tooltip>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="roundedTbody">
-                    @foreach (var game in GamesList)
-                    {
-                        <tr style="border-top: 1px solid #e0e0e0;">
-                            <td><b>@game.GameCode</b></td>
-                            <td>@game.GameName</td>
-                            <td><i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i> </td>
-                            <td>
-                                @if (game.CanPublish == false)
-                                {
-                                    <div class="checkbox-wrapper-19">
-                                        <input type="checkbox" id="@game.ID" disabled>
-                                        <label for="@game.ID" class="check-box1" />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="checkbox-wrapper-20">
-                                        <input type="checkbox" id="@game.ID" checked="@game.IsPublished" @onchange="()=>changePublish(game)" />
-                                        <label for="@game.ID" class="check-box2"></label>
-                                    </div>
-                                }
-                            </td>
-                            <td>
-                                <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="()=>DeleteGame(game)"></i>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-
-            </table>
+        <div class="topDiv">
+            <div class="innerDiv">
+            <h3>המשחקים שלי</h3>
+            <h5>הנחיות לפרסום:</h5>
+            <ul>
+                <li>גזע שאלה - 2 תווים לפחות</li>
+                <li>יחס מסיחים - 2:1</li>
+                <li>לפחות 18 מסיחים</li>
+                <li>הודעת סיום</li>
+            </ul>
+            </div>
         </div>
+
+        <div class="bottomDiv">
+            <img class="bottomDivImage" src="assets-images/DogPixle.png">
+        </div>
+
+         <div class="table-container @grayedclass">
+                <table class="rounded-table">
+                    <thead>
+                        <tr style="background-color:whitesmoke;">
+                            <th>@Localizer["GameCode"]</th>
+                            <th class="tableGameName">@Localizer["GameName"]</th>
+                            <th>
+                                @Localizer["GameEdit"]
+                                <Tooltip Text="לחצו על העפרון לעריכת המשחק ומסיחי התשובות"><i class="fa fa-info-circle"> </i> </Tooltip>
+                            </th>
+                            <th>
+                            @Localizer["IsPublished"] 
+                            <Tooltip Text="פרסום המשחק דורש: <br/>
+               גזע שאלה - 2 תווים לפחות<br/>
+               יחס מסיחים - 2:1<br/>
+               לפחות 18 מסיחים<br/>
+             הודעת סיום"> <i class="fa fa-info-circle"> </i> </Tooltip>
+                            </th>
+                            <th>
+                                @Localizer["GameDelete"] 
+                                <Tooltip Text="מחיקת המשחק לצמיתות ללא אפשרות שחזור"><i class="fa fa-info-circle"></i></Tooltip>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="roundedTbody">
+                        @foreach (var game in GamesList)
+                        {
+                            <tr style="border-top: 1px solid #e0e0e0;">
+                                <td><b>@game.GameCode</b></td>
+                                <td>@game.GameName</td>
+                                <td><i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i> </td>
+                                <td>
+                                    @if (game.CanPublish == false)
+                                    {
+                                        <div class="checkbox-wrapper-19">
+                                            <input type="checkbox" id="@game.ID" disabled>
+                                            <label for="@game.ID" class="check-box1" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="checkbox-wrapper-20">
+                                            <input type="checkbox" id="@game.ID" checked="@game.IsPublished" @onchange="()=>changePublish(game)" />
+                                            <label for="@game.ID" class="check-box2"></label>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="()=>DeleteGame(game)"></i>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        
+            
+
     }
 }
 

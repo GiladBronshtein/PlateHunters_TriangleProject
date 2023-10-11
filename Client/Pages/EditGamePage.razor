@@ -25,8 +25,8 @@
                         <label>@Localizer["GameName"]</label>
                     </td>
                     <td style="width:15%;">
-                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.GameName" 
-                        alert="" class="default-input" maxlength="30" maxChars="30" minChars="2" inputWidth="320px" />
+                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.GameName"
+                          alert="" class="default-input" maxlength="30" maxChars="30" minChars="2" inputWidth="320px" />
                     </td>
                     <td rowspan="3" style="text-align:center;" class="gameQuestionTD">
                         <div class="flexContainer">
@@ -45,10 +45,18 @@
                                 הנחייה עם טקסט ותמונה
                             </div>
                             <div class="flexItem">
-                                <button type="button" value="תמונה" class="picortext">
-                                    <i class="fa fa-picture-o picButton"></i>
-                                </button>
+                                <!-----------------------------------
+                                    ADDING IMAGE TO GAME QUESTION 
+                                ------------------------------------->
+
+                                <label class="uploadImg" for="QuestionFileInputID">
+                                    <i class="fa fa-picture-o" aria-hidden="true" style="color:black;font-size:44px;"></i>
+                                </label>
+                                <InputFile name="QuestionImage" id="QuestionFileInputID" OnChange="@(e => UploadFile(e, "QuestionImage"))" hidden />
                             </div>
+
+
+
                         </div>
                     </td>
                     <td rowspan="2" style="text-align:center; " class="GezaTextandPicture">
@@ -70,7 +78,7 @@
                                 {
                                     @if (!string.IsNullOrEmpty(gameData.QuestionImageText))
                                     {
-                                        <img src="@gameData.QuestionImageText" />
+                                        <img src="@gameData.QuestionImageText" width="50" style="padding-top:7px; float: left;"/>
                                     }
                                 }
 
@@ -169,7 +177,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr style="height:100px;">
+                                <tr style="height:200px;">
                                     <td colspan="3">
                                         <div class="plasteanswer">
                                             <div class="container">
@@ -222,7 +230,7 @@
                                         לא נכון
                                     </td>
                                 </tr>
-                                <tr style="height:100px;">
+                                <tr style="height:200px;">
                                     <td colspan="3">
                                         <div class="plasteanswer">
                                             <div class="container">
@@ -247,7 +255,7 @@
                                                             <label class="uploadImg" for="FileInputID">
                                                                 <i class="fa fa-upload" aria-hidden="true" style="color:black;font-size:44px;"></i>
                                                             </label>
-                                                            <InputFile id="FileInputID" OnChange="UploadFile" hidden />
+                                                            <InputFile name="AnswerImage" id="FileInputID" OnChange="@(e => UploadFile(e, "AnswerImage"))" hidden />
                                                         }
                                                     </div>
                                                 </div>
@@ -284,6 +292,7 @@
                             <tr>
                                 <th colspan="3" style="text-align:center; background-color:#EEF3E7;">
                                     @gameData.QuestionCorrectCategory
+                                    (@countCorrectAnswers)
                                 </th>
                             </tr>
                             <tbody class="correct-table">
@@ -328,6 +337,8 @@
                             <tr>
                                 <th colspan="3" style="text-align:center; background-color:#EEDFDF;">
                                     @gameData.QuestionWrongCategory
+                                    (@countWrongAnswers)
+
                                 </th>
                             </tr>
                             <tbody class="wrong-table">
@@ -375,11 +386,11 @@
                         <td style="width:12%;">
                             <label>@Localizer["GameEndMessage"]</label>
                         </td>
-                        <td style="width:30%;">
+                        <td style="width:50%;">
                             <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.GameEndMessage" alert="" class="default-input" maxlength="50" maxChars="50" minChars="2" inputWidth="380px" />
 
                         </td>
-                        <td style="text-align:center;width:20%;">
+                        <td style="text-align:center;width:250px;">
                             @if (gameData.IsPublished == false)
                             {
                                 <input type="button" class="btn btn-success" @onclick="ShowPublishModal" value="@Localizer["GamePublish"]" />
@@ -389,7 +400,7 @@
                                 <input type="button" class="btn btn-outline-success" @onclick="ShowPublishModal" value="@Localizer["Unpublish"]" />
                             }
                         </td>
-                        <td style="text-align:center;width:20%;">
+                        <td style="text-align:center;width:250px;">
                             @if (hasChanges)
                             {
                                 <button class="btn btn-secondary backBTN" @onclick="ShowSaveModal">@Localizer["Back"]</button>
@@ -423,7 +434,6 @@
     GameDetails gameData; // Object to hold the game data
     UserWithGames user; // Object to hold the user data
 
-    // List<GameDetails> orignialGameData = new List<GameDetails>(); // List to hold the original game data
     List<GameAnswers> answersDataToDelete = new List<GameAnswers>(); // List to hold the answers to delete
     List<GameAnswers> tempAnswersData = new List<GameAnswers>(); // List to hold the answers data
     List<string> DeleteImages = new List<string>(); // List to hold the images to delete
@@ -431,6 +441,7 @@
     string inputClass = ""; // variable to hold the input class
     string alert = ""; // variable to hold the alert message
     string myFileImage = ""; // New variable to hold the image file name
+    string myQuestionFileImage = ""; // New variable to hold the image file name
     string msg = ""; // variable to hold the message to display to the user
     string pageMsg = ""; // variable to hold the message to display to the user
     string inputData = ""; // variable to hold the input data from the user
@@ -439,6 +450,8 @@
     int edititem = 0; // variable to hold the edit item id
     int gameNameLength = 0; // variable to hold the length of gameData.GameName
     int gameAnswersCount = 0; // variable to hold the number of answers in the game
+    int countCorrectAnswers = 0;
+    int countWrongAnswers = 0;
 
     bool publishConfirm = false; // variable to hold the publish confirmation state
     bool editAnswer = false; // variable to hold the edit answer state
@@ -486,8 +499,8 @@
                 tempAnswersData.Add(gameAnswer);
             }
 
-            //save all gamedata details to orignialGameData
-            // orignialGameData.Add(gameData);
+            countCorrectAnswers = tempAnswersData.Where(x => x.IsCorrect == true).Count();
+            countWrongAnswers = tempAnswersData.Where(x => x.IsCorrect == false).Count();
         }
         catch (Exception ex)
         {
@@ -513,7 +526,9 @@
                 QuestionCorrectCategory = gameData.QuestionCorrectCategory,
                 QuestionWrongCategory = gameData.QuestionWrongCategory,
                 Answers = tempAnswersData,
-                AnswersToDelete = answersDataToDelete
+                AnswersToDelete = answersDataToDelete,
+                QuestionImageText = gameData.QuestionImageText,
+                QuestionHasImage = gameData.QuestionHasImage
             };
         foreach (var item in tempAnswersData)
         {
@@ -656,9 +671,9 @@
         var result = await messageForm.Result; // Get result from modal
         if (result.Confirmed)
         {
-            EditGameData();
-            checkCanPublish();
-            Nav.NavigateTo("/Pagewithauth");
+            // EditGameData();
+            // checkCanPublish();
+            Nav.NavigateTo("Pagewithauth");
 
         }
         else
@@ -667,7 +682,7 @@
         }
         var currentUrl = Nav.Uri;
         // Navigate to the current URL to reload the page
-        Nav.NavigateTo("/Pagewithauth");
+        Nav.NavigateTo("Pagewithauth");
     }
 
     async Task ShowSaveSettingsModal()
@@ -681,7 +696,7 @@
             Console.WriteLine("Confirmed");
             EditGameData();
             checkCanPublish();
-            Nav.NavigateTo("/Pagewithauth");
+            Nav.NavigateTo("Pagewithauth");
 
         }
         else
@@ -719,6 +734,10 @@
             tempAnswersData.Add(gameAnswer);
             inputData = "";
             hasChanges = true;
+
+            countCorrectAnswers = tempAnswersData.Where(x => x.IsCorrect == true).Count();
+            countWrongAnswers = tempAnswersData.Where(x => x.IsCorrect == false).Count();
+
         }
     }
 
@@ -740,6 +759,10 @@
             tempAnswersData.Add(gameAnswer);
             myFileImage = "";
             hasChanges = true;
+
+            countCorrectAnswers = tempAnswersData.Where(x => x.IsCorrect == true).Count();
+            countWrongAnswers = tempAnswersData.Where(x => x.IsCorrect == false).Count();
+
         }
     }
 
@@ -821,6 +844,9 @@
         }
         hasChanges = true;
 
+        countCorrectAnswers = tempAnswersData.Where(x => x.IsCorrect == true).Count();
+        countWrongAnswers = tempAnswersData.Where(x => x.IsCorrect == false).Count();
+
     }
 
     //method to change the bool type from text to image
@@ -838,8 +864,10 @@
     }
 
     //method to upload image to server
-    private async Task UploadFile(InputFileChangeEventArgs e)
+    private async Task UploadFile(InputFileChangeEventArgs e,string source)
     {
+        Console.WriteLine("User Clicked: " + source);
+
         var imageFiles = e.GetMultipleFiles();
         foreach (var file in imageFiles)
         {
@@ -853,9 +881,22 @@
                 if (saveResponse.IsSuccessStatusCode == true)
                 {
                     string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
-                    myFileImage = "uploadedFiles/" + resizeUrl;
+
+                    if(source =="AnswerImage")
+                    {
+                        myFileImage = "uploadedFiles/" + resizeUrl;
+                    }
+                    else
+                    {
+                        myQuestionFileImage = "uploadedFiles/" + resizeUrl;
+                        hasChanges = true;
+                        gameData.QuestionImageText = myQuestionFileImage;
+                        gameData.QuestionHasImage = true;
+                    }
+                    
                 }
             }
+
         }
     }
 

@@ -239,7 +239,9 @@ namespace TriangleProject.Server.Controllers
                                 GameQuestion = gameToUpdate.QuestionDescription,
                                 GameCorrectCategory = gameToUpdate.QuestionCorrectCategory,
                                 GameWrongCategory = gameToUpdate.QuestionWrongCategory,
-                                TheGameEndMessage = gameToUpdate.GameEndMessage
+                                TheGameEndMessage = gameToUpdate.GameEndMessage,
+                                QuestionHasImage = gameToUpdate.QuestionHasImage,
+                                QuestionImageText = gameToUpdate.QuestionImageText
                                 //ADD MORE PARAMS TO UPDATE
                             };
                             string updateGameQuery =
@@ -247,7 +249,9 @@ namespace TriangleProject.Server.Controllers
                                 "QuestionDescription = @GameQuestion, " +
                                 "QuestionCorrectCategory = @GameCorrectCategory, " +
                                 "QuestionWrongCategory = @GameWrongCategory, " +
-                                "GameEndMessage = @TheGameEndMessage " +
+                                "GameEndMessage = @TheGameEndMessage, " +
+                                "QuestionHasImage = @QuestionHasImage," +
+                                "QuestionImageText = @QuestionImageText " +
                                 "WHERE GameCode = @GameCode";
                             //CHANGE QUERY ACCORDINGLY TO ADD MORE PARAMS TO UPDATE
                             bool isGameUpdate = await _db.SaveDataAsync(updateGameQuery, param3);
@@ -414,7 +418,7 @@ namespace TriangleProject.Server.Controllers
 
         private async Task CanPublishFunc(int gameId)
         {
-            int minQuestions = 4;
+            int minQuestions = 18;
             bool isPublished = false;
             bool canPublish = false;
             object param = new

@@ -1,7 +1,11 @@
 ﻿/* Reset default table styles */
 body {
-    background-color:yellow !important;
+    background-image: url('assets-images/DogPixle.png') !important;
+    background-size: cover; /* This will ensure the background image covers the entire viewport */
+    background-repeat: no-repeat; /* This will prevent the image from repeating */
+    background-position: center center; /* This will center the image */
 }
+
 
 table, th, td {
     border: 0px solid black;
@@ -383,13 +387,26 @@ table.rounded-table {
 }
 
     /* Align header content in specific columns */
-    .rounded-table th:nth-child(3),
-    .rounded-table th:nth-child(4),
+    .rounded-table th:nth-child(3) {
+        text-align: center;
+        border: 0px solid black;
+        width: 110px;
+    }
+
+
+    .rounded-table th:nth-child(4) {
+        text-align: center;
+        border: 0px solid black;
+        width: 72px;
+    }
+
     .rounded-table th:nth-child(5) {
         text-align: center;
         border: 0px solid black;
-        width: 138px;
+        width: 115px;
     }
+
+
 
     .rounded-table th:nth-child(1) {
         text-align: center;
@@ -424,9 +441,6 @@ table.rounded-table {
 
 
 
-
-
-
     ::-webkit-scrollbar-thumb:hover {
         background-color: rgb(112, 112, 112);
     }
@@ -435,7 +449,7 @@ table.rounded-table {
         background-color: rgb(128, 128, 128);
     }
 
-/* Buttons */
+/* scroll Buttons */
 ::-webkit-scrollbar-button:single-button {
     background-color: #eee;
     display: block;
@@ -498,11 +512,18 @@ table.rounded-table {
     }
 
 /* Align content in specific columns */
-.rounded-table td:nth-child(3),
-.rounded-table td:nth-child(4),
-.rounded-table td:nth-child(5) {
-    width: 130px;
+.rounded-table td:nth-child(3) {
+    width: 80px;
 }
+
+.rounded-table td:nth-child(4) {
+    width: 70px;
+}
+
+.rounded-table td:nth-child(5) {
+    width: 85px;
+}
+
 .rounded-table td:nth-child(2)
 {
     width:240px; /*GAME NAME*/
@@ -684,3 +705,74 @@ table.rounded-table {
     pointer-events: none;
 }
 
+
+
+
+.topDiv {
+    position: fixed;
+    top: 60px;
+    left: 20px;
+    width: 250px;
+    height: 250px;
+    z-index: 98;
+    background-image: url('assets-images/minSign.png');
+    background-color: white;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align vertically to the start */
+}
+
+.innerDiv {
+    padding-top: 26px;
+        width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .innerDiv h3 {
+        margin-bottom: 14px;
+    }
+
+    .innerDiv h5 {
+        margin-bottom: 7px;
+    }
+
+    .innerDiv ul {
+        margin: 0;
+        padding-inline-start: 0; /* Set to 0 since we are customizing the bullet */
+        list-style-type: none; /* Remove default bullets */
+        padding-right: 26px;
+    }
+
+    .innerDiv li {
+        position: relative;
+        padding-right: 20px; /* Adjust this value to control spacing */
+    }
+
+        .innerDiv li::before {
+            content: "🔔"; /* Your custom bullet */
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%); /* Vertically center the bullet */
+        }
+
+
+
+.bottomDiv {
+    position: fixed;
+    width: 350px; /* or whatever you prefer */
+    bottom: -3px; /* This will stick it directly to the bottom */
+    left: -50px;
+    background-color: #ddd;
+    padding: 0px;
+    z-index: 98;
+}
+
+.bottomDivImage {
+    width: 100%; /* This will ensure the image takes the full width of the container */
+    height: auto; /* This will maintain the image's aspect ratio */
+    display: block; /* To remove any default margins/paddings */
+}
