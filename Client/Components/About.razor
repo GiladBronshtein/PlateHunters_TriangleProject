@@ -5,19 +5,14 @@
 
 
 <div>
-    <p>@Message</p>
-
-    <button @onclick="Confirm" class="btn btn-success">אישור</button>
+    <img src="assets-images/About.png" style="width:100%;" />
 </div>
+<button @onclick="Confirm" class="btn btn-success">אישור</button>
 
 
 @code {
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
-    [Parameter] public string? Message { get; set; }
 
     //Confirm button
     private async Task Confirm() => await BlazoredModal.CloseAsync();
-    //Cancel button
-    private async Task Cancel() => await BlazoredModal.CancelAsync();
-
 }

@@ -1,5 +1,11 @@
-﻿<h3>HowToPlay</h3>
+﻿<div class="container">
+    <img src="assets-images/Howtoplayimage.jpeg" style="width:100%;" />
+</div>
+
+<button @onclick="Confirm" class="btn btn-success">אישור</button>
 
 @code {
-
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    //Confirm button
+    private async Task Confirm() => await BlazoredModal.CloseAsync();
 }

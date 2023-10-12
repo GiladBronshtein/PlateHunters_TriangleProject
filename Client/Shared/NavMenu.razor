@@ -27,10 +27,18 @@
 
     async Task ShowModalOdot()
     {
-        var messageForm = Modal.Show<About>("אודות"); // Show modal
+        var options = new ModalOptions()
+            {
+                Size = ModalSize.Large
+            };
+        var messageForm = Modal.Show<About>("אודות",options); // Show modal
     }
     async Task ShowModalHowToPlay()
     {
-        var messageForm = Modal.Show<About>("איך משחקים"); // Show modal
+        var options = new ModalOptions()
+            {
+                Size = ModalSize.Large
+            };
+        var messageForm = Modal.Show<HowToPlay>("איך משחקים",options); // Show modal
     }
 }

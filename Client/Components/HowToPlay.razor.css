@@ -1,4 +1,7 @@
-﻿
+﻿img {
+    border: 0px solid gray;
+    box-shadow: rgb(38, 57, 77) 0px 15px 15px -10px;
+}
 button {
     display: block;
     margin-left: auto;

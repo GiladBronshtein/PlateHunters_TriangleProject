@@ -9,6 +9,10 @@ html, body {
     direction: rtl;
     font-size: 14px;
 
+ /*   background-image: url('/assets-images/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;*/
 }
 
 h1:focus {
@@ -71,19 +75,6 @@ a, .btn-link {
  }
 
 
-/*.bm-header .bm-close{
-    position: relative;
-    display: flex;
-}
-
-.bm-close:hover{
-color: #0071c1;
-}
-
-.bm-close span{
-    margin-right: 300px;
-}*/
-
 .bm-header {
     position: relative; /* Ensure the parent container has a position: relative; */
 }
@@ -103,3 +94,4 @@ color: #0071c1;
     .bm-close span {
         margin-right: 0;
     }
+

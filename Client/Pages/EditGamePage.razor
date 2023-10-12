@@ -130,8 +130,11 @@
                             <tr style="background-color:#F7F7F7;">
                                 <td style="text-align:center; height:15px;" colspan="5"> <b> הוספת תשובה </b></td>
                             </tr>
-                            <tr style="border-bottom: 3px solid white; background-color:#F7F7F7;  height:80px;">
-                                <td style="text-align:center;">
+
+
+
+                            <tr style="border-bottom: 5px solid white; background-color:#F7F7F7;  height:50px;">
+                                <td style="text-align:center; width:180px;">
                                     <div class="textBTN">
                                         טקסט
                                         <button type="button" value="טקסט" class="picortext " @onclick="ChangeToPic">
@@ -140,11 +143,11 @@
                                     </div>
                                 </td>
 
-                                <td style="text-align:center;width:10%;">
+                                <td style="text-align:center;width:100px;">
                                     <h3>או</h3>
                                 </td>
 
-                                <td style="text-align:center;" id="picBTN">
+                                <td style="text-align:center;width:180px;" id="picBTN">
                                     <div class="picBTN">
                                         <button type="button" value="תמונה" class="picortext " @onclick="ChangeToText">
                                             <i class="fa fa-picture-o picButton"></i>
@@ -154,12 +157,16 @@
                                     </div>
                                 </td>
                             </tr>
+
+
+
+
                             @if (textOrPic)
                             {
-                                <tr style="background-color:#F7F7F7; height:40px; text-align:center;">
+                                <tr style="background-color:#F7F7F7; height:60px; text-align:center;">
                                     <td>
                                         <div class="rightText">
-                                            נכון
+                                            @gameData.QuestionCorrectCategory
                                         </div>
                                     </td>
                                     <td>
@@ -172,8 +179,7 @@
                                     </td>
                                     <td>
                                         <div class="wrongText">
-
-                                            לא נכון
+                                            @gameData.QuestionWrongCategory
                                         </div>
                                     </td>
                                 </tr>
@@ -214,9 +220,9 @@
                             }
                             else
                             {
-                                <tr style="background-color:#F7F7F7; height:40px; text-align:center;">
+                                <tr style="background-color:#F7F7F7; height:60px; text-align:center;">
                                     <td>
-                                        נכון
+                                        @gameData.QuestionCorrectCategory
                                     </td>
                                     <td>
                                         <div class="checkbox-wrapper-64">
@@ -227,7 +233,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        לא נכון
+                                        @gameData.QuestionWrongCategory
                                     </td>
                                 </tr>
                                 <tr style="height:200px;">

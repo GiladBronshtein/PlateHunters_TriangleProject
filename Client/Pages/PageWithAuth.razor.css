@@ -1,10 +1,4 @@
-﻿/* Reset default table styles */
-body {
-    background-image: url('assets-images/DogPixle.png') !important;
-    background-size: cover; /* This will ensure the background image covers the entire viewport */
-    background-repeat: no-repeat; /* This will prevent the image from repeating */
-    background-position: center center; /* This will center the image */
-}
+﻿
 
 
 table, th, td {
@@ -383,7 +377,7 @@ table.rounded-table {
 .rounded-table {
     border-radius: 8px;
     overflow: hidden;
-    width: 652px;
+    width: 800px;
 }
 
     /* Align header content in specific columns */
@@ -397,13 +391,13 @@ table.rounded-table {
     .rounded-table th:nth-child(4) {
         text-align: center;
         border: 0px solid black;
-        width: 72px;
+        width: 80px;
     }
 
     .rounded-table th:nth-child(5) {
         text-align: center;
         border: 0px solid black;
-        width: 115px;
+        width: 130px;
     }
 
 
@@ -485,9 +479,9 @@ table.rounded-table {
             background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(112, 112, 112)'><polygon points='0,0 100,0 50,50'/></svg>");
         }
 
-        ::-webkit-scrollbar-button:single-button:vertical:increment:active {
+/*        ::-webkit-scrollbar-button:single-button:vertical:increment:active {
             background-image
-        }
+        }*/
 
 
 
@@ -517,20 +511,20 @@ table.rounded-table {
 }
 
 .rounded-table td:nth-child(4) {
-    width: 70px;
+    width: 65px;
 }
 
 .rounded-table td:nth-child(5) {
-    width: 85px;
+    width: 80px;
 }
 
 .rounded-table td:nth-child(2)
 {
-    width:240px; /*GAME NAME*/
+    width:280px; /*GAME NAME*/
     text-align:right;
 }
 .rounded-table td:nth-child(1) {
-    width: 80px;
+    width: 60px;
 }
 
 
@@ -710,13 +704,12 @@ table.rounded-table {
 
 .topDiv {
     position: fixed;
-    top: 60px;
-    left: 20px;
+    top: 80px;
+    left: 60px;
     width: 250px;
     height: 250px;
     z-index: 98;
     background-image: url('assets-images/minSign.png');
-    background-color: white;
     background-repeat: no-repeat;
     display: flex;
     justify-content: center; /* Center horizontally */
@@ -766,7 +759,6 @@ table.rounded-table {
     width: 350px; /* or whatever you prefer */
     bottom: -3px; /* This will stick it directly to the bottom */
     left: -50px;
-    background-color: #ddd;
     padding: 0px;
     z-index: 98;
 }
@@ -775,4 +767,85 @@ table.rounded-table {
     width: 100%; /* This will ensure the image takes the full width of the container */
     height: auto; /* This will maintain the image's aspect ratio */
     display: block; /* To remove any default margins/paddings */
+    background: white;
+    background-color: hsla(0, 100%, 50%, 0); /* This sets a fully transparent background */
+}
+
+
+
+
+
+.background {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed; /* This will make sure the background covers the entire viewport */
+}
+
+
+
+
+
+
+#home {
+    clip-path: url(#cache);
+}
+
+#red {
+    fill: none;
+    opacity: 0.02;
+    stroke: orange;
+    stroke-width: 12;
+    stroke-miterlimit: 10;
+    animation: show 4s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+#blue {
+    fill: none;
+    opacity: 0.15;
+    stroke: green;
+    stroke-width: 12;
+    stroke-miterlimit: 10;
+    animation: show 4s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+#light-blue {
+    fill: none;
+    opacity: 0.04;
+    stroke: brown;
+    stroke-width: 6;
+    stroke-miterlimit: 10;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 800;
+    animation: draw 4s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes show {
+    0% {
+        opacity: 0.05;
+    }
+
+    50% {
+        opacity: 0.03;
+    }
+
+    100% {
+        opacity: 0.05;
+    }
 }
