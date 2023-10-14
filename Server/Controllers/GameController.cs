@@ -399,7 +399,6 @@ namespace TriangleProject.Server.Controllers
                         UserId = userId,
                         gameID = gameId
                     };
-                    Console.WriteLine(param);
 
                     string checkQuery = "SELECT GameName FROM Games WHERE UserId = @UserId and ID=@gameID";
                     var checkRecords = await _db.GetRecordsAsync<string>(checkQuery, param);

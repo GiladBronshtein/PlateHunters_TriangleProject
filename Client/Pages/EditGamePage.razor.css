@@ -619,3 +619,25 @@ float: left;
     margin-left: 1px;
     margin-bottom: 1px;
 }
+
+
+
+
+
+
+
+.image-exists-checkbox:checked + .uploadImg + .delete-image-btn {
+    display: inline-block;
+}
+
+.delete-image-btn {
+    color: black;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+    .delete-image-btn:hover {
+        color: orange;
+    }

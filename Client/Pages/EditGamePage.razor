@@ -36,7 +36,8 @@
                             <div class="flexItem">
                                 <div class="checkbox-wrapper-64">
                                     <label class="switch">
-                                        <input type="checkbox">
+                                        <input type="checkbox" checked="@(!gameData.QuestionHasImage)">
+                                        
                                         <span class="slider"></span>
                                     </label>
                                 </div>
@@ -50,9 +51,16 @@
                                 ------------------------------------->
 
                                 <label class="uploadImg" for="QuestionFileInputID">
-                                    <i class="fa fa-picture-o" aria-hidden="true" style="color:black;font-size:44px;"></i>
+                                    <i class="fa fa-picture-o" aria-hidden="true" style="color:black;font-size:30px;"></i>
                                 </label>
                                 <InputFile name="QuestionImage" id="QuestionFileInputID" OnChange="@(e => UploadFile(e, "QuestionImage"))" hidden />
+
+
+
+                                @if (gameData.QuestionHasImage)
+                                {
+                                    <i class="fa fa-trash-o  delete-image-btn" @onclick="DeleteImageMethod"></i>
+                                }
                             </div>
 
 
@@ -504,7 +512,6 @@
                 // Add the new GameAnswers object to the tempTableData list
                 tempAnswersData.Add(gameAnswer);
             }
-
             countCorrectAnswers = tempAnswersData.Where(x => x.IsCorrect == true).Count();
             countWrongAnswers = tempAnswersData.Where(x => x.IsCorrect == false).Count();
         }
@@ -536,11 +543,10 @@
                 QuestionImageText = gameData.QuestionImageText,
                 QuestionHasImage = gameData.QuestionHasImage
             };
-        foreach (var item in tempAnswersData)
-        {
-            Console.WriteLine("LOG NEW: " + item.ID);
-        }
+
         await Http.PutAsJsonAsync($"api/game/" + UserId + "/updateGame/" + gameCode, newGame);
+        await checkCanPublish();
+
     }
 
     //cancel edit and return to page with auth
@@ -552,23 +558,37 @@
     //check if the game can be published
     async Task checkCanPublish()
     {
-        newCanPublish = gameData.CanPublish;
-        newCanPublish = await Http.GetFromJsonAsync<bool>($"api/game/" + UserId + "/canPublish/" + gameData.ID);
-        if (newCanPublish == true)
+        try
         {
-            newIsPublished = true;
+            newCanPublish = gameData.CanPublish;
+            newCanPublish = await Http.GetFromJsonAsync<bool>($"api/game/" + UserId + "/canPublish/" + gameData.ID);
+            if (newCanPublish == true)
+            {
+                newIsPublished = true;
+            }
+            else
+            {
+                newIsPublished = false;
+            }
         }
-        else
+        catch (HttpRequestException httpEx)
         {
-            newIsPublished = false;
+            // This will catch any HTTP request related errors
+            Console.WriteLine($"HTTP Error: {httpEx.Message}");
         }
+
+        catch (Exception ex)
+        {
+            // General error logging
+            Console.WriteLine($"Unexpected Error: {ex.Message}");
+        }
+
     }
 
     //form submit method
     private void formSubmit()
     {
-        EditGameData();
-        checkCanPublish();
+
     }
 
     //failed submit method
@@ -649,6 +669,7 @@
         Nav.NavigateTo(currentUrl);
     }
 
+    //method to show modal with message
     async Task ShowDeleteModal(int itemToDelete)
     {
         var parameters = new ModalParameters()
@@ -668,19 +689,17 @@
         Nav.NavigateTo(currentUrl);
     }
 
+    //method to remove item from the answers list - later add to database
     async Task ShowSaveModal()
     {
-
         var parameters = new ModalParameters()
           .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשמור את המשחק?"); // Pass parameter(s) to modal component
         var messageForm = Modal.Show<PopUpComponent>("שמירת משחק", parameters); // Show modal
         var result = await messageForm.Result; // Get result from modal
         if (result.Confirmed)
         {
-            // EditGameData();
-            // checkCanPublish();
+            await EditGameData();
             Nav.NavigateTo("Pagewithauth");
-
         }
         else
         {
@@ -691,35 +710,44 @@
         Nav.NavigateTo("Pagewithauth");
     }
 
+    //method to show modal with message
     async Task ShowSaveSettingsModal()
     {
-        var parameters = new ModalParameters()
-          .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשמור את הגדרות המשחק?"); // Pass parameter(s) to modal component
-        var messageForm = Modal.Show<PopUpComponent>("שמירת משחק", parameters); // Show modal
-        var result = await messageForm.Result; // Get result from modal
-        if (result.Confirmed)
+        try
         {
-            Console.WriteLine("Confirmed");
-            EditGameData();
-            checkCanPublish();
-            Nav.NavigateTo("Pagewithauth");
+            var parameters = new ModalParameters()
+         .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשמור את הגדרות המשחק?"); // Pass parameter(s) to modal component
+            var messageForm = Modal.Show<PopUpComponent>("שמירת משחק", parameters); // Show modal
+            var result = await messageForm.Result; // Get result from modal
+            if (result.Confirmed)
+            {
+                Console.WriteLine("Confirmed");
+                await EditGameData();
+            }
+            else
+            {
+                Console.WriteLine("Not confirmed");
+            }
+        }
+        catch
+        {
 
         }
-        else
+        finally
         {
-            Console.WriteLine("Not confirmed");
+
+            var currentUrl = Nav.Uri;
+            Nav.NavigateTo(currentUrl);
         }
-        var currentUrl = Nav.Uri;
-        // Navigate to the current URL to reload the page
-        Nav.NavigateTo(currentUrl);
+        
     }
 
+    //method to show modal with message
     async Task ShowNothingChangedModal()
     {
-
         var parameters = new ModalParameters();
-        parameters.Add("Message", "לא שיניתם כלום? המשיכו לערוך");
-        Modal.Show<About>("מה נשתנה?", parameters);
+        parameters.Add("Message", "לא שיניתם כלום, המשיכו לערוך");
+        Modal.Show<NoChange>("מה נשתנה?", parameters);
     }
 
     //method to add new item into the answers list - later add to database
@@ -899,7 +927,7 @@
                         gameData.QuestionImageText = myQuestionFileImage;
                         gameData.QuestionHasImage = true;
                     }
-                    
+
                 }
             }
 
@@ -974,9 +1002,18 @@
 
     }
 
+    //method to count the chars in the input field
     private void HandleInputChange(string newValue)
     {
         hasChanges = true;
         Console.WriteLine(hasChanges);
+    }
+
+    //method to delete image
+    private void DeleteImageMethod()
+    {
+        gameData.QuestionHasImage = false;
+        gameData.QuestionImageText = "empty";
+        hasChanges = true;
     }
 }
