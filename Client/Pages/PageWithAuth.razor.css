@@ -706,10 +706,12 @@ table.rounded-table {
     position: fixed;
     top: 80px;
     left: 60px;
-    width: 250px;
-    height: 250px;
+    width: 350px;
+    height: 350px;
     z-index: 98;
     background-image: url('assets-images/minSign.png');
+    background-size: 280px 270px; /* Width and Height */
+
     background-repeat: no-repeat;
     display: flex;
     justify-content: center; /* Center horizontally */
@@ -717,8 +719,9 @@ table.rounded-table {
 }
 
 .innerDiv {
-    padding-top: 26px;
-        width: 250px;
+    padding-top: 36px;
+        width: 280px;
+        padding-right: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -726,10 +729,12 @@ table.rounded-table {
 
     .innerDiv h3 {
         margin-bottom: 14px;
+        padding-right: 36px;
     }
 
     .innerDiv h5 {
-        margin-bottom: 7px;
+        margin-bottom: 16px;
+        padding-right: 36px;
     }
 
     .innerDiv ul {
