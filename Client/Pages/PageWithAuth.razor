@@ -220,31 +220,40 @@
                     </tr>
                 </thead>
                 <tbody class="roundedTbody">
-                    @foreach (var game in GamesList)
+                    @if (GamesList != null && GamesList.Count > 0)
                     {
-                        <tr style="border-top: 1px solid #e0e0e0;">
-                            <td><b>@game.GameCode</b></td>
-                            <td>@game.GameName</td>
-                            <td><i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i> </td>
-                            <td>
-                                @if (game.CanPublish == false)
-                                {
-                                    <div class="checkbox-wrapper-19">
-                                        <input type="checkbox" id="@game.ID" disabled>
-                                        <label for="@game.ID" class="check-box1" />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="checkbox-wrapper-20">
-                                        <input type="checkbox" id="@game.ID" checked="@game.IsPublished" @onchange="()=>changePublish(game)" />
-                                        <label for="@game.ID" class="check-box2"></label>
-                                    </div>
-                                }
-                            </td>
-                            <td>
-                                <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="()=>DeleteGame(game)"></i>
-                            </td>
+                        @foreach (var game in GamesList)
+                        {
+                            <tr style="border-top: 1px solid #e0e0e0;">
+                                <td><b>@game.GameCode</b></td>
+                                <td>@game.GameName</td>
+                                <td><i class="fa fa-pencil icon" style="font-size:24px;" @onclick="()=>EditGame(game)"></i> </td>
+                                <td>
+                                    @if (game.CanPublish == false)
+                                    {
+                                        <div class="checkbox-wrapper-19">
+                                            <input type="checkbox" id="@game.ID" disabled>
+                                            <label for="@game.ID" class="check-box1" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="checkbox-wrapper-20">
+                                            <input type="checkbox" id="@game.ID" checked="@game.IsPublished" @onchange="()=>changePublish(game)" />
+                                            <label for="@game.ID" class="check-box2"></label>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <i class="fa fa-trash-o icon" style="font-size:24px;" @onclick="()=>DeleteGame(game)"></i>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center" style="font-weight:bold;height:350px;">בטבלה זו יופיעו כלל המשחקים, טרם הוזנו משחקים - לחצו על "צור משחק"</td>
                         </tr>
                     }
                 </tbody>
@@ -380,13 +389,32 @@
     //deletegame method considering my controller code
     private async Task DeleteGame(Games game)
     {
+        //call GetImageFilesForDeletion and create a new list of images to delete 
+        var filesToDelete = await Http.GetAsync("api/game/" + UserId + "/GetImageFilesForDeletion/" + game.GameCode);
+        
+        //make a list out of the returned filesToDelete object 
+        List<string> filesToDeleteList = filesToDelete.Content.ReadFromJsonAsync<List<string>>().Result;
+      
         var parameters = new ModalParameters().Add(nameof(PopUpComponent.Message), "האם ברצונכם למחוק את המשחק?"); // Pass parameter(s) to modal component
+        
         var messageForm = Modal.Show<PopUpComponent>("מחיקת משחק", parameters); // Show modal
 
         var result = await messageForm.Result; // Get result from modal
 
         if (result.Confirmed)
         {
+            //delete image files
+            var saveResponse = await Http.PostAsJsonAsync("api/Media/deleteImages", filesToDeleteList);
+            if (saveResponse.IsSuccessStatusCode == true)
+            {
+                Console.WriteLine("Images deleted Successfully");
+            }
+            else
+            {
+                msg = "IMAGES DELETE ERROR";
+            }
+
+
             //שליחת המשתנה לקונטרולר
             var res = await Http.DeleteAsync("api/game/" + UserId + "/deleteGame/" + game.GameCode);
             if (res.IsSuccessStatusCode == true)
@@ -410,6 +438,7 @@
                         break;
                 }
             }
+
         }
         else
         {
@@ -488,6 +517,4 @@
     {
         showValidationMessage = true;
     }
-
-   
 }

@@ -7,6 +7,7 @@ using TriangleDbRepository;
 using TriangleProject.Shared.Models.Games;
 using TriangleProject.Shared.Models.GamesContent;
 using TriangleProject.Shared.Models.Users;
+using static System.Net.WebRequestMethods;
 
 namespace TriangleProject.Server.Controllers
 {
@@ -14,6 +15,8 @@ namespace TriangleProject.Server.Controllers
     [ApiController]
     public class GameController : ControllerBase
     {
+        List<string> DeleteImages = new List<string>(); // List to hold the images to delete
+
         private readonly DbRepository _db;
 
         public GameController(DbRepository db)
@@ -195,6 +198,8 @@ namespace TriangleProject.Server.Controllers
                             {
                                 return Ok("Game deleted");
                             }
+
+
                             return BadRequest("Game not deleted");
                         }
                         return BadRequest("Game Not Found");
@@ -456,7 +461,6 @@ namespace TriangleProject.Server.Controllers
             }
         }
 
-
         private async Task UpdateAnswers(int gameCode, GameToUpdate gameToUpdate)
         {
             //Update existing answers
@@ -504,7 +508,7 @@ namespace TriangleProject.Server.Controllers
 
         }
 
-        public async Task DeleteAnswers(int gameId, GameToUpdate gameToUpdate)
+        private async Task DeleteAnswers(int gameId, GameToUpdate gameToUpdate)
         {
             foreach (GameAnswers item in gameToUpdate.AnswersToDelete)
             {
@@ -520,5 +524,47 @@ namespace TriangleProject.Server.Controllers
                 }
             }
         }
+
+
+        [HttpGet("GetImageFilesForDeletion/{gameCode}")]
+        public async Task<IActionResult> GetImageFilesForDeletion(int gameCode)
+        {
+            try
+            {
+                var imageFiles = await GetGameRelatedImageFilesForDeletionAsync(gameCode);
+                if (imageFiles == null || !imageFiles.Any())
+                {
+                    return NotFound("No image files found for deletion.");
+                }
+
+                // Return the list of image files to the client
+                return Ok(imageFiles);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving image files for deletion.");
+            }
+        }
+
+        private async Task<List<string>> GetGameRelatedImageFilesForDeletionAsync(int gameCode)
+        {
+            List<string> deleteImages = new List<string>();
+
+            // Retrieve image file names from the Games table where they are not 'empty' or '-'
+            string gameImagesQuery = "SELECT QuestionImageText FROM Games WHERE GameCode = @GameCode AND QuestionImageText <> 'empty' AND QuestionImageText <> '-'";
+            var gameImages = await _db.GetRecordsAsync<string>(gameImagesQuery, new { GameCode = gameCode });
+            deleteImages.AddRange(gameImages.Where(image => !string.IsNullOrEmpty(image)));
+
+            // Retrieve image file names from the Items table where they are not 'empty' or '-'
+            string itemImagesQuery = "SELECT AnswerImageText FROM Items JOIN Games ON Items.GameID = Games.ID WHERE Games.GameCode = @GameCode AND Items.AnswerImageText <> 'empty' AND Items.AnswerImageText <> '-'";
+            var itemImages = await _db.GetRecordsAsync<string>(itemImagesQuery, new { GameCode = gameCode });
+            deleteImages.AddRange(itemImages.Where(image => !string.IsNullOrEmpty(image)));
+
+            return deleteImages;
+        }
+
+
+
     }
 }
