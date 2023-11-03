@@ -26,7 +26,7 @@
                     </td>
                     <td style="width:15%;">
                         <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.GameName"
-                          alert="" class="default-input" maxlength="30" maxChars="30" minChars="2" inputWidth="320px" />
+                                         alert="" class="default-input" maxlength="30" maxChars="30" minChars="2" inputWidth="320px" />
                     </td>
                     <td rowspan="3" style="text-align:center;" class="gameQuestionTD">
                         <div class="flexContainer">
@@ -37,7 +37,6 @@
                                 <div class="checkbox-wrapper-64">
                                     <label class="switch">
                                         <input type="checkbox" checked="@(!gameData.QuestionHasImage)">
-                                        
                                         <span class="slider"></span>
                                     </label>
                                 </div>
@@ -46,25 +45,15 @@
                                 הנחייה עם טקסט ותמונה
                             </div>
                             <div class="flexItem">
-                                <!-----------------------------------
-                                    ADDING IMAGE TO GAME QUESTION 
-                                ------------------------------------->
-
                                 <label class="uploadImg" for="QuestionFileInputID">
                                     <i class="fa fa-picture-o" aria-hidden="true" style="color:black;font-size:30px;"></i>
                                 </label>
                                 <InputFile name="QuestionImage" id="QuestionFileInputID" OnChange="@(e => UploadFile(e, "QuestionImage"))" hidden />
-
-
-
                                 @if (gameData.QuestionHasImage)
                                 {
                                     <i class="fa fa-trash-o  delete-image-btn" @onclick="DeleteImageMethod"></i>
                                 }
                             </div>
-
-
-
                         </div>
                     </td>
                     <td rowspan="2" style="text-align:center; " class="GezaTextandPicture">
@@ -86,7 +75,7 @@
                                 {
                                     @if (!string.IsNullOrEmpty(gameData.QuestionImageText))
                                     {
-                                        <img src="@gameData.QuestionImageText" width="50" style="padding-top:7px; float: left;"/>
+                                        <img src="@gameData.QuestionImageText" width="50" style="padding-top:7px; float: left;" />
                                     }
                                 }
 
@@ -120,27 +109,28 @@
                         <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
                     </td>
                     <td style="text-align:center;width:10%;">
-                        @if (hasChanges)
+                        @*  @if (hasChanges)
+                    {
+                    <input type="button" class="btn btn-primary saveBTN" @onclick="ShowSaveSettingsModal" value="@Localizer["SaveSettings"]" />
+                    }
+                    else
+                    {
+                    <input type="button" class="btn btn-primary saveBTN" @onclick="ShowNothingChangedModal" value="@Localizer["SaveSettings"]" />
+                    } *@
+                        @if (IsQuestionDescriptionEmpty)
                         {
                             <input type="button" class="btn btn-primary saveBTN" @onclick="ShowSaveSettingsModal" value="@Localizer["SaveSettings"]" />
-                        }
-                        else
-                        {
-                            <input type="button" class="btn btn-primary saveBTN" @onclick="ShowNothingChangedModal" value="@Localizer["SaveSettings"]" />
                         }
                     </td>
                 </tr>
             </table>
-            <div class="Answers">
+            <div class="Answers @(IsQuestionDescriptionEmpty ? "gray-out" : "")">
                 <div class="row">
                     <div class="col-6 col-md-4 division1">
                         <table style="background-color:#F7F7F7; border: 0px solid black;">
                             <tr style="background-color:#F7F7F7;">
                                 <td style="text-align:center; height:15px;" colspan="5"> <b> הוספת תשובה </b></td>
                             </tr>
-
-
-
                             <tr style="border-bottom: 5px solid white; background-color:#F7F7F7;  height:50px;">
                                 <td style="text-align:center; width:180px;">
                                     <div class="textBTN">
@@ -154,7 +144,6 @@
                                 <td style="text-align:center;width:100px;">
                                     <h3>או</h3>
                                 </td>
-
                                 <td style="text-align:center;width:180px;" id="picBTN">
                                     <div class="picBTN">
                                         <button type="button" value="תמונה" class="picortext " @onclick="ChangeToText">
@@ -165,10 +154,6 @@
                                     </div>
                                 </td>
                             </tr>
-
-
-
-
                             @if (textOrPic)
                             {
                                 <tr style="background-color:#F7F7F7; height:60px; text-align:center;">
@@ -303,12 +288,18 @@
                     </div>
                     <div class="col-6 col-md-4 table1">
                         <table class="col-6 col-md-4 table table-hover">
+
                             <tr>
                                 <th colspan="3" style="text-align:center; background-color:#EEF3E7;">
+                                    <Tooltip Text="נדרש מינימום של 12 תשובות נכונות"><i class="fa fa-info-circle"> </i> </Tooltip>
                                     @gameData.QuestionCorrectCategory
-                                    (@countCorrectAnswers)
+                                    <span style="color:@(countCorrectAnswers >= 12 ? "green" : "red")">
+                                        (@countCorrectAnswers)
+                                    </span>
                                 </th>
                             </tr>
+
+
                             <tbody class="correct-table">
                                 @foreach (var item in tempAnswersData)
                                 {
@@ -350,11 +341,14 @@
                         <table class="col-6 col-md-4 table table-hover">
                             <tr>
                                 <th colspan="3" style="text-align:center; background-color:#EEDFDF;">
+                                    <Tooltip Text="נדרש מינימום של 6 תשובות לא נכונות"><i class="fa fa-info-circle"> </i> </Tooltip>
                                     @gameData.QuestionWrongCategory
-                                    (@countWrongAnswers)
-
+                                    <span style="color:@(countWrongAnswers >= 6 ? "green" : "red")">
+                                        (@countWrongAnswers)
+                                    </span>
                                 </th>
                             </tr>
+
                             <tbody class="wrong-table">
                                 @foreach (var item in tempAnswersData)
                                 {
@@ -402,7 +396,6 @@
                         </td>
                         <td style="width:50%;">
                             <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.GameEndMessage" alert="" class="default-input" maxlength="50" maxChars="50" minChars="2" inputWidth="380px" />
-
                         </td>
                         <td style="text-align:center;width:250px;">
                             @if (gameData.IsPublished == false)
@@ -417,11 +410,11 @@
                         <td style="text-align:center;width:250px;">
                             @if (hasChanges)
                             {
-                                <button class="btn btn-secondary backBTN" @onclick="ShowSaveModal">@Localizer["Back"]</button>
+                                <button class="btn btn-primary backBTN" @onclick="ShowSaveModal">@Localizer["Back"]</button>
                             }
                             else
                             {
-                                <button class="btn btn-secondary backBTN" @onclick="CancelEdit">@Localizer["Back"]</button>
+                                <button class="btn btn-primary backBTN" @onclick="CancelEdit">@Localizer["Back"]</button>
                             }
                         </td>
                     </tr>
@@ -442,9 +435,6 @@
     [Parameter]
     public string gameCode { get; set; } // Inject gameCode
 
-    // [Parameter]
-    // public List<Games> GamesList { get; set; } // Inject GamesList
-
     GameDetails gameData; // Object to hold the game data
     UserWithGames user; // Object to hold the user data
 
@@ -459,6 +449,8 @@
     string msg = ""; // variable to hold the message to display to the user
     string pageMsg = ""; // variable to hold the message to display to the user
     string inputData = ""; // variable to hold the input data from the user
+    string QuestionDesc = "";
+
 
     long maxFileSize = 4194304; //4MB
     int edititem = 0; // variable to hold the edit item id
@@ -466,6 +458,8 @@
     int gameAnswersCount = 0; // variable to hold the number of answers in the game
     int countCorrectAnswers = 0;
     int countWrongAnswers = 0;
+
+
 
     bool publishConfirm = false; // variable to hold the publish confirmation state
     bool editAnswer = false; // variable to hold the edit answer state
@@ -476,11 +470,11 @@
     bool textOrPic = true; // variable to hold the text or pic state
     bool uploadButton = true; // variable to hold the upload button state
     bool hasChanges = false; // variable to hold the has changes state
+    bool IsQuestionDescriptionEmpty => QuestionDesc == "empty";
 
 
-    //////////////////////////////////////////////////////////
-    ////////////////////     Methods    //////////////////////
-    //////////////////////////////////////////////////////////
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -514,6 +508,7 @@
             }
             countCorrectAnswers = tempAnswersData.Where(x => x.IsCorrect == true).Count();
             countWrongAnswers = tempAnswersData.Where(x => x.IsCorrect == false).Count();
+            QuestionDesc = gameData.QuestionDescription;
         }
         catch (Exception ex)
         {
@@ -586,9 +581,8 @@
     }
 
     //form submit method
-    private void formSubmit()
+    async Task formSubmit()
     {
-
     }
 
     //failed submit method
@@ -613,6 +607,8 @@
             if (gameData.IsPublished == true)
             {
                 msg = "Game published";
+                publishConfirm = true;
+
             }
             else
             {
@@ -649,15 +645,30 @@
         }
     }
 
+    //method to remove item from the answers list - later add to database
+    private bool IsRateValid()
+    {
+        return (countCorrectAnswers / 2) == countWrongAnswers;
+    }
+
     //show modal method to show modal with confirmation message
     async Task ShowPublishModal()
     {
-        var parameters = new ModalParameters()
+        if (!IsRateValid())
+        {
+            var parameters = new ModalParameters()
+                .Add(nameof(NoChange.Message), "לא ניתן לפרסם משחק אלה אם יחס השאלות הנכונות / לא נכונות הוא 2:1 לדוגמא - עבור 20 שאלות בקטגוריה נכונה יש להוסיף 10 שאלות לא נכונות");
+            Modal.Show<NoChange>("פרסום משחק", parameters);
+            return;
+        }
+
+        var publishParameters = new ModalParameters()
             .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשנות את סטאטוס הפרסום?"); // Pass parameter(s) to modal component
-        var messageForm = Modal.Show<PopUpComponent>("פרסום משחק", parameters); // Show modal
+        var messageForm = Modal.Show<PopUpComponent>("פרסום משחק", publishParameters); // Show modal
         var result = await messageForm.Result; // Get result from modal
         if (result.Confirmed)
         {
+            await EditGameData();
             await changePublish(gameData);
         }
         else
@@ -665,8 +676,11 @@
             Console.WriteLine("Not confirmed");
         }
         var currentUrl = Nav.Uri;
-        // Navigate to the current URL to reload the page
-        Nav.NavigateTo(currentUrl);
+        if (publishConfirm == true)
+        {
+            Nav.NavigateTo("Pagewithauth");
+
+        }
     }
 
     //method to show modal with message
@@ -692,6 +706,8 @@
     //method to remove item from the answers list - later add to database
     async Task ShowSaveModal()
     {
+        await DeleteImage();
+
         var parameters = new ModalParameters()
           .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשמור את המשחק?"); // Pass parameter(s) to modal component
         var messageForm = Modal.Show<PopUpComponent>("שמירת משחק", parameters); // Show modal
@@ -721,8 +737,9 @@
             var result = await messageForm.Result; // Get result from modal
             if (result.Confirmed)
             {
-                Console.WriteLine("Confirmed");
+                Console.WriteLine("Confirmed Save Settings");
                 await EditGameData();
+
             }
             else
             {
@@ -735,11 +752,11 @@
         }
         finally
         {
-
+            QuestionDesc = gameData.QuestionDescription;
             var currentUrl = Nav.Uri;
             Nav.NavigateTo(currentUrl);
         }
-        
+
     }
 
     //method to show modal with message
@@ -768,7 +785,6 @@
             tempAnswersData.Add(gameAnswer);
             inputData = "";
             hasChanges = true;
-
             countCorrectAnswers = tempAnswersData.Where(x => x.IsCorrect == true).Count();
             countWrongAnswers = tempAnswersData.Where(x => x.IsCorrect == false).Count();
 
@@ -898,7 +914,7 @@
     }
 
     //method to upload image to server
-    private async Task UploadFile(InputFileChangeEventArgs e,string source)
+    private async Task UploadFile(InputFileChangeEventArgs e, string source)
     {
         Console.WriteLine("User Clicked: " + source);
 
@@ -916,7 +932,7 @@
                 {
                     string resizeUrl = saveResponse.Content.ReadAsStringAsync().Result;
 
-                    if(source =="AnswerImage")
+                    if (source == "AnswerImage")
                     {
                         myFileImage = "uploadedFiles/" + resizeUrl;
                     }
@@ -939,12 +955,8 @@
     {
         DeleteImages.Add(myFileImage);
         myFileImage = "";
-    }
-
-    //method to hide upload button
-    private void HideUploadButton()
-    {
-
+        DeleteImages.Add(myQuestionFileImage);
+        myQuestionFileImage = "";
     }
 
     //method to delete image from server
@@ -963,46 +975,6 @@
     }
 
     //method to count the chars in the input field
-    void countChars(string field)
-    {
-        // Get the length of the input field
-        int length = field.Length;
-
-        if (length > 3 && length <= 10)
-        {
-            inputClass = "good-input";
-            alert = $"יש בין 3 ל10 תווים";
-        }
-        else if (length > 10 && length <= 15)
-        {
-            inputClass = "warnning-input";
-            alert = "יש בין 10 ל15 תווים";
-        }
-        else if (length > 10 && length <= 15)
-        {
-            inputClass = "warnning-input";
-            alert = "יש בין 10 ל15 תווים";
-        }
-        else if (length > 15 && length < 30)
-        {
-            inputClass = "danger-input";
-            alert = "יש יותר מ15 תווים";
-        }
-        else if (length >= 30)
-        {
-            inputClass = "danger-input";
-            alert = "הגעת למקסימום התווים";
-        }
-        else
-        {
-            inputClass = "";
-            alert = "אין מספיק תווים";
-        }
-
-
-    }
-
-    //method to count the chars in the input field
     private void HandleInputChange(string newValue)
     {
         hasChanges = true;
@@ -1015,5 +987,6 @@
         gameData.QuestionHasImage = false;
         gameData.QuestionImageText = "empty";
         hasChanges = true;
+        MakeDeleteList();
     }
 }

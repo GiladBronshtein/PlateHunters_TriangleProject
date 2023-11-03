@@ -427,7 +427,18 @@ namespace TriangleProject.Server.Controllers
             string queryQuestionCount = "SELECT Count(ID) from Items WHERE GameID = @ID";
             var recordQuestionCount = await _db.GetRecordsAsync<int>(queryQuestionCount, param);
             int numberOfQuestions = recordQuestionCount.FirstOrDefault();
-            if (numberOfQuestions >= minQuestions)
+
+            // Fetch the count of correct answers
+            string queryCorrectCount = "SELECT Count(ID) from Items WHERE GameID = @ID AND IsCorrect = 1"; // Assuming IsCorrect is a boolean or bit field
+            int correctAnswersCount = (await _db.GetRecordsAsync<int>(queryCorrectCount, param)).FirstOrDefault();
+
+            // Fetch the count of wrong answers
+            int wrongAnswersCount = numberOfQuestions - correctAnswersCount;
+
+            // Check the 2:1 rate condition
+            bool isRateValid = (correctAnswersCount / 2) == wrongAnswersCount;
+
+            if (numberOfQuestions >= minQuestions && isRateValid)
             {
                 canPublish = true;
             }
@@ -444,6 +455,7 @@ namespace TriangleProject.Server.Controllers
                 Console.WriteLine($"The update of game: {gameId} was completed successfully {isUpdate}");
             }
         }
+
 
         private async Task UpdateAnswers(int gameCode, GameToUpdate gameToUpdate)
         {

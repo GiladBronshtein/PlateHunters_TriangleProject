@@ -2,7 +2,7 @@
 tbody.wrong-table {
     background-color: white;
     display: block;
-    max-height: 354px;
+    max-height: 343px;
     overflow-y: auto;
 }
 
@@ -15,7 +15,7 @@ thead.wrong-table, tbody.wrong-table tr {
 tbody.correct-table {
     background-color: white;
     display: block;
-    max-height: 354px;
+    max-height: 343px;
     overflow-y: auto;
 }
 
@@ -131,7 +131,7 @@ table, th, td {
 
 
 .MainTable th {
-    background-color: #ACACAC;
+    background-color: gray;
     color: white;
 }
 
@@ -641,3 +641,8 @@ float: left;
     .delete-image-btn:hover {
         color: orange;
     }
+
+.gray-out {
+    opacity: 0.1; /* or any desired level of graying out */
+    pointer-events: none; /* to make it non-interactive */
+}
