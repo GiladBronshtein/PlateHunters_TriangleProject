@@ -526,35 +526,48 @@ namespace TriangleProject.Server.Controllers
         }
 
         [HttpGet("GetImageFilesForDeletion/{gameCode}")]
-        public async Task<IActionResult> GetImageFilesForDeletion(int gameCode)
+        public async Task<IActionResult> GetImageFilesForDeletion(int userId, int gameCode)
         {
-            try
+            int? sessionId = HttpContext.Session.GetInt32("userId");
+            if (sessionId != null)
             {
-                List<string> deleteImages = new List<string>();
-
-                // Retrieve image file names from the Games table where they are not 'empty' or '-'
-                string gameImagesQuery = "SELECT QuestionImageText FROM Games WHERE GameCode = @GameCode AND QuestionImageText <> 'empty' AND QuestionImageText <> '-'";
-                var gameImages = await _db.GetRecordsAsync<string>(gameImagesQuery, new { GameCode = gameCode });
-                deleteImages.AddRange(gameImages.Where(image => !string.IsNullOrEmpty(image)));
-
-                // Retrieve image file names from the Items table where they are not 'empty' or '-'
-                string itemImagesQuery = "SELECT AnswerImageText FROM Items JOIN Games ON Items.GameID = Games.ID WHERE Games.GameCode = @GameCode AND Items.AnswerImageText <> 'empty' AND Items.AnswerImageText <> '-'";
-                var itemImages = await _db.GetRecordsAsync<string>(itemImagesQuery, new { GameCode = gameCode });
-                deleteImages.AddRange(itemImages.Where(image => !string.IsNullOrEmpty(image)));
-
-                if (!deleteImages.Any())
+                if (userId == sessionId)
                 {
-                    return NotFound("No image files found for deletion.");
-                }
 
-                // Return the list of image files to the client
-                return Ok(deleteImages);
+                    try
+                    {
+                        List<string> deleteImages = new List<string>();
+
+                        // Retrieve image file names from the Games table where they are not 'empty' or '-'
+                        string gameImagesQuery = "SELECT QuestionImageText FROM Games WHERE GameCode = @GameCode AND QuestionImageText <> 'empty' AND QuestionImageText <> '-'";
+                        var gameImages = await _db.GetRecordsAsync<string>(gameImagesQuery, new { GameCode = gameCode });
+                        deleteImages.AddRange(gameImages.Where(image => !string.IsNullOrEmpty(image)));
+
+                        // Retrieve image file names from the Items table where they are not 'empty' or '-'
+                        string itemImagesQuery = "SELECT AnswerImageText FROM Items JOIN Games ON Items.GameID = Games.ID WHERE Games.GameCode = @GameCode AND Items.AnswerImageText <> 'empty' AND Items.AnswerImageText <> '-'";
+                        var itemImages = await _db.GetRecordsAsync<string>(itemImagesQuery, new { GameCode = gameCode });
+                        deleteImages.AddRange(itemImages.Where(image => !string.IsNullOrEmpty(image)));
+
+                        if (!deleteImages.Any())
+                        {
+                            return NotFound("No image files found for deletion.");
+                        }
+
+                        // Return the list of image files to the client
+                        return Ok(deleteImages);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception here
+                        return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving image files for deletion.");
+                    }
+                    return BadRequest("It's Not Your Game");
+                }
+                return BadRequest("User Not Logged In");
             }
-            catch (Exception ex)
-            {
-                // Log the exception here
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving image files for deletion.");
-            }
+            return BadRequest("No Session");
+
+           
         }
 
 

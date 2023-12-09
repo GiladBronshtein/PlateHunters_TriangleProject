@@ -109,14 +109,7 @@
                         <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה - היא תופיע בסיכום המשחק" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
                     </td>
                     <td style="text-align:center;width:10%;">
-                        @*  @if (hasChanges)
-                    {
-                    <input type="button" class="btn btn-primary saveBTN" @onclick="ShowSaveSettingsModal" value="@Localizer["SaveSettings"]" />
-                    }
-                    else
-                    {
-                    <input type="button" class="btn btn-primary saveBTN" @onclick="ShowNothingChangedModal" value="@Localizer["SaveSettings"]" />
-                    } *@
+                   
                         @if (IsQuestionDescriptionEmpty)
                         {
                             <input type="button" class="btn btn-primary saveBTN" @onclick="ShowSaveSettingsModal" value="@Localizer["SaveSettings"]" />
@@ -692,6 +685,7 @@
         var result = await messageForm.Result; // Get result from modal
         if (result.Confirmed)
         {
+            MakeDeleteList();
             RemoveFromTable(itemToDelete);
         }
         else
@@ -706,7 +700,7 @@
     //method to remove item from the answers list - later add to database
     async Task ShowSaveModal()
     {
-        await DeleteImage();
+        MakeDeleteList();
 
         var parameters = new ModalParameters()
           .Add(nameof(PopUpComponent.Message), "האם ברצונכם לשמור את המשחק?"); // Pass parameter(s) to modal component
