@@ -65,3 +65,25 @@ button{
 position: relative;
 top: 40%;
 }
+
+/*center credits class and creditsref id under container div*/
+.credits{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0px;
+}
+#creditsref{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}

@@ -205,13 +205,14 @@
                             @Localizer["GameEdit"]
                             <Tooltip Text="לחצו על העפרון לעריכת המשחק ומסיחי התשובות"><i class="fa fa-info-circle"> </i> </Tooltip>
                         </th>
-                        <th>
+                        <th style="text-align: right;">
                             @Localizer["IsPublished"]
-                            <Tooltip Text="פרסום המשחק דורש: <br/>
-               גזע שאלה - 2 תווים לפחות<br/>
-               יחס מסיחים - 2:1<br/>
-               לפחות 18 מסיחים<br/>
-             הודעת סיום"> <i class="fa fa-info-circle"> </i> </Tooltip>
+                            <Tooltip Text="פרסום המשחק דורש: <br/><br/>
+                                                      <ul>
+                                                        <li> גזע שאלה - 2 תווים לפחות</li>
+                                                        <li> יחס מסיחים - 2:1</li>
+                                                        <li> לפחות 18 מסיחים</li>
+                                                        <li> הודעת סיום</li></ul>"><i class="fa fa-info-circle"> </i></Tooltip>
                         </th>
                         <th>
                             @Localizer["GameDelete"]
@@ -389,31 +390,40 @@
     //deletegame method considering my controller code
     private async Task DeleteGame(Games game)
     {
+        List<string> filesToDeleteList = new List<string>();
+
         //call GetImageFilesForDeletion and create a new list of images to delete 
         var filesToDelete = await Http.GetAsync("api/game/" + UserId + "/GetImageFilesForDeletion/" + game.GameCode);
-        
-        //make a list out of the returned filesToDelete object 
-        List<string> filesToDeleteList = filesToDelete.Content.ReadFromJsonAsync<List<string>>().Result;
-      
-        var parameters = new ModalParameters().Add(nameof(PopUpComponent.Message), "האם ברצונכם למחוק את המשחק?"); // Pass parameter(s) to modal component
-        
-        var messageForm = Modal.Show<PopUpComponent>("מחיקת משחק", parameters); // Show modal
 
+        if (filesToDelete.IsSuccessStatusCode)
+        {
+            filesToDeleteList = await filesToDelete.Content.ReadFromJsonAsync<List<string>>();
+        }
+        else
+        {
+            Console.WriteLine("Nothing To Delete");
+        }
+
+
+        var parameters = new ModalParameters().Add(nameof(PopUpComponent.Message), "האם ברצונכם למחוק את המשחק?"); // Pass parameter(s) to modal component
+        var messageForm = Modal.Show<PopUpComponent>("מחיקת משחק", parameters); // Show modal
         var result = await messageForm.Result; // Get result from modal
 
         if (result.Confirmed)
         {
-            //delete image files
-            var saveResponse = await Http.PostAsJsonAsync("api/Media/deleteImages", filesToDeleteList);
-            if (saveResponse.IsSuccessStatusCode == true)
+            if(filesToDeleteList.Count > 0)
             {
-                Console.WriteLine("Images deleted Successfully");
+                //delete image files
+                var saveResponse = await Http.PostAsJsonAsync("api/Media/deleteImages", filesToDeleteList);
+                if (saveResponse.IsSuccessStatusCode == true)
+                {
+                    Console.WriteLine("Images deleted Successfully");
+                }
+                else
+                {
+                    msg = "IMAGES DELETE ERROR";
+                }
             }
-            else
-            {
-                msg = "IMAGES DELETE ERROR";
-            }
-
 
             //שליחת המשתנה לקונטרולר
             var res = await Http.DeleteAsync("api/game/" + UserId + "/deleteGame/" + game.GameCode);

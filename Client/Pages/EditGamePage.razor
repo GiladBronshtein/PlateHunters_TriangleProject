@@ -100,13 +100,13 @@
                         <label>@Localizer["GameCorrectCategory"]</label>
                     </td>
                     <td>
-                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
+                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.QuestionCorrectCategory" alert="כתבו את הקטגוריה הנכונה - היא תופיע בסיכום המשחק" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
                     </td>
                     <td style="width:12%;">
                         <label>@Localizer["GameWrongCategory"]</label>
                     </td>
                     <td>
-                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
+                        <CustomInputText CustomValueChanged="HandleInputChange" @bind-Value="gameData.QuestionWrongCategory" alert="כתבו את הקטגוריה הלא נכונה - היא תופיע בסיכום המשחק" class="default-input" maxlength="25" maxChars="25" minChars="2" inputWidth="280px" />
                     </td>
                     <td style="text-align:center;width:10%;">
                         @*  @if (hasChanges)
@@ -484,7 +484,7 @@
 
             if (response.Headers.Contains("X-Error") && response.Headers.GetValues("X-Error").FirstOrDefault() == "BadRequest")
             {
-                Nav.NavigateTo("/badrequest");
+                Nav.NavigateTo("badrequest");
                 return; // Exit the method early since we're navigating away
             }
 
@@ -547,7 +547,7 @@
     //cancel edit and return to page with auth
     private void CancelEdit()
     {
-        Nav.NavigateTo("/Pagewithauth");
+        Nav.NavigateTo("Pagewithauth");
     }
 
     //check if the game can be published
@@ -942,6 +942,7 @@
                         hasChanges = true;
                         gameData.QuestionImageText = myQuestionFileImage;
                         gameData.QuestionHasImage = true;
+                        isPreviewOn = true;
                     }
 
                 }
